@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>8bfde4e9-76f7-44ed-8144-2ba146347521</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>SujaySarma.Sdk.Azure.Common</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AzureObjectBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Count.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ResourceIdentity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ResourcePlan.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ResourceSku.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ResourceUri.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internal\RestApiClient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internal\RestApiResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ListContinuableResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SubResource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UriResource.cs" />
+  </ItemGroup>
+</Project>
