@@ -47,17 +47,10 @@ namespace SujaySarma.Sdk.Azure.Compute.ResourceSkus
         public List<string> Locations { get; set; } = new List<string>();
 
         /// <summary>
-        /// List of capabilities. This is hard to use, use the other (public) dictionary
-        /// </summary>
-        [JsonProperty("capabilities")]
-        private List<Dictionary<string, string>> _capabilities = new List<Dictionary<string, string>>();
-
-        /// <summary>
         /// More information about the locations
         /// </summary>
         [JsonProperty("locationInfo")]
         public List<ComputeResourceSkuLocationInfo> LocationInfo { get; set; } = new List<ComputeResourceSkuLocationInfo>();
-
 
         /// <summary>
         /// Capabilities of a VM - rebuilt from the actual structure returned to make it 
@@ -70,9 +63,13 @@ namespace SujaySarma.Sdk.Azure.Compute.ResourceSkus
                 if (_capabilitiesRebuilt == null)
                 {
                     _capabilitiesRebuilt = new Dictionary<string, string>();
-                    foreach(Dictionary<string, string> item in _capabilities)
+
+                    if (_capabilities != null)
                     {
-                        _capabilitiesRebuilt.Add(item["name"], item["value"]);
+                        foreach (Dictionary<string, string> item in _capabilities)
+                        {
+                            _capabilitiesRebuilt.Add(item["name"], item["value"]);
+                        }
                     }
                 }
 
@@ -81,6 +78,12 @@ namespace SujaySarma.Sdk.Azure.Compute.ResourceSkus
         }
         private Dictionary<string, string>? _capabilitiesRebuilt = null;
 
+#pragma warning disable IDE0044 // Add readonly modifier (Is de/hydrated by Json)
+
+        [JsonProperty("capabilities")]
+        private List<Dictionary<string, string>>? _capabilities = null;
+
+#pragma warning restore IDE0044 // Add readonly modifier
 
         public ComputeResourceSku() { }
     }

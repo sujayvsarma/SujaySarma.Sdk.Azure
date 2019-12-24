@@ -34,7 +34,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
             RestApiResponse response = await RestApiClient.GETWithContinuations<Usage>(
                     bearerToken,
                     $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/providers/Microsoft.Compute/locations/{locationName}/usages",
-                    "2019-03-01"
+                    "2019-03-01",
                     null, null,
                     new int[] { 200 }
                 );
@@ -73,7 +73,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
             string apiEndpointName = type switch
             {
                 ComputeAnalyticsLogType.RequestRate => "getRequestRateByInterval",
-                ComputeAnalyticsLogType.ThrottleRate => "getThrottledRequests"
+                ComputeAnalyticsLogType.ThrottleRate => "getThrottledRequests",
                 _ => throw new ArgumentOutOfRangeException(nameof(apiEndpointName))
             };
 
