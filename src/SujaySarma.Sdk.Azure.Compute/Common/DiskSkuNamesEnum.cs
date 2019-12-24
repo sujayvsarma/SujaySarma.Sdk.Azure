@@ -8,6 +8,7 @@
         Standard_LRS,
         StandardSSD_LRS,
         Premium_LRS,
-        UltraSSD_LRS
+        UltraSSD_LRS,
+        Standard_ZRS
     }
 }

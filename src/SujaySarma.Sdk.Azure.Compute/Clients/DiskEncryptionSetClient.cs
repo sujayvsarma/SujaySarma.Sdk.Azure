@@ -93,6 +93,24 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskEncryptionSets
         }
 
         /// <summary>
+        /// Delete a single disk encryption set
+        /// </summary>
+        /// <param name="bearerToken">Authorization bearer token</param>
+        /// <param name="subscription">Guid of the subscription</param>
+        /// <param name="resourceGroupName">Name of the resource group containing the disk</param>
+        /// <param name="diskEncryptionSetName">Name of the disk encryption set to retrieve</param>
+        /// <returns>True if deletion job was accepted. False otherwise</returns>
+        public static async Task<bool> Delete(string bearerToken, Guid subscription, string resourceGroupName, string diskEncryptionSetName)
+        {
+            if ((subscription == Guid.Empty) || (subscription == default)) { throw new ArgumentNullException(nameof(subscription)); }
+            if (string.IsNullOrWhiteSpace(resourceGroupName)) { throw new ArgumentNullException(nameof(resourceGroupName)); }
+            if (string.IsNullOrWhiteSpace(diskEncryptionSetName)) { throw new ArgumentNullException(nameof(diskEncryptionSetName)); }
+
+            return await Delete(bearerToken, $"subscriptions/{subscription.ToString("d")}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}");
+        }
+
+
+        /// <summary>
         /// Delete a disk encryption set. This is an async job and the returned value only indicates acceptance of the job
         /// </summary>
         /// <param name="bearerToken">Authorization bearer token</param>

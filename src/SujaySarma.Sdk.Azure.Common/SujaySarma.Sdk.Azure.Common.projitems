@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AzureObjectBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Count.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LocalizedStringValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ResourceIdentity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ResourcePlan.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ResourceSku.cs" />

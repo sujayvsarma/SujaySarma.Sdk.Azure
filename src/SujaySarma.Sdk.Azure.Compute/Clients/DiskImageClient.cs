@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 
 using SujaySarma.Sdk.Azure.Common;
-using SujaySarma.Sdk.Azure.Compute.Common;
 using SujaySarma.Sdk.Azure.Compute.DiskImages;
 using SujaySarma.Sdk.Azure.Internal;
 
@@ -30,7 +29,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
 
             RestApiResponse response = await RestApiClient.GETWithContinuations<DiskImage>(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}{(string.IsNullOrWhiteSpace(resourceGroupName) ? "" : "/resourceGroups/" + resourceGroupName)}/providers/Microsoft.Compute/disks",
+                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}{(string.IsNullOrWhiteSpace(resourceGroupName) ? "" : "/resourceGroups/" + resourceGroupName)}/providers/Microsoft.Compute/images",
                     CLIENT_API_VERSION,
                     null, null,
                     new int[] { 200 }
@@ -89,6 +88,23 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
             }
 
             return JsonConvert.DeserializeObject<DiskImage>(response.Body);
+        }
+
+        /// <summary>
+        /// Delete a disk image. Operation is completed asynchronously.
+        /// </summary>
+        /// <param name="bearerToken">Authorization bearer token</param>
+        /// <param name="subscription">Guid of the subscription</param>
+        /// <param name="resourceGroupName">Name of the resource group containing the disk</param>
+        /// <param name="imageName">Name of the disk image to retrieve</param>
+        /// <returns>True if the job was accepted. False if not</returns>
+        public static async Task<bool> Delete(string bearerToken, Guid subscription, string resourceGroupName, string imageName)
+        {
+            if ((subscription == Guid.Empty) || (subscription == default)) { throw new ArgumentNullException(nameof(subscription)); }
+            if (string.IsNullOrWhiteSpace(resourceGroupName)) { throw new ArgumentNullException(nameof(resourceGroupName)); }
+            if (string.IsNullOrWhiteSpace(imageName)) { throw new ArgumentNullException(nameof(imageName)); }
+
+            return await Delete(bearerToken, $"subscriptions/{subscription.ToString("d")}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}");
         }
 
         /// <summary>

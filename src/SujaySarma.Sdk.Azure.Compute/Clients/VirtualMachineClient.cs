@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace SujaySarma.Sdk.Azure.Compute.Clients
 {
+    /// <summary>
+    /// Client to interact with the virtual machines endpoint
+    /// </summary>
     public static class VirtualMachineClient
     {
 
