@@ -5,7 +5,8 @@ using System.Collections.Generic;
 namespace SujaySarma.Sdk.Azure.Providers
 {
     /// <summary>
-    /// Metadata about a single resource provider
+    /// Metadata about a single resource provider. This is purely a return-data structure and there 
+    /// are no flows where this is instantiated in the client's code.
     /// </summary>
     public class ResourceProvider
     {

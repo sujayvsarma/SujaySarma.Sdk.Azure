@@ -89,7 +89,7 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskEncryptionSets
                 return new List<DiskEncryptionSet>();
             }
 
-            return JsonConvert.DeserializeObject<ListContinuableResult<DiskEncryptionSet>>(response.Body).Values;
+            return JsonConvert.DeserializeObject<ListResultWithContinuations<DiskEncryptionSet>>(response.Body).Values;
         }
 
         /// <summary>

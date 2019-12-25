@@ -1,11 +1,13 @@
 ﻿using Newtonsoft.Json;
+
 using System;
 using System.Collections.Generic;
 
 namespace SujaySarma.Sdk.Azure.Subscriptions
 {
     /// <summary>
-    /// The subscription item
+    /// The subscription item. This is purely a result-data structure and there are no code flows 
+    /// that require the caller to generate this data.
     /// </summary>
     public class Subscription
     {

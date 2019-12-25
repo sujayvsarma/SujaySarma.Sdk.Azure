@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
+using SujaySarma.Sdk.Azure.Common;
 using SujaySarma.Sdk.Azure.Compute.Encryption;
 
 namespace SujaySarma.Sdk.Azure.Compute.DiskEncryptionSets
@@ -30,5 +32,30 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskEncryptionSets
 
 
         public DiskEncryptionSetProperties() { }
+
+        /// <summary>
+        /// Create a property pointing to an active key
+        /// </summary>
+        /// <param name="keyVaultUri">The Resource Uri to the KeyVault where the key is interned</param>
+        /// <param name="keyVaultKeyUri">The absolute Uri to the key in the KeyVault</param>
+        public DiskEncryptionSetProperties(ResourceUri keyVaultUri, string keyVaultKeyUri)
+        {
+            if ((keyVaultUri == null) || (!keyVaultUri.IsValid)
+                || string.IsNullOrWhiteSpace(keyVaultUri.ProviderName) || (!keyVaultUri.ProviderName.Equals("Microsoft.KeyVault", StringComparison.InvariantCultureIgnoreCase))
+                    || string.IsNullOrWhiteSpace(keyVaultUri.Type) || (! keyVaultUri.Type.Equals("vaults", StringComparison.InvariantCultureIgnoreCase))
+                ) 
+            { 
+                throw new ArgumentException(nameof(keyVaultUri)); 
+            }
+
+            ActiveKey = new KeyVaultAndKeyReference()
+            {
+                Vault = new SourceVault() 
+                { 
+                    KeyVaultResourceId = keyVaultUri.ToString() 
+                },
+                KeyUrl = keyVaultKeyUri
+            };
+        }
     }
 }

@@ -6,6 +6,7 @@ namespace SujaySarma.Sdk.Azure.Common
     /// A string that has an English value as well as something that might 
     /// be localized. Sometimes both values are identical or one may be missing.
     /// </summary>
+    /// <remarks>This class is only present in results and never used in data sent TO an API</remarks>
     public class LocalizedStringValue
     {
 
@@ -20,6 +21,9 @@ namespace SujaySarma.Sdk.Azure.Common
         /// </summary>
         [JsonProperty("localizedValue")]
         public string? Localized { get; set; } = null;
+
+
+        public LocalizedStringValue() { }
 
     }
 }

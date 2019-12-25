@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+
 using SujaySarma.Sdk.Azure.Common;
 using SujaySarma.Sdk.Azure.Compute.VirtualMachines;
+
+using System;
+using System.Collections.Generic;
 
 namespace SujaySarma.Sdk.Azure.Compute.AvailabilitySets
 {
@@ -28,7 +31,7 @@ namespace SujaySarma.Sdk.Azure.Compute.AvailabilitySets
         /// should be assigned to
         /// </summary>
         [JsonProperty("proximityPlacementGroup")]
-        public SubResource ProximityPlacementGroup { get; set; } = new SubResource();
+        public SubResource? ProximityPlacementGroup { get; set; } = null;
 
         /// <summary>
         /// Status of the set
@@ -43,5 +46,86 @@ namespace SujaySarma.Sdk.Azure.Compute.AvailabilitySets
         public List<SubResource>? VirtualMachines { get; set; } = null;
 
         public AvailabilitySetProperties() { }
+
+        /// <summary>
+        /// Create properties object
+        /// </summary>
+        /// <param name="numberOfFaultDomains">Number of fault domains</param>
+        /// <param name="numberOfUpdateDomains">Number of update domains</param>
+        /// <param name="proximityGroup">Resource Uri of the Proximity Placement Group to assign the availability set to</param>
+        public AvailabilitySetProperties(int numberOfFaultDomains, int numberOfUpdateDomains, ResourceUri? proximityGroup = null)
+        {
+            FaultDomainCount = numberOfFaultDomains;
+            UpdateDomainCount = numberOfUpdateDomains;
+            ProximityPlacementGroup = ((proximityGroup == null) ? null : new SubResource(proximityGroup));
+
+            VirtualMachines = new List<SubResource>();
+        }
+
+        /// <summary>
+        /// Add a virtual machine to the availability set
+        /// </summary>
+        /// <param name="virtualMachine">ResourceUri of the VM to add</param>
+        public void AddVirtualMachine(ResourceUri virtualMachine)
+        {
+            if ((virtualMachine.ProviderName == null) || (!virtualMachine.ProviderName.Equals("Microsoft.Compute", StringComparison.InvariantCultureIgnoreCase))
+                || (virtualMachine.Type == null) || (!virtualMachine.Type.Equals("virtualMachines", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                throw new ArgumentException($"{nameof(virtualMachine)} does not represent a virtual machine.");
+            }
+
+            string resourceUri = virtualMachine.ToString();
+            if (VirtualMachines == null)
+            {
+                VirtualMachines = new List<SubResource>();
+            }
+
+            if (VirtualMachines.Count > 0)
+            {
+                foreach (SubResource resource in VirtualMachines)
+                {
+                    if (resource.ResourceId.Equals(resourceUri, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        throw new ArgumentException($"A virtual machine with the resource Id '{resourceUri}' is already added to this availability set.");
+                    }
+                }
+            }
+
+            VirtualMachines.Add(new SubResource(resourceUri));
+        }
+
+        /// <summary>
+        /// Remove a virtual machine from the availability set
+        /// </summary>
+        /// <param name="virtualMachine">ResourceUri of the VM to remove</param>
+        public void RemoveVirtualMachine(ResourceUri virtualMachine)
+        {
+            if ((virtualMachine.ProviderName == null) || (!virtualMachine.ProviderName.Equals("Microsoft.Compute", StringComparison.InvariantCultureIgnoreCase))
+                || (virtualMachine.Type == null) || (!virtualMachine.Type.Equals("virtualMachines", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                throw new ArgumentException($"{nameof(virtualMachine)} does not represent a virtual machine.");
+            }
+
+            if ((VirtualMachines == null) || (VirtualMachines.Count == 0))
+            {
+                return;
+            }
+
+            string resourceUri = virtualMachine.ToString();
+            SubResource? toRemove = null;
+            foreach (SubResource resource in VirtualMachines)
+            {
+                if (resource.ResourceId.Equals(resourceUri, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    toRemove = resource;
+                    break;
+                }
+            }
+
+            if (toRemove != null)
+            {
+                VirtualMachines.Remove(toRemove);
+            }
+        }
     }
 }

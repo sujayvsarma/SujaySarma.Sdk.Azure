@@ -6,7 +6,8 @@ using System.Collections.Generic;
 namespace SujaySarma.Sdk.Azure.Tenants
 {
     /// <summary>
-    /// Details about an Azure Tenant
+    /// Details about an Azure Tenant. This is purely a result-data structure and there are no code flows 
+    /// that require the caller to generate this data.
     /// </summary>
     public class Tenant
     {

@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-
+using SujaySarma.Sdk.Azure.Common;
 using SujaySarma.Sdk.Azure.Internal;
 using SujaySarma.Sdk.Azure.Subscriptions;
 
@@ -35,7 +35,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
                 return new List<Subscription>();
             }
 
-            return JsonConvert.DeserializeObject<SubscriptionListResult>(response.Body).Values;
+            return JsonConvert.DeserializeObject<ListResultWithContinuations<Subscription>>(response.Body).Values;
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
                 return new List<SubscriptionLocation>();
             }
 
-            return JsonConvert.DeserializeObject<SubscriptionLocationsListResult>(response.Body).Values;
+            return JsonConvert.DeserializeObject<ListResultWithContinuations<SubscriptionLocation>>(response.Body).Values;
         }
 
 

@@ -7,7 +7,8 @@ using System.Collections.Generic;
 namespace SujaySarma.Sdk.Azure.Core.Tags
 {
     /// <summary>
-    /// Data about a tag
+    /// Data about a tag. This is purely a result-data structure and there are no code flows 
+    /// that require the caller to generate this data.
     /// </summary>
     public class Tag
     {
@@ -28,7 +29,7 @@ namespace SujaySarma.Sdk.Azure.Core.Tags
         /// The number of instances of this tag across all resources in this subscription
         /// </summary>
         [JsonProperty("count")]
-        public Count Count { get; set; }
+        public ResultValueAggregate Count { get; set; }
 
         /// <summary>
         /// Values in each instance
@@ -36,12 +37,14 @@ namespace SujaySarma.Sdk.Azure.Core.Tags
         [JsonProperty("values")]
         public List<TagValue> Values { get; set; }
 
-
+        /// <summary>
+        /// Create a new tag
+        /// </summary>
         public Tag()
         {
             TagId = string.Empty;
             Name = string.Empty;
-            Count = new Count();
+            Count = new ResultValueAggregate();
             Values = new List<TagValue>();
         }
     }

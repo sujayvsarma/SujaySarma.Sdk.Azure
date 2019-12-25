@@ -15,7 +15,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
     /// Class to encapsulate calls to miscellaneous Compute methods that do not 
     /// justify their own class to have them.
     /// </summary>
-    public static class ComputeResourcesClient
+    public static class MiscServicesClient
     {
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
             }
 
 
-            return JsonConvert.DeserializeObject<ListContinuableResult<Usage>>(response.Body).Values;
+            return JsonConvert.DeserializeObject<ListResultWithContinuations<Usage>>(response.Body).Values;
         }
 
 

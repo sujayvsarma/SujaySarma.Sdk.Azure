@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+
+using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace SujaySarma.Sdk.Azure.Providers
 {
@@ -33,7 +34,7 @@ namespace SujaySarma.Sdk.Azure.Providers
         /// last RTM version. No guarantees!
         /// </summary>
         [JsonProperty("defaultApiVersion")]
-        public string DefaultApiVersion { get; set; }
+        public string? DefaultApiVersion { get; set; }
 
         /// <summary>
         /// Locations [human-readable names!] supported by this resource type. List should not be assumed to be in any particular order!
@@ -85,5 +86,34 @@ namespace SujaySarma.Sdk.Azure.Providers
             if (string.IsNullOrWhiteSpace(capability)) { throw new ArgumentNullException(nameof(capability)); }
             return ((!string.IsNullOrWhiteSpace(Capabilities)) && Capabilities.Contains(capability, StringComparison.InvariantCultureIgnoreCase));
         }
+
+        /// <summary>
+        /// Get the latest version supported. If ApiVersions is populated, returns the latest one from that list. 
+        /// Otherwise, checks and returns the DefaultApiVersion. If nothing could be found, throws an exception.
+        /// </summary>
+        /// <returns>Version number</returns>
+        public string GetLatestVersion()
+        {
+            int numberOfVersions = ApiVersions.Count;
+            if (numberOfVersions > 0)
+            {
+                if ((!isApiListSorted) && (numberOfVersions > 1))
+                {
+                    ApiVersions.Sort();
+                    isApiListSorted = true;
+                }
+
+                return ApiVersions[numberOfVersions - 1];
+            }
+
+            if (!string.IsNullOrWhiteSpace(DefaultApiVersion))
+            {
+                return DefaultApiVersion;
+            }
+
+            throw new Exception("Could not determine an available version.");
+        }
+        bool isApiListSorted = false;
+
     }
 }

@@ -301,7 +301,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
                 return new List<VMExtension>();
             }
 
-            return JsonConvert.DeserializeObject<ListContinuableResult<VMExtension>>(response.Body).Values;
+            return JsonConvert.DeserializeObject<ListResultWithContinuations<VMExtension>>(response.Body).Values;
         }
 
 

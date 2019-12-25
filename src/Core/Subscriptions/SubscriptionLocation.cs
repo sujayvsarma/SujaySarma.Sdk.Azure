@@ -5,7 +5,8 @@ namespace SujaySarma.Sdk.Azure.Subscriptions
 
     /// <summary>
     /// A geographic location that objects created within a subscription may be 
-    /// placed under
+    /// placed under. This is purely a result-data structure and there are no code flows 
+    /// that require the caller to generate this data.
     /// </summary>
     public class SubscriptionLocation
     {

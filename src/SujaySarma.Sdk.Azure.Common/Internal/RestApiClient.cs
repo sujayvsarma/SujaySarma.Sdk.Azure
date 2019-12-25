@@ -112,7 +112,7 @@ namespace SujaySarma.Sdk.Azure.Internal
                 responseMessage = await client.SendAsync(request);
                 if (responseMessage.IsSuccessStatusCode || successCodes.Contains((int)responseMessage.StatusCode))
                 {
-                    ListContinuableResult<T> result = JsonConvert.DeserializeObject<ListContinuableResult<T>>(await responseMessage.Content.ReadAsStringAsync());
+                    ListResultWithContinuations<T> result = JsonConvert.DeserializeObject<ListResultWithContinuations<T>>(await responseMessage.Content.ReadAsStringAsync());
                     if ((result.Values != null) && (result.Values.Count > 0))
                     {
                         returnableObjects.AddRange(result.Values);
@@ -124,7 +124,7 @@ namespace SujaySarma.Sdk.Azure.Internal
                         responseMessage = await client.SendAsync(request);
                         if (responseMessage.IsSuccessStatusCode || successCodes.Contains((int)responseMessage.StatusCode))
                         {
-                            result = JsonConvert.DeserializeObject<ListContinuableResult<T>>(await responseMessage.Content.ReadAsStringAsync());
+                            result = JsonConvert.DeserializeObject<ListResultWithContinuations<T>>(await responseMessage.Content.ReadAsStringAsync());
                             if ((result.Values != null) && (result.Values.Count > 0))
                             {
                                 returnableObjects.AddRange(result.Values);
@@ -149,7 +149,7 @@ namespace SujaySarma.Sdk.Azure.Internal
                 ExceptionMessage = null,
                 HttpStatus = 200,
                 Body = JsonConvert.SerializeObject(
-                        new Common.ListContinuableResult<T>()
+                        new ListResultWithContinuations<T>()
                         {
                             Values = returnableObjects,
                             NextPage = null

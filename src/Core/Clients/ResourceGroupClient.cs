@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 
+using SujaySarma.Sdk.Azure.Common;
 using SujaySarma.Sdk.Azure.Internal;
 using SujaySarma.Sdk.Azure.ResourceGroups;
 
@@ -39,7 +40,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
                 return new List<ResourceGroup>();
             }
 
-            return JsonConvert.DeserializeObject<ResourceGroupListResult>(response.Body).Values;
+            return JsonConvert.DeserializeObject<ListResultWithContinuations<ResourceGroup>>(response.Body).Values;
         }
 
         /// <summary>

@@ -37,7 +37,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
                 return new List<ComputeResourceSku>();
             }
 
-            return JsonConvert.DeserializeObject<ListContinuableResult<ComputeResourceSku>>(response.Body).Values;
+            return JsonConvert.DeserializeObject<ListResultWithContinuations<ComputeResourceSku>>(response.Body).Values;
         }
 
         public static string CLIENT_API_VERSION = "2017-09-01";

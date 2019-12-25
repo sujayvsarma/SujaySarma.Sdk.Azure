@@ -5,7 +5,7 @@ namespace SujaySarma.Sdk.Azure.Obscure.Backfill
 {
 
     /// <summary>
-    /// Metadata about backfill status of a tenant
+    /// Metadata about backfill status of a tenant. This is purely a return structure.
     /// </summary>
     public class TenantBackFillStatus
     {

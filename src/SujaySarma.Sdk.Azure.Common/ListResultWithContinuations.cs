@@ -7,7 +7,7 @@ namespace SujaySarma.Sdk.Azure.Common
     /// <summary>
     /// A listing that provides for a continuation URL
     /// </summary>
-    public class ListContinuableResult<T>
+    public class ListResultWithContinuations<T>
     {
 
         #region Properties
@@ -24,17 +24,12 @@ namespace SujaySarma.Sdk.Azure.Common
         [JsonProperty("nextLink")]
         public string? NextPage { get; set; }
 
-        /// <summary>
-        /// Returns if the result has more results
-        /// </summary>
-        public bool HasMoreResults => (NextPage != null);
-
         #endregion
 
         /// <summary>
         /// Base initializer
         /// </summary>
-        public ListContinuableResult()
+        public ListResultWithContinuations()
         {
             Values = new List<T>();
             NextPage = null;

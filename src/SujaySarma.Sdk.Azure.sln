@@ -16,9 +16,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SujaySarma.Sdk.Azure.AppService", "SujaySarma.Sdk.Azure.AppService\SujaySarma.Sdk.Azure.AppService.csproj", "{5F3E5165-D571-452A-BFC4-4D8B0AAE5364}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CF57CD9F-1470-47AB-A785-430185897FDF}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

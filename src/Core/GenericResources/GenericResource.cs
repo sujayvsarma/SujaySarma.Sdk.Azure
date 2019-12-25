@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+
 using SujaySarma.Sdk.Azure.Common;
+
 using System.Collections.Generic;
 
 namespace SujaySarma.Sdk.Azure.Core.GenericResources
@@ -78,5 +80,7 @@ namespace SujaySarma.Sdk.Azure.Core.GenericResources
 
 
         public GenericResource() { }
+
+
     }
 }

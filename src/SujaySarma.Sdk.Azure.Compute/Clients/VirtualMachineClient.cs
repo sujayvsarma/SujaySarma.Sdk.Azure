@@ -849,7 +849,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
                 return new List<VirtualMachine>();
             }
 
-            return JsonConvert.DeserializeObject<ListContinuableResult<VirtualMachine>>(response.Body).Values;
+            return JsonConvert.DeserializeObject<ListResultWithContinuations<VirtualMachine>>(response.Body).Values;
         }
 
 

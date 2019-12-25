@@ -1,6 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SujaySarma.Sdk.Azure.ResourceGroups
 {
@@ -42,5 +40,8 @@ namespace SujaySarma.Sdk.Azure.ResourceGroups
         /// List of names of resources to export. Must be set if <see cref="IncludeAllResources"/> is false.
         /// </summary>
         public List<string>? ResourceNames { get; set; } = null;
+
+
+        public ExportTemplateOptions() { }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 
+using SujaySarma.Sdk.Azure.Common;
 using SujaySarma.Sdk.Azure.Core.Tags;
 using SujaySarma.Sdk.Azure.Internal;
 
@@ -134,7 +135,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
                 return new List<Tag>();
             }
 
-            return JsonConvert.DeserializeObject<Common.ListContinuableResult<Tag>>(response.Body).Values;
+            return JsonConvert.DeserializeObject<ListResultWithContinuations<Tag>>(response.Body).Values;
         }
 
 

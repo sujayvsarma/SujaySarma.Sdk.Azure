@@ -2,8 +2,6 @@
 
 using SujaySarma.Sdk.Azure.Common;
 using SujaySarma.Sdk.Azure.Compute.AvailabilitySets;
-using SujaySarma.Sdk.Azure.Compute.Common;
-using SujaySarma.Sdk.Azure.Compute.VirtualMachines;
 using SujaySarma.Sdk.Azure.Internal;
 
 using System;
@@ -201,7 +199,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
                 return new List<AvailabilitySet>();
             }
 
-            return JsonConvert.DeserializeObject<ListContinuableResult<AvailabilitySet>>(response.Body).Values;
+            return JsonConvert.DeserializeObject<ListResultWithContinuations<AvailabilitySet>>(response.Body).Values;
         }
 
 

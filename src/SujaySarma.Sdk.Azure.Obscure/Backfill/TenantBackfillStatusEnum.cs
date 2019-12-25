@@ -5,6 +5,11 @@
     /// </summary>
     public enum TenantBackfillStatusEnum
     {
-        Cancelled = -2, Failed = -1, NotStarted = 0, NotStartedButGroupsExist, Started, Completed
+        Cancelled = -2, 
+        Failed = -1, 
+        NotStarted = 0, 
+        NotStartedButGroupsExist, 
+        Started, 
+        Completed
     }
 }

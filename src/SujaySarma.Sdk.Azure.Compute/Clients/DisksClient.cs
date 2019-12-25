@@ -42,7 +42,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
                 return new List<Disk>();
             }
 
-            return JsonConvert.DeserializeObject<ListContinuableResult<Disk>>(response.Body).Values;
+            return JsonConvert.DeserializeObject<ListResultWithContinuations<Disk>>(response.Body).Values;
         }
 
         /// <summary>

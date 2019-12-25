@@ -10,8 +10,8 @@ namespace SujaySarma.Sdk.Azure.Deployments
         /// <summary>
         /// Type of error handling. One of: "SpecificDeployment" or "LastSuccessful"
         /// </summary>
-        [JsonProperty("type")]
-        public string Type { get; set; }
+        [JsonProperty("type", ItemConverterType = typeof(DeploymentRequestErrorHandlerTypesEnum))]
+        public DeploymentRequestErrorHandlerTypesEnum Type { get; set; } = DeploymentRequestErrorHandlerTypesEnum.LastSuccessful;
 
         /// <summary>
         /// Name of deployment, only required if Type = "SpecificDeployment"
@@ -19,10 +19,25 @@ namespace SujaySarma.Sdk.Azure.Deployments
         [JsonProperty("deploymentName")]
         public string? DeploymentName { get; set; }
 
+        /// <summary>
+        /// Create a new error handler (sets for LastSuccessful)
+        /// </summary>
         public DeploymentRequestErrorHandlerDeployment()
         {
-            Type = "LastSuccessful";
+            Type = DeploymentRequestErrorHandlerTypesEnum.LastSuccessful;
             DeploymentName = null;
+        }
+
+        /// <summary>
+        /// Create a new specific deployment handler
+        /// </summary>
+        /// <param name="deploymentName">Name of the specific deployment to redeploy</param>
+        public DeploymentRequestErrorHandlerDeployment(string deploymentName)
+        {
+            if (string.IsNullOrWhiteSpace(deploymentName)) { throw new System.ArgumentNullException(nameof(deploymentName)); }
+
+            Type = DeploymentRequestErrorHandlerTypesEnum.SpecificDeployment;
+            DeploymentName = deploymentName;
         }
 
     }

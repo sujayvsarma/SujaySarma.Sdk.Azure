@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-using SujaySarma.Sdk.Azure.Common.Common;
+using SujaySarma.Sdk.Azure.Common;
 using SujaySarma.Sdk.Azure.Core.GenericResources;
 using SujaySarma.Sdk.Azure.Internal;
 
@@ -21,41 +21,16 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
         /// Check if a resource exists
         /// </summary>
         /// <param name="bearerToken">Authorization bearer token</param>
-        /// <param name="subscription">Guid of the subscription</param>
-        /// <param name="resourceGroupName">Name of the containing resource group</param>
-        /// <param name="resourceProviderNamespace">Namespace name of the resource provider (eg: "Microsoft.Web")</param>
-        /// <param name="parentResourcePath">Path of the containing resource (if any, else set NULL or empty string)</param>
-        /// <param name="type">Type of resource</param>
-        /// <param name="resourceName">Name of the resource itself</param>
+        /// <param name="resourceUri">Absolute resource Id</param>
         /// <returns>True if exists, False if not, NULL if there was a problem</returns>
-        public static async Task<bool?> Exists(string bearerToken, Guid subscription, string resourceGroupName, string resourceProviderNamespace,
-            string? parentResourcePath, string type, string resourceName)
-        {
-            if ((subscription == Guid.Empty) || (subscription == default)) { throw new ArgumentNullException(nameof(subscription)); }
-            if (string.IsNullOrWhiteSpace(resourceProviderNamespace)) { throw new ArgumentNullException(nameof(resourceProviderNamespace)); }
-            if (string.IsNullOrWhiteSpace(resourceGroupName)) { throw new ArgumentNullException(nameof(resourceGroupName)); }
-            if (string.IsNullOrWhiteSpace(type)) { throw new ArgumentNullException(nameof(type)); }
-            if (string.IsNullOrWhiteSpace(resourceName)) { throw new ArgumentNullException(nameof(resourceName)); }
-            if (string.IsNullOrWhiteSpace(parentResourcePath)) { parentResourcePath = null; }
-
-            string providerName = $"{resourceProviderNamespace}{((parentResourcePath == null) ? "" : "/" + parentResourcePath)}";
-            return await Exists(bearerToken, $"https://management.azure.com{ResourceUri.CreateResourceUri(subscription, resourceGroupName, providerName, type, resourceName)}");
-        }
-
-        /// <summary>
-        /// Check if a resource exists
-        /// </summary>
-        /// <param name="bearerToken">Authorization bearer token</param>
-        /// <param name="resourceId">Absolute resource Id</param>
-        /// <returns>True if exists, False if not, NULL if there was a problem</returns>
-        public static async Task<bool?> Exists(string bearerToken, string resourceId)
+        public static async Task<bool?> Exists(string bearerToken, ResourceUri resourceUri)
         {
             if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
-            if (string.IsNullOrWhiteSpace(resourceId) || (!resourceId.StartsWith("/subscriptions/"))) { throw new ArgumentNullException(nameof(resourceId)); }
+            if ((resourceUri == null) || (!resourceUri.IsValid)) { throw new ArgumentNullException(nameof(resourceUri)); }
 
             RestApiResponse response = await RestApiClient.HEAD(
                     bearerToken,
-                    resourceId,
+                    resourceUri.ToAbsoluteAzureRMEndpointUri(string.Empty),
                     CLIENT_API_VERSION,
                     null,
                     new int[] { 204, 404 }
@@ -69,25 +44,20 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
             return (response.HttpStatus == 204);
         }
 
-
         /// <summary>
         /// Delete a resource. Resources are queued for async deletion and status will be available only later.
         /// </summary>
         /// <param name="bearerToken">Authorization bearer token</param>
-        /// <param name="resourceId">Absolute resource Id</param>
+        /// <param name="resourceUri">Absolute resource Id</param>
         /// <returns>True if accepted for deletion, false if not or there was a problem</returns>
-        public static async Task<bool> Delete(string bearerToken, string resourceId)
+        public static async Task<bool> Delete(string bearerToken, ResourceUri resourceUri)
         {
             if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
-            if (string.IsNullOrWhiteSpace(resourceId)) { throw new ArgumentNullException(nameof(resourceId)); }
-            if (resourceId.StartsWith("/"))
-            {
-                resourceId = resourceId[1..];
-            }
+            if ((resourceUri == null) || (!resourceUri.IsValid)) { throw new ArgumentNullException(nameof(resourceUri)); }
 
             RestApiResponse response = await RestApiClient.DELETE(
                     bearerToken,
-                    $"https://management.azure.com/{resourceId}",
+                    resourceUri.ToAbsoluteAzureRMEndpointUri(string.Empty),
                     CLIENT_API_VERSION,
                     null,
                     new int[] { 200, 202, 204 }
@@ -133,20 +103,16 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
         /// Get a resource.
         /// </summary>
         /// <param name="bearerToken">Authorization bearer token</param>
-        /// <param name="resourceId">Absolute resource Id</param>
+        /// <param name="resourceUri">Absolute resource Id</param>
         /// <returns>Resource. NULL if there was a problem</returns>
-        public static async Task<GenericResource?> Get(string bearerToken, string resourceId)
+        public static async Task<GenericResource?> Get(string bearerToken, ResourceUri resourceUri)
         {
             if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
-            if (string.IsNullOrWhiteSpace(resourceId)) { throw new ArgumentNullException(nameof(resourceId)); }
-            if (resourceId.StartsWith("/"))
-            {
-                resourceId = resourceId[1..];
-            }
+            if ((resourceUri == null) || (!resourceUri.IsValid)) { throw new ArgumentNullException(nameof(resourceUri)); }
 
             RestApiResponse response = await RestApiClient.GET(
                     bearerToken,
-                    $"https://management.azure.com/{resourceId}",
+                    resourceUri.ToAbsoluteAzureRMEndpointUri(string.Empty),
                     CLIENT_API_VERSION,
                     null, null,
                     new int[] { 200 }
@@ -159,7 +125,6 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             return JsonConvert.DeserializeObject<GenericResource>(response.Body);
         }
-
 
         /// <summary>
         /// List all resources, optionally within a resource group
@@ -176,7 +141,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             RestApiResponse response = await RestApiClient.GET(
                     bearerToken,
-                    $"https://management.azure.com{ResourceUri.CreateResourceUri(subscription, resourceGroupName, null, null, "resources")}",
+                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/resourceGroups/{resourceGroupName}/resources",
                     CLIENT_API_VERSION,
                     null, null,
                     new int[] { 200 }
@@ -204,44 +169,51 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
             if ((resources == null) || (resources.Count() == 0)) { throw new ArgumentNullException(nameof(resources)); }
             if ((targetResourceGroup == null) || string.IsNullOrWhiteSpace(targetResourceGroup.ResourceId)) { throw new ArgumentException("targetResourceGroup is not valid."); }
 
-            // validate that the source resource groups are all the same
-            GenericResource firstResource = resources.First();
-            if (string.IsNullOrWhiteSpace(firstResource.ResourceId) || (firstResource.ResourceId.Length < 68)) { throw new ArgumentException("ResourceId of resources, Element 1 is not valid."); }
-
-            string sourceResourceGroupId = firstResource.ResourceId.Substring(0, firstResource.ResourceId.IndexOf("/", 67));
-
-            // validate that target is not the same as the source!
-            if (sourceResourceGroupId.Equals(targetResourceGroup.ResourceId, StringComparison.InvariantCultureIgnoreCase))
-            {
-                throw new ArgumentException("Target resource group cannot be the same as the source group.");
-            }
-
             ResourceMoveRequest moveRequest = new ResourceMoveRequest()
             {
                 TargetResourceGroupId = targetResourceGroup.ResourceId
             };
 
+            ResourceUri targetResourceGroupUri = new ResourceUri(targetResourceGroup.ResourceId);
+            ResourceUri? sourceResourceGroupUri = null;
             foreach (GenericResource res in resources)
             {
-                if (string.IsNullOrWhiteSpace(res.ResourceId) || (!res.ResourceId.StartsWith(sourceResourceGroupId)))
+                // its not enough to check only RG, check the subs also (it is possible to have identical RG names in two different subscriptions!)
+                if (!string.IsNullOrWhiteSpace(res.ResourceId))
                 {
-                    throw new ArgumentException($"All resources in {nameof(resources)} must belong to the same resource group.");
-                }
+                    ResourceUri resourceUri = new ResourceUri(res.ResourceId);
+                    if (!resourceUri.Compare(targetResourceGroupUri, ResourceUriCompareLevel.Subscription | ResourceUriCompareLevel.ResourceGroup))
+                    {
+                        throw new ArgumentException($"All resources in {nameof(resources)} must belong to the same resource group.");
+                    }
 
-                moveRequest.Resources.Add(res.ResourceId);
+                    if (sourceResourceGroupUri == null)
+                    {
+                        // we only need 2 components
+                        sourceResourceGroupUri = new ResourceUri(resourceUri.Subscription, resourceUri.ResourceGroupName);
+                    }
+
+                    moveRequest.Resources.Add(res.ResourceId);
+                }
+            }
+
+            // unlikely, but to keep the nullable compiler happy :-(
+            if (sourceResourceGroupUri == null)
+            {
+                throw new Exception("Please check your source resource IDs for bad data.");
             }
 
             string endpointName = (onlyValidate ? "validateMoveResources" : "moveResources");
             RestApiResponse response = await RestApiClient.POST(
                     bearerToken,
-                    $"https://management.azure.com/{sourceResourceGroupId[1..]}/{endpointName}",
+                    $"https://management.azure.com/{sourceResourceGroupUri.ToString()[1..]}/{endpointName}",
                     CLIENT_API_VERSION,
-                    null, 
+                    null,
                     moveRequest,
                     new int[] { 202, 204 }
                 );
 
-            if ((! response.IsExpectedSuccess) || response.WasException)
+            if ((!response.IsExpectedSuccess) || response.WasException)
             {
                 return false;
             }

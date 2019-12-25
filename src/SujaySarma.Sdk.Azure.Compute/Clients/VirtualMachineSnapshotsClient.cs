@@ -287,7 +287,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
                 return new List<VMSnapshot>();
             }
 
-            return JsonConvert.DeserializeObject<ListContinuableResult<VMSnapshot>>(response.Body).Values;
+            return JsonConvert.DeserializeObject<ListResultWithContinuations<VMSnapshot>>(response.Body).Values;
         }
 
 
