@@ -4,7 +4,8 @@ using Newtonsoft.Json;
 namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
 {
     /// <summary>
-    /// Size of a virtual machine
+    /// Size of a virtual machine. 
+    /// This structure is created internally and used.
     /// </summary>
     public class VirtualMachineSize
     {

@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 
+using System;
+
 namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
 {
     /// <summary>
@@ -13,7 +15,12 @@ namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
         [JsonProperty("vmSize")]
         public string VMSize { get; set; } = "Basic_A0";
 
-
         public VMHardwareProfile() { }
+
+        public VMHardwareProfile(string sizeName)
+        {
+            if (string.IsNullOrWhiteSpace(sizeName)) { throw new ArgumentNullException(nameof(sizeName)); }
+            VMSize = sizeName;
+        }
     }
 }

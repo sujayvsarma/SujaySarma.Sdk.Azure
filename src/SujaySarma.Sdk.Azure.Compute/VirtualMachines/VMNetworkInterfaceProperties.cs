@@ -15,5 +15,11 @@ namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
 
 
         public VMNetworkInterfaceProperties() { }
+
+        /// <summary>
+        /// Specify that the interface is primary or otherwise
+        /// </summary>
+        /// <param name="isPrimary">If set, this is the primary network interface for the VM</param>
+        public VMNetworkInterfaceProperties(bool isPrimary) => IsPrimary = isPrimary;
     }
 }

@@ -5,7 +5,8 @@ using System.Collections.Generic;
 namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
 {
     /// <summary>
-    /// Commands to run on a VM
+    /// Commands to run on a VM. 
+    /// This structure is created internally and used.
     /// </summary>
     internal class RunCommand
     {
@@ -32,37 +33,5 @@ namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
 
         public RunCommand() { }
 
-    }
-
-    /// <summary>
-    /// Parameters for the RunCommand
-    /// </summary>
-    internal class RunCommandParameter
-    {
-        /// <summary>
-        /// Name of the parameter
-        /// </summary>
-        [JsonProperty("name")]
-        public string Name { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Value of the parameter
-        /// </summary>
-        [JsonProperty("value")]
-        public string? Value { get; set; } = null;
-
-
-        public RunCommandParameter() { }
-    }
-
-    /// <summary>
-    /// Results from a RunCommand execution
-    /// </summary>
-    internal class RunCommandResult
-    {
-        [JsonProperty("value")]
-        public List<InstanceViewStatus>? Status { get; set; }
-
-        public RunCommandResult() { }
     }
 }

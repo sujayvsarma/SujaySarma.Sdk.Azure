@@ -28,5 +28,42 @@ namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
 
 
         public VMSettingsForLinux() { }
+
+        /// <summary>
+        /// Enable for password authentication
+        /// </summary>
+        public void WithPasswordAuthentication() => IsPasswordAuthenticationEnabled = true;
+
+        /// <summary>
+        /// Enable for SSH authentication
+        /// </summary>
+        /// <param name="sshPublicKey">SSH public key</param>
+        public void WithSshAuthentication(string sshPublicKey)
+            => SshConfiguration = new VMSshConfiguration()
+            {
+                Keys = new System.Collections.Generic.List<VMSshPublicKey>()
+                {
+                    new VMSshPublicKey()
+                    { 
+                        KeyData = sshPublicKey
+                        
+                    }
+                }
+            };
+
+        /// <summary>
+        /// Adds an SSH key to the collection without disturbing the existing collection
+        /// </summary>
+        /// <param name="sshPublicKey">SSH public key to add</param>
+        public void AddSshKey(string sshPublicKey)
+        {
+            if (SshConfiguration == null)
+            {
+                SshConfiguration = new VMSshConfiguration();
+            }
+
+            SshConfiguration.AddKey(sshPublicKey);
+        }
+
     }
 }

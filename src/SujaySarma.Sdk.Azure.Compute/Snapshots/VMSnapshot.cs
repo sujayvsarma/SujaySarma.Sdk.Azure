@@ -2,6 +2,9 @@
 using Newtonsoft.Json;
 
 using SujaySarma.Sdk.Azure.Common;
+using SujaySarma.Sdk.Azure.Compute.Disks;
+
+using System;
 
 namespace SujaySarma.Sdk.Azure.Compute.Snapshots
 {
@@ -25,5 +28,19 @@ namespace SujaySarma.Sdk.Azure.Compute.Snapshots
 
 
         public VMSnapshot() { }
+
+        /// <summary>
+        /// Create a snapshot of a VM
+        /// </summary>
+        /// <param name="creationMetadata">Disk creation metadata</param>
+        /// <param name="sizeGB">Size of disk in GB (0 to 1023)</param>
+        /// <param name="managedBy">Resource Id of the entity managing the snapshot</param>
+        public VMSnapshot(DiskCreationMetadata creationMetadata, int sizeGB, ResourceUri? managedBy = null)
+        {
+            if ((managedBy != null) && (! managedBy.IsValid)) { throw new ArgumentException(nameof(managedBy)); }
+
+            Properties = new VMSnapshotProperties(creationMetadata, sizeGB);
+            ManagedBy = managedBy?.ToString();
+        }
     }
 }

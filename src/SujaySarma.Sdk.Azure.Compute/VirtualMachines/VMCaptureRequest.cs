@@ -3,7 +3,8 @@
 namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
 {
     /// <summary>
-    /// Request sent to capture a VM into a template
+    /// Request sent to capture a VM into a template. 
+    /// This structure is created internally and used.
     /// </summary>
     internal class VMCaptureRequest
     {

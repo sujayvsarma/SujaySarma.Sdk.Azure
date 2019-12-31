@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 
-using Newtonsoft.Json;
 using SujaySarma.Sdk.Azure.Compute.Common;
 using SujaySarma.Sdk.Azure.Compute.Encryption;
+
+using System;
+using System.Collections.Generic;
 
 namespace SujaySarma.Sdk.Azure.Compute.Disks
 {
@@ -20,20 +21,20 @@ namespace SujaySarma.Sdk.Azure.Compute.Disks
         /// Range is between: 4k and 256k.
         /// </summary>
         [JsonProperty("diskIOPSReadWrite")]
-        public int ReadWriteIOPS { get; set; } = 0;
+        public int? ReadWriteIOPS { get; set; } = null;
 
         /// <summary>
         /// Bandwidth allowed for this disk. Only settable for UltraSSD disks. 
         /// MBps = millions of bytes/sec. ISO notation, in powers of 10.
         /// </summary>
         [JsonProperty("diskMBpsReadWrite")]
-        public int ReadWriteMBps { get; set; } = 0;
+        public int? ReadWriteMBps { get; set; } = null;
 
         /// <summary>
         /// Size of disk in bytes. Cannot be set.
         /// </summary>
         [JsonProperty("diskSizeBytes")]
-        public int SizeInBytes { get; private set; } = 0;
+        public int? SizeInBytes { get; private set; } = null;
 
         /// <summary>
         /// Mandatory for create. If present & changed in a disk-update, then the size is changed, 
@@ -97,6 +98,41 @@ namespace SujaySarma.Sdk.Azure.Compute.Disks
         [JsonProperty("zones")]
         public List<string>? Zones { get; set; } = null;
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public DiskProperties() { }
+
+        /// <summary>
+        /// Initialize disk properties
+        /// </summary>
+        /// <param name="creationMetadata">Disk creation metadata</param>
+        /// <param name="sizeGB">Size of disk in GB (0 to 1023)</param>
+        public DiskProperties(DiskCreationMetadata creationMetadata, int sizeGB)
+        {
+            if (creationMetadata == null) { throw new ArgumentNullException(nameof(creationMetadata)); }
+            if ((sizeGB <= 0) || (sizeGB > 1023)) { throw new ArgumentOutOfRangeException(nameof(sizeGB)); }
+
+            CreationMetadata = creationMetadata;
+            SizeInGB = sizeGB;
+        }
+
+
+        /// <summary>
+        /// Resize the disk. Does not actually change the size!
+        /// </summary>
+        /// <param name="newSizeGB">New size of disk in GB</param>
+        /// <returns>TRUE if the size can be modified, FALSE if not</returns>
+        public bool Resize(int newSizeGB)
+        {
+            if ((newSizeGB <= 0) || (newSizeGB > 1023)) { throw new ArgumentOutOfRangeException(nameof(newSizeGB)); }
+            if (newSizeGB <= SizeInGB)
+            {
+                return false;
+            }
+
+            SizeInGB = newSizeGB;
+            return true;
+        }
     }
 }

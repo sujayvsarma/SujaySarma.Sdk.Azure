@@ -17,5 +17,14 @@ namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
         public bool IsUltraSSDEnabled { get; set; } = false;
 
         public VMAdditionalCapabilities() { }
+
+        /// <summary>
+        /// Enable/disable Ultra SSD
+        /// </summary>
+        /// <param name="enableUltraSSD">Set Ultra SSD enabled/disabled</param>
+        public VMAdditionalCapabilities(bool enableUltraSSD)
+        {
+            IsUltraSSDEnabled = enableUltraSSD;
+        }
     }
 }

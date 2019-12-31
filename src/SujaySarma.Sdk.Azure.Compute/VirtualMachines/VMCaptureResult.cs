@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
+
 using System;
 
 namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
 {
     /// <summary>
-    /// Results of a VM capture request
+    /// Results of a VM capture request. 
+    /// This structure is created internally and used.
     /// </summary>
     internal class VMCaptureResult
     {

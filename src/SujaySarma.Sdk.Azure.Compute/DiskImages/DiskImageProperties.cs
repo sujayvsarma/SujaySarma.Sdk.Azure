@@ -3,6 +3,9 @@
 using SujaySarma.Sdk.Azure.Common;
 using SujaySarma.Sdk.Azure.Compute.Common;
 
+using System;
+using System.Collections.Generic;
+
 namespace SujaySarma.Sdk.Azure.Compute.DiskImages
 {
     /// <summary>
@@ -36,5 +39,23 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskImages
 
 
         public DiskImageProperties() { }
+
+        /// <summary>
+        /// Initialize a new set of properties
+        /// </summary>
+        /// <param name="generation">The HyperV generation of the VM created from the image</param>
+        /// <param name="sourceVM">URI to the VM from which this image was created</param>
+        /// <param name="primaryDisk">Properties of the primary or OS disk</param>
+        /// <param name="isZoneResilient">Flag indicating if the storage or disk image is zone-resilient</param>
+        /// <param name="dataDisks">Collection of data disks in the image</param>
+        public DiskImageProperties(HyperVGenerationNamesEnum generation, ResourceUri sourceVM, ImageOSDisk primaryDisk, bool isZoneResilient = false, IEnumerable<ImageDataDisk>? dataDisks = null)
+        {
+            if (! Enum.IsDefined(typeof(HyperVGenerationNamesEnum), generation)) { throw new ArgumentOutOfRangeException(nameof(generation)); }
+            if ((sourceVM == null) || (!sourceVM.IsValid)) { throw new ArgumentException(nameof(sourceVM)); }           
+
+            HyperVGeneration = generation;
+            SourceVirtualMachine = new SubResource(sourceVM);
+            StorageProfile = new ImageStorageProfile(primaryDisk, isZoneResilient, dataDisks);            
+        }
     }
 }

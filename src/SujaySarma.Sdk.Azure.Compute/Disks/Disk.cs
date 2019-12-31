@@ -1,7 +1,7 @@
-﻿
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 using SujaySarma.Sdk.Azure.Common;
+using SujaySarma.Sdk.Azure.Compute.Common;
 
 namespace SujaySarma.Sdk.Azure.Compute.Disks
 {
@@ -28,5 +28,30 @@ namespace SujaySarma.Sdk.Azure.Compute.Disks
         /// </summary>
         [JsonProperty("properties")]
         public DiskProperties Properties { get; set; } = new DiskProperties();
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public Disk() { }
+
+        /// <summary>
+        /// Build a disk
+        /// </summary>
+        /// <param name="sku">Name of the SKU</param>
+        /// <param name="tier">Tier of the SKU</param>
+        /// <param name="properties">Other properties of the disk</param>
+        public Disk(DiskSkuNamesEnum sku, string? tier = null, DiskProperties? properties = null)
+        {
+            Sku = new DiskSku(sku, tier);
+
+            if ((sku != DiskSkuNamesEnum.UltraSSD_LRS) && (properties != null))
+            {
+                // some properties cannot be set for non-UltraSSD_LRS
+                properties.ReadWriteIOPS = null;
+                properties.ReadWriteMBps = null;
+            }
+
+            Properties = properties ?? new DiskProperties();
+        }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 
+using System;
+
 namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
 {
     /// <summary>
@@ -71,5 +73,48 @@ namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
 
 
         public VMExtensionProperties() { }
+
+        /// <summary>
+        /// Initialize properties for the VM extension
+        /// </summary>
+        public VMExtensionProperties(string type, string typeHandlerVersion, string? publisherName, string? jsonSerializedSettings = null, bool useNewerMinorVersionIfAvailable = true)
+        {
+            if (string.IsNullOrWhiteSpace(type)) { throw new ArgumentNullException(nameof(type)); }
+            if (string.IsNullOrWhiteSpace(typeHandlerVersion)) { throw new ArgumentNullException(nameof(typeHandlerVersion)); }
+            if (string.IsNullOrWhiteSpace(publisherName))
+            {
+                publisherName = null;
+            }
+
+            if (string.IsNullOrWhiteSpace(jsonSerializedSettings))
+            {
+                jsonSerializedSettings = null;
+            }
+
+            InstallNewerMinorVersionIfAvailable = useNewerMinorVersionIfAvailable;
+            Type = type;
+            TypeHandlerVersion = typeHandlerVersion;
+            PublisherName = publisherName;
+            Settings = jsonSerializedSettings;
+        }
+
+        /// <summary>
+        /// Configure protected settings
+        /// </summary>
+        /// <param name="settings">Object containing details about the protected settings to use</param>
+        /// <param name="isSettingsFromKeyVault">If set, sets the settings to be used from an Azure Key Vault</param>
+        public void UseProtectedSettings(object settings, bool isSettingsFromKeyVault)
+        {
+            if (settings == null) { throw new ArgumentNullException(nameof(settings)); }
+
+            if (isSettingsFromKeyVault)
+            {
+                ProtectedSettingsFromKeyVault = settings;
+            }
+            else
+            {
+                ProtectedSettings = settings;
+            }
+        }
     }
 }

@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 
-using Newtonsoft.Json;
 using SujaySarma.Sdk.Azure.Compute.Common;
 using SujaySarma.Sdk.Azure.Compute.Disks;
 using SujaySarma.Sdk.Azure.Compute.Encryption;
+
+using System;
 
 namespace SujaySarma.Sdk.Azure.Compute.Snapshots
 {
@@ -83,6 +84,40 @@ namespace SujaySarma.Sdk.Azure.Compute.Snapshots
 
 
         public VMSnapshotProperties() { }
+
+        /// <summary>
+        /// Create a snapshot of a disk
+        /// </summary>
+        /// <param name="creationMetadata">Snapshot creation metadata</param>
+        /// <param name="sizeGB">Size of disk in GB (0 to 1023)</param>
+        public VMSnapshotProperties(DiskCreationMetadata creationMetadata, int sizeGB)
+        {
+            if (creationMetadata == null) { throw new ArgumentNullException(nameof(creationMetadata)); }
+            if ((sizeGB <= 0) || (sizeGB > 1023)) { throw new ArgumentOutOfRangeException(nameof(sizeGB)); }
+
+            CreationMetadata = creationMetadata;
+            DiskSizeGB = sizeGB;
+        }
+
+
+        /// <summary>
+        /// Resize the disk. Does not actually change the size!
+        /// </summary>
+        /// <param name="newSizeGB">New size of disk in GB</param>
+        /// <returns>TRUE if the size can be modified, FALSE if not</returns>
+        public bool Resize(int newSizeGB)
+        {
+            if ((newSizeGB <= 0) || (newSizeGB > 1023)) { throw new ArgumentOutOfRangeException(nameof(newSizeGB)); }
+            if (newSizeGB <= DiskSizeGB)
+            {
+                return false;
+            }
+
+            DiskSizeGB = newSizeGB;
+            return true;
+        }
+
+
 
     }
 }

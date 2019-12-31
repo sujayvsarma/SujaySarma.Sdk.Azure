@@ -1,6 +1,10 @@
 ﻿
 using Newtonsoft.Json;
 
+using SujaySarma.Sdk.Azure.Common;
+
+using System;
+
 namespace SujaySarma.Sdk.Azure.Compute.Encryption
 {
     /// <summary>
@@ -22,5 +26,18 @@ namespace SujaySarma.Sdk.Azure.Compute.Encryption
         public SourceVault Vault { get; set; } = new SourceVault();
 
         public KeyVaultAndSecretReference() { }
+
+        /// <summary>
+        /// Initialize a new reference
+        /// </summary>
+        /// <param name="vaultUri">ResourceUri to the KeyVault</param>
+        /// <param name="secretUrl">Absolute URL to the secret or key in the KeyVault</param>
+        public KeyVaultAndSecretReference(ResourceUri vaultUri, string secretUrl)
+        {
+            if (string.IsNullOrWhiteSpace(secretUrl)) { throw new ArgumentNullException(nameof(secretUrl)); }
+
+            Vault = new SourceVault(vaultUri);
+            SecretUrl = secretUrl;
+        }
     }
 }

@@ -4,6 +4,8 @@ using Newtonsoft.Json.Converters;
 using SujaySarma.Sdk.Azure.Common;
 using SujaySarma.Sdk.Azure.Compute.Common;
 
+using System;
+
 namespace SujaySarma.Sdk.Azure.Compute.DiskImages
 {
     /// <summary>
@@ -15,7 +17,7 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskImages
         /// Uri to the VHD that is stored as a blob in an Azure Storage account
         /// </summary>
         [JsonProperty("blobUri")]
-        public string VhdStoredOnBlobUri { get; set; } = string.Empty;
+        public string? VhdStoredOnBlobUri { get; set; } = null;
 
         /// <summary>
         /// Type of caching
@@ -40,7 +42,7 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskImages
         /// URI to the managed disk resource
         /// </summary>
         [JsonProperty("managedDisk")]
-        public SubResource ManagedDisk { get; set; } = new SubResource();
+        public SubResource? ManagedDisk { get; set; } = null;
 
         /// <summary>
         /// URI to the latest(?) snapshot
@@ -55,5 +57,55 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskImages
         public DiskSkuNamesEnum AccountType { get; set; } = DiskSkuNamesEnum.StandardSSD_LRS;
 
         public ImageDataDisk() { }
+
+        /// <summary>
+        /// Instantiate for an unmanaged disk
+        /// </summary>
+        /// <param name="attachedLUN">The logical unit number the disk is attached on to the VM</param>
+        /// <param name="storageType">Type of storage account stored on (cannot be UltraSSD_LRS)</param>
+        /// <param name="caching">Type of caching used on the disk</param>
+        /// <param name="sizeInGB">Size in GB (must be from 1 to 1023)</param>
+        /// <param name="vhdBlobUri">Uri to VHD file stored as a blob in an Azure Storage account</param>
+        public ImageDataDisk(int attachedLUN, DiskSkuNamesEnum storageType, CachingTypeNamesEnum caching, int sizeInGB, string vhdBlobUri)
+        {
+            if ((attachedLUN < 0) || (attachedLUN > 254)) { throw new ArgumentOutOfRangeException(nameof(attachedLUN)); }
+            if ((!Enum.IsDefined(typeof(DiskSkuNamesEnum), storageType)) || (storageType == DiskSkuNamesEnum.UltraSSD_LRS)) { throw new ArgumentOutOfRangeException(nameof(storageType)); }
+            if (!Enum.IsDefined(typeof(CachingTypeNamesEnum), caching)) { throw new ArgumentOutOfRangeException(nameof(caching)); }
+            if ((sizeInGB <= 0) || (sizeInGB > 1023)) { throw new ArgumentOutOfRangeException(nameof(sizeInGB)); }
+            if (string.IsNullOrWhiteSpace(vhdBlobUri)) { throw new ArgumentNullException(nameof(vhdBlobUri)); }
+
+            AttachedOnLUN = attachedLUN;
+            AccountType = storageType;
+            LatestSnapshot = null;
+            ManagedDisk = null;
+            SizeGB = sizeInGB;
+            CacheType = caching;
+            VhdStoredOnBlobUri = vhdBlobUri;
+        }
+
+        /// <summary>
+        /// Instantiate for an managed disk
+        /// </summary>
+        /// <param name="attachedLUN">The logical unit number the disk is attached on to the VM</param>
+        /// <param name="storageType">Type of storage account stored on (cannot be UltraSSD_LRS)</param>
+        /// <param name="caching">Type of caching used on the disk</param>
+        /// <param name="sizeInGB">Size in GB (must be from 1 to 1023)</param>
+        /// <param name="diskUri">Uri to the managed disk</param>
+        public ImageDataDisk(int attachedLUN, DiskSkuNamesEnum storageType, CachingTypeNamesEnum caching, int sizeInGB, ResourceUri diskUri)
+        {
+            if (!Enum.IsDefined(typeof(OSTypeNamesEnum), osName)) { throw new ArgumentOutOfRangeException(nameof(osName)); }
+            if ((!Enum.IsDefined(typeof(DiskSkuNamesEnum), storageType)) || (storageType == DiskSkuNamesEnum.UltraSSD_LRS)) { throw new ArgumentOutOfRangeException(nameof(storageType)); }
+            if (!Enum.IsDefined(typeof(CachingTypeNamesEnum), caching)) { throw new ArgumentOutOfRangeException(nameof(caching)); }
+            if ((sizeInGB <= 0) || (sizeInGB > 1023)) { throw new ArgumentOutOfRangeException(nameof(sizeInGB)); }
+            if ((diskUri == null) || (!diskUri.IsValid)) { throw new ArgumentNullException(nameof(diskUri)); }
+
+            AttachedOnLUN = attachedLUN;
+            AccountType = storageType;
+            LatestSnapshot = null;
+            ManagedDisk = new SubResource(diskUri);
+            SizeGB = sizeInGB;
+            CacheType = caching;
+            VhdStoredOnBlobUri = null;
+        }
     }
 }

@@ -5,7 +5,8 @@ using System;
 namespace SujaySarma.Sdk.Azure.Compute.LogAnalytics
 {
     /// <summary>
-    /// Request to retrieve compute resource log analytics
+    /// Request to retrieve compute resource log analytics. 
+    /// This class is used internally by the LogAnalytics client!
     /// </summary>
     public class ComputeLogAnalyticsRequest
     {
@@ -56,32 +57,5 @@ namespace SujaySarma.Sdk.Azure.Compute.LogAnalytics
 
 
         public ComputeLogAnalyticsRequest() { }
-    }
-
-
-    /// <summary>
-    /// Length of log required (calculated from starting time)
-    /// </summary>
-    public enum ComputeLogAnalyticsRequestIntervals
-    {
-        /// <summary>
-        /// 3 minutes
-        /// </summary>
-        ThreeMins,
-
-        /// <summary>
-        /// 5 minutes
-        /// </summary>
-        FiveMins,
-
-        /// <summary>
-        /// 30 minutes
-        /// </summary>
-        ThirtyMins,
-
-        /// <summary>
-        /// 60 minutes
-        /// </summary>
-        SixtyMins
     }
 }

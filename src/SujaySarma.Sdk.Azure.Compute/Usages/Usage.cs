@@ -5,7 +5,8 @@ using SujaySarma.Sdk.Azure.Common;
 namespace SujaySarma.Sdk.Azure.Compute.Usages
 {
     /// <summary>
-    /// Usage information of a Compute resource
+    /// Usage information of a Compute resource. 
+    /// This structure is created in response to a request
     /// </summary>
     public class Usage
     {

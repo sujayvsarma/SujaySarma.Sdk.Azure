@@ -224,6 +224,25 @@ namespace SujaySarma.Sdk.Azure.Common
         }
 
         /// <summary>
+        /// Checks if the provided component is the value provided
+        /// </summary>
+        /// <param name="componentToCompare">The component of the ResourceUri to compare</param>
+        /// <param name="value">The value the component should be</param>
+        /// <returns>TRUE if the component matches the value provided. FALSE (including if the component is NULL)</returns>
+        public bool Is(ResourceUriCompareLevel componentToCompare, string value)
+        => componentToCompare switch
+        {
+            ResourceUriCompareLevel.ResourceName => (ResourceName != null) && ResourceName.Equals(value, StringComparison.InvariantCultureIgnoreCase),
+            ResourceUriCompareLevel.Type => (Type != null) && Type.Equals(value, StringComparison.InvariantCultureIgnoreCase),
+            ResourceUriCompareLevel.Provider => (ProviderName != null) && ProviderName.Equals(value, StringComparison.InvariantCultureIgnoreCase),
+            ResourceUriCompareLevel.ResourceGroup => (ResourceGroupName != null) && ResourceGroupName.Equals(value, StringComparison.InvariantCultureIgnoreCase),
+            ResourceUriCompareLevel.Subscription => (Subscription == Guid.Parse(value)),
+            _ => false,
+        };
+
+
+
+        /// <summary>
         /// Compare the current instance with the provided instance and return if they match. 
         /// </summary>
         /// <param name="targetUri">The other ResourceUri object to compare with</param>
@@ -239,22 +258,22 @@ namespace SujaySarma.Sdk.Azure.Common
         {
             int differences = 0;
 
-            if (((level == ResourceUriCompareLevel.All) || level.HasFlag(ResourceUriCompareLevel.ResourceName)) && (ResourceName != null) && (!ResourceName.Equals(targetUri.ResourceName)))
+            if (((level == ResourceUriCompareLevel.All) || level.HasFlag(ResourceUriCompareLevel.ResourceName)) && (ResourceName != null) && (!ResourceName.Equals(targetUri.ResourceName, StringComparison.InvariantCultureIgnoreCase)))
             {
                 differences++;
             }
 
-            if (((level == ResourceUriCompareLevel.All) || level.HasFlag(ResourceUriCompareLevel.Type)) && (Type != null) && (!Type.Equals(targetUri.Type)))
+            if (((level == ResourceUriCompareLevel.All) || level.HasFlag(ResourceUriCompareLevel.Type)) && (Type != null) && (!Type.Equals(targetUri.Type, StringComparison.InvariantCultureIgnoreCase)))
             {
                 differences++;
             }
 
-            if (((level == ResourceUriCompareLevel.All) || level.HasFlag(ResourceUriCompareLevel.Provider)) && (ProviderName != null) && (!ProviderName.Equals(targetUri.ProviderName)))
+            if (((level == ResourceUriCompareLevel.All) || level.HasFlag(ResourceUriCompareLevel.Provider)) && (ProviderName != null) && (!ProviderName.Equals(targetUri.ProviderName, StringComparison.InvariantCultureIgnoreCase)))
             {
                 differences++;
             }
 
-            if (((level == ResourceUriCompareLevel.All) || level.HasFlag(ResourceUriCompareLevel.ResourceGroup)) && (ResourceGroupName != null) && (!ResourceGroupName.Equals(targetUri.ResourceGroupName)))
+            if (((level == ResourceUriCompareLevel.All) || level.HasFlag(ResourceUriCompareLevel.ResourceGroup)) && (ResourceGroupName != null) && (!ResourceGroupName.Equals(targetUri.ResourceGroupName, StringComparison.InvariantCultureIgnoreCase)))
             {
                 differences++;
             }

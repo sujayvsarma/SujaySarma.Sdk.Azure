@@ -5,8 +5,14 @@
     /// </summary>
     public enum OSTypeNamesEnum
     {
+        /// <summary>
+        /// Windows Operating System. May be Client or Server
+        /// </summary>
         Windows,
 
+        /// <summary>
+        /// Linux Operating System.
+        /// </summary>
         Linux
     }
 }

@@ -1,5 +1,8 @@
-﻿
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+
+using SujaySarma.Sdk.Azure.Common;
+
+using System;
 
 namespace SujaySarma.Sdk.Azure.Compute.Encryption
 {
@@ -9,7 +12,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Encryption
     public class DiskDataEncryptionProperties
     {
         /// <summary>
-        /// ResourceId of the disk encryption set to use for enabling encryption at rest
+        /// ResourceId of the Azure Disk Encryption Set to use for enabling encryption at rest
         /// </summary>
         [JsonProperty("diskEncryptionSetId")]
         public string EncryptionSetResourceId { get; set; } = string.Empty;
@@ -22,5 +25,23 @@ namespace SujaySarma.Sdk.Azure.Compute.Encryption
 
 
         public DiskDataEncryptionProperties() { }
+
+        /// <summary>
+        /// Initialize properties for data disk encryption
+        /// </summary>
+        /// <param name="type">Type of encryption</param>
+        /// <param name="encryptionSetId">ResourceUri to the Azure Disk Encryption Set to be used</param>
+        public DiskDataEncryptionProperties(DiskDataEncryptionTypeNamesEnum type, ResourceUri encryptionSetId)
+        {
+            if (! Enum.IsDefined(typeof(DiskDataEncryptionTypeNamesEnum), type)) { throw new ArgumentOutOfRangeException(nameof(type)); }
+            if ((encryptionSetId == null) || (! encryptionSetId.IsValid) || 
+                (! encryptionSetId.Is(ResourceUriCompareLevel.Provider, "Microsoft.Compute")) || (! encryptionSetId.Is(ResourceUriCompareLevel.Type, "diskEncryptionSets")))
+            {
+                throw new ArgumentException(nameof(encryptionSetId));
+            }
+
+            Type = type;
+            EncryptionSetResourceId = encryptionSetId.ToString();
+        }
     }
 }

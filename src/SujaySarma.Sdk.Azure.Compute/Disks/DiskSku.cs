@@ -1,6 +1,8 @@
-﻿
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+
 using SujaySarma.Sdk.Azure.Compute.Common;
+
+using System;
 
 namespace SujaySarma.Sdk.Azure.Compute.Disks
 {
@@ -20,5 +22,18 @@ namespace SujaySarma.Sdk.Azure.Compute.Disks
 
 
         public DiskSku() { }
+
+        /// <summary>
+        /// Build a Disk SKU
+        /// </summary>
+        /// <param name="sku">Name of the SKU</param>
+        /// <param name="tier">Tier of the SKU</param>
+        public DiskSku(DiskSkuNamesEnum sku, string? tier = null)
+        {
+            if (! Enum.IsDefined(typeof(DiskSkuNamesEnum), sku)) { throw new ArgumentOutOfRangeException(nameof(sku)); }
+
+            Name = sku;
+            Tier = tier;
+        }
     }
 }

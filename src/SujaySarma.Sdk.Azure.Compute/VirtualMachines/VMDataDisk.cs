@@ -1,7 +1,10 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+
 using SujaySarma.Sdk.Azure.Common;
 using SujaySarma.Sdk.Azure.Compute.Common;
+
+using System;
 
 namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
 {
@@ -73,5 +76,123 @@ namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
         public VMManagedDisk? ManagedDisk { get; set; }
 
         public VMDataDisk() { }
+
+        /// <summary>
+        /// Create a data disk by copying an existing image
+        /// </summary>
+        /// <param name="name">Name of the disk</param>
+        /// <param name="fromImage">URI to the Vhd's blob on a Storage Account</param>
+        /// <param name="caching">Type of caching to enable</param>
+        /// <param name="enableWriteAcceleration">Flag indicating whether to enable write acceleration on the disk</param>
+        /// <param name="attachToLUN">The LUN to attach the disk to. Set to -1 to automatically pick a LUN (Azure will decide)</param>
+        public static VMDataDisk FromImage(string name, ResourceUri fromImage, CachingTypeNamesEnum caching = CachingTypeNamesEnum.None, bool enableWriteAcceleration = false, int attachToLUN = -1)
+        {
+            if (string.IsNullOrWhiteSpace(name)) { throw new ArgumentNullException(nameof(name)); }
+            if (!Enum.IsDefined(typeof(CachingTypeNamesEnum), caching)) { throw new ArgumentOutOfRangeException(nameof(caching)); }
+            if (attachToLUN < -1) { throw new ArgumentOutOfRangeException(nameof(attachToLUN)); }
+
+            if ((fromImage == null) || (!fromImage.IsValid) ||
+                (!fromImage.Is(ResourceUriCompareLevel.Provider, "Microsoft.Storage")) || (!fromImage.Is(ResourceUriCompareLevel.Type, "storageAccounts")))
+            {
+                throw new ArgumentException(nameof(fromImage));
+            }
+
+            VMDataDisk disk = new VMDataDisk()
+            {
+                Name = name,
+                CreateUsing = DiskCreationOptionsEnum.FromImage,
+                CreateModeSourceImage = new UriResource(fromImage.ToString()),
+                Caching = caching,
+                IsWriteAccelerationEnabled = enableWriteAcceleration
+            };
+
+
+            if (attachToLUN != -1)
+            {
+                disk.LogicalUnitNumber = attachToLUN;
+            }
+
+            return disk;
+        }
+
+        /// <summary>
+        /// Create a data disk by attaching an unmanaged Vhd
+        /// </summary>
+        /// <param name="name">Name of the disk</param>
+        /// <param name="unmanagedVhdFile">URI to the existing unmanaged Vhd on a Storage Account</param>
+        /// <param name="caching">Type of caching to enable</param>
+        /// <param name="enableWriteAcceleration">Flag indicating whether to enable write acceleration on the disk</param>
+        /// <param name="attachToLUN">The LUN to attach the disk to. Set to -1 to automatically pick a LUN (Azure will decide)</param>
+        public static VMDataDisk FromUmanagedVhd(string name, ResourceUri unmanagedVhdFile, CachingTypeNamesEnum caching = CachingTypeNamesEnum.None, bool enableWriteAcceleration = false, int attachToLUN = -1)
+        {
+            if (string.IsNullOrWhiteSpace(name)) { throw new ArgumentNullException(nameof(name)); }
+            if (!Enum.IsDefined(typeof(CachingTypeNamesEnum), caching)) { throw new ArgumentOutOfRangeException(nameof(caching)); }
+            if (attachToLUN < -1) { throw new ArgumentOutOfRangeException(nameof(attachToLUN)); }
+
+            if ((unmanagedVhdFile == null) || (!unmanagedVhdFile.IsValid) ||
+                (!unmanagedVhdFile.Is(ResourceUriCompareLevel.Provider, "Microsoft.Storage")) || (!unmanagedVhdFile.Is(ResourceUriCompareLevel.Type, "storageAccounts")))
+            {
+                throw new ArgumentException(nameof(unmanagedVhdFile));
+            }
+
+            VMDataDisk disk = new VMDataDisk()
+            {
+                Name = name,
+                CreateUsing = DiskCreationOptionsEnum.Copy,
+                VhdFile = new UriResource(unmanagedVhdFile.ToString()),
+                Caching = caching,
+                IsWriteAccelerationEnabled = enableWriteAcceleration
+            };
+
+            if (attachToLUN != -1)
+            {
+                disk.LogicalUnitNumber = attachToLUN;
+            }
+
+            return disk;
+        }
+
+        /// <summary>
+        /// Create a data disk by attaching an managed disk
+        /// </summary>
+        /// <param name="name">Name of the disk</param>
+        /// <param name="managedDiskUri">URI to the existing unmanaged Vhd on a Storage Account</param>
+        /// <param name="caching">Type of caching to enable</param>
+        /// <param name="enableWriteAcceleration">Flag indicating whether to enable write acceleration on the disk</param>
+        /// <param name="attachToLUN">The LUN to attach the disk to. Set to -1 to automatically pick a LUN (Azure will decide)</param>
+        public static VMDataDisk FromManagedDisk(string name, ResourceUri managedDiskUri, DiskSkuNamesEnum typeOfDisk = DiskSkuNamesEnum.Standard_LRS, CachingTypeNamesEnum caching = CachingTypeNamesEnum.None, bool enableWriteAcceleration = false, int attachToLUN = -1)
+        {
+            if (string.IsNullOrWhiteSpace(name)) { throw new ArgumentNullException(nameof(name)); }
+            if (!Enum.IsDefined(typeof(CachingTypeNamesEnum), caching)) { throw new ArgumentOutOfRangeException(nameof(caching)); }
+            if (!Enum.IsDefined(typeof(DiskSkuNamesEnum), typeOfDisk)) { throw new ArgumentOutOfRangeException(nameof(typeOfDisk)); }
+            if (attachToLUN < -1) { throw new ArgumentOutOfRangeException(nameof(attachToLUN)); }
+
+            if ((managedDiskUri == null) || (!managedDiskUri.IsValid) ||
+                (!managedDiskUri.Is(ResourceUriCompareLevel.Provider, "Microsoft.Storage")) || (!managedDiskUri.Is(ResourceUriCompareLevel.Type, "storageAccounts")))
+            {
+                throw new ArgumentException(nameof(managedDiskUri));
+            }
+
+            VMDataDisk disk = new VMDataDisk()
+            {
+                Name = name,
+                CreateUsing = DiskCreationOptionsEnum.Attach,
+                ManagedDisk = new VMManagedDisk()
+                {
+                    Id = managedDiskUri.ToString(),
+                    Type = typeOfDisk
+                },
+                Caching = caching,
+                IsWriteAccelerationEnabled = enableWriteAcceleration
+            };
+
+            if (attachToLUN != -1)
+            {
+                disk.LogicalUnitNumber = attachToLUN;
+            }
+
+            return disk;
+        }
+
     }
 }

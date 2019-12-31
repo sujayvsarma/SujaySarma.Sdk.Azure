@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
+
 using SujaySarma.Sdk.Azure.Compute.Encryption;
 
 namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
 {
     /// <summary>
-    /// A collection of encryption settings, one for each disk volume.
+    /// A collection of encryption settings, one for each disk volume. During 
+    /// create/update, this is initialized from different class constructors
     /// </summary>
     public class VMDiskEncryptionSettings
     {

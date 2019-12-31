@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 
+using System;
+
 namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
 {
     /// <summary>
@@ -18,5 +20,12 @@ namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
 
 
         public VMBillingProfile() { }
+
+
+        public VMBillingProfile(double bidPrice)
+        {
+            if ((bidPrice < -1) || (bidPrice == 0)) { throw new ArgumentOutOfRangeException(nameof(bidPrice)); }
+            MaximumBidPrice = bidPrice;
+        }
     }
 }
