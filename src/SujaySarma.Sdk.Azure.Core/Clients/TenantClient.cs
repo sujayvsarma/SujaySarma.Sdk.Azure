@@ -38,6 +38,6 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
             return JsonConvert.DeserializeObject<TenantListResult>(response.Body).Values;
         }
 
-        public static string CLIENT_API_VERSION = "2019-06-01";
+        public static string CLIENT_API_VERSION = "2019-11-01";
     }
 }

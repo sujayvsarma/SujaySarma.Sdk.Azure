@@ -93,7 +93,6 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskImages
         /// <param name="diskUri">Uri to the managed disk</param>
         public ImageDataDisk(int attachedLUN, DiskSkuNamesEnum storageType, CachingTypeNamesEnum caching, int sizeInGB, ResourceUri diskUri)
         {
-            if (!Enum.IsDefined(typeof(OSTypeNamesEnum), osName)) { throw new ArgumentOutOfRangeException(nameof(osName)); }
             if ((!Enum.IsDefined(typeof(DiskSkuNamesEnum), storageType)) || (storageType == DiskSkuNamesEnum.UltraSSD_LRS)) { throw new ArgumentOutOfRangeException(nameof(storageType)); }
             if (!Enum.IsDefined(typeof(CachingTypeNamesEnum), caching)) { throw new ArgumentOutOfRangeException(nameof(caching)); }
             if ((sizeInGB <= 0) || (sizeInGB > 1023)) { throw new ArgumentOutOfRangeException(nameof(sizeInGB)); }

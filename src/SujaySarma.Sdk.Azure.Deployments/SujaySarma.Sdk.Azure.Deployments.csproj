@@ -35,16 +35,16 @@
     <None Remove="README.md" />
   </ItemGroup>
 
-  <Import Project="..\SujaySarma.Sdk.Azure.Common\SujaySarma.Sdk.Azure.Common.projitems" Label="Shared" />
-
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\..\NuGet\newtonsoft.json\12.0.3\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Clients\" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="COPY /Y $(TargetPath) $(SolutionDir)..\_build\$(TargetFileName)" />
+  </Target>
 
 </Project>

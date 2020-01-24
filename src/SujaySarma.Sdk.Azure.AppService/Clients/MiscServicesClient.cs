@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
+
 using SujaySarma.Sdk.Azure.AppService.Common;
 using SujaySarma.Sdk.Azure.Internal;
+
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SujaySarma.Sdk.Azure.AppService.Clients
@@ -34,7 +34,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
 
             RestApiResponse response = await RestApiClient.POST(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/providers/Microsoft.Web/checknameavailability",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/providers/Microsoft.Web/checknameavailability",
                     "2019-08-01",
                     null, 
                     new ResourceNameAvailabilityRequest()

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+
 using SujaySarma.Sdk.Azure.Common;
 using SujaySarma.Sdk.Azure.Internal;
 using SujaySarma.Sdk.Azure.Subscriptions;
@@ -93,6 +94,99 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
         }
 
 
-        public static string CLIENT_API_VERSION = "2019-06-01";
+        /// <summary>
+        /// Cancel a subscription
+        /// </summary>
+        /// <param name="bearerToken">Authorization bearer token</param>
+        /// <param name="id">Guid of the subscription</param>
+        public static async Task Cancel(string bearerToken, Guid id)
+        {
+            if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
+            if ((id == Guid.Empty) || (id == default)) { throw new ArgumentNullException(nameof(id)); }
+
+            RestApiResponse response = await RestApiClient.POST(
+                    bearerToken,
+                    $"https://management.azure.com/subscriptions/{id.ToString("d")}/providers/Microsoft.Subscription/cancel",
+                    "2019-03-01-preview",
+                    null, null,
+                    new int[] { 200 }
+                );
+
+            if ((!response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
+            {
+                await Task.FromException(new Exception(response.ExceptionMessage));
+            }
+
+            await Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Enable a subscription
+        /// </summary>
+        /// <param name="bearerToken">Authorization bearer token</param>
+        /// <param name="id">Guid of the subscription</param>
+        public static async Task Enable(string bearerToken, Guid id)
+        {
+            if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
+            if ((id == Guid.Empty) || (id == default)) { throw new ArgumentNullException(nameof(id)); }
+
+            RestApiResponse response = await RestApiClient.POST(
+                    bearerToken,
+                    $"https://management.azure.com/subscriptions/{id.ToString("d")}/providers/Microsoft.Subscription/enable",
+                    "2019-03-01-preview",
+                    null, null,
+                    new int[] { 200 }
+                );
+
+            if ((!response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
+            {
+                await Task.FromException(new Exception(response.ExceptionMessage));
+            }
+
+            await Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Rename a subscription
+        /// </summary>
+        /// <param name="bearerToken">Authorization bearer token</param>
+        /// <param name="id">Guid of the subscription</param>
+        /// <param name="newName">New name for the subscription</param>
+        public static async Task Rename(string bearerToken, Guid id, string newName)
+        {
+            if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
+            if ((id == Guid.Empty) || (id == default)) { throw new ArgumentNullException(nameof(id)); }
+            if (string.IsNullOrWhiteSpace(newName)) { throw new ArgumentNullException(nameof(newName)); }
+
+            RestApiResponse response = await RestApiClient.POST(
+                    bearerToken,
+                    $"https://management.azure.com/subscriptions/{id.ToString("d")}/providers/Microsoft.Subscription/rename",
+                    "2019-03-01-preview",
+                    null,
+                    new SubscriptionRenameStructure()
+                    {
+                        SubscriptionName = newName
+                    },
+                    new int[] { 200 }
+                );
+
+            if ((!response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
+            {
+                await Task.FromException(new Exception(response.ExceptionMessage));
+            }
+
+            await Task.CompletedTask;
+        }
+
+
+        public static string CLIENT_API_VERSION = "2019-11-01";
     }
+
+
+    public class SubscriptionRenameStructure
+    {
+        [JsonProperty("SubscriptionName")]
+        public string SubscriptionName { get; set; } = string.Empty;
+    }
+
 }

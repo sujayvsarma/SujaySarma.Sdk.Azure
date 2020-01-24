@@ -13,7 +13,7 @@ namespace SujaySarma.Sdk.Azure.Internal
     /// This is a specially modified version of our RestApiClient class. Handles the actual calls to the 
     /// REST API and returns the relevant responses. Most of our methods should be threadsafe. 
     /// </summary>
-    internal static class RestApiClient
+    public static class RestApiClient
     {
 
         /// <summary>
@@ -148,13 +148,7 @@ namespace SujaySarma.Sdk.Azure.Internal
                 IsExpectedSuccess = true,
                 ExceptionMessage = null,
                 HttpStatus = 200,
-                Body = JsonConvert.SerializeObject(
-                        new ListResultWithContinuations<T>()
-                        {
-                            Values = returnableObjects,
-                            NextPage = null
-                        }
-                    )
+                Body = JsonConvert.SerializeObject(returnableObjects)
             };
         }
 

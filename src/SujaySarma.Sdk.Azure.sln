@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29521.150
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SujaySarma.Sdk.Azure.Core", "Core\SujaySarma.Sdk.Azure.Core.csproj", "{A73ED944-747A-4AF7-AB36-D51E6A273D0E}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SujaySarma.Sdk.Azure.Common", "SujaySarma.Sdk.Azure.Common\SujaySarma.Sdk.Azure.Common.shproj", "{8BFDE4E9-76F7-44ED-8144-2BA146347521}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SujaySarma.Sdk.Azure.Core", "SujaySarma.Sdk.Azure.Core\SujaySarma.Sdk.Azure.Core.csproj", "{A73ED944-747A-4AF7-AB36-D51E6A273D0E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SujaySarma.Sdk.Azure.Obscure", "SujaySarma.Sdk.Azure.Obscure\SujaySarma.Sdk.Azure.Obscure.csproj", "{9DDB7221-2643-4DAC-9BDE-FD5108A54A5B}"
 EndProject
@@ -18,9 +16,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CF57CD9F-1470-47AB-A785-430185897FDF}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		SujaySarma.Sdk.Azure.Common\SujaySarma.Sdk.Azure.Common.projitems*{8bfde4e9-76f7-44ed-8144-2ba146347521}*SharedItemsImports = 13
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

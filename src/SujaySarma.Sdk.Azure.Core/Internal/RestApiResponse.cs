@@ -9,7 +9,7 @@ namespace SujaySarma.Sdk.Azure.Internal
     /// Encapsulate the important information returned from the remote endpoint. 
     /// Used as the function return types for the methods in <see cref="RestApiClient"/>.
     /// </summary>
-    internal class RestApiResponse
+    public class RestApiResponse
     {
 
         #region Properties
@@ -73,6 +73,8 @@ namespace SujaySarma.Sdk.Azure.Internal
                     }
                 }
             }
+
+            Body = httpResponse.Content.ReadAsStringAsync().Result;
         }
 
         /// <summary>

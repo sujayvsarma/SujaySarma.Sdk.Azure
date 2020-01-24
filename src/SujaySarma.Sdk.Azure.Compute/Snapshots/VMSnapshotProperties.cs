@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
+using SujaySarma.Sdk.Azure.Common;
 using SujaySarma.Sdk.Azure.Compute.Common;
 using SujaySarma.Sdk.Azure.Compute.Disks;
 using SujaySarma.Sdk.Azure.Compute.Encryption;
@@ -67,8 +69,8 @@ namespace SujaySarma.Sdk.Azure.Compute.Snapshots
         /// <summary>
         /// Disk provisioning status
         /// </summary>
-        [JsonProperty("provisioningState")]
-        public string ProvisioningStatus { get; set; } = "Succeeded";
+        [JsonProperty("provisioningState", ItemConverterType = typeof(StringEnumConverter))]
+        public ProvisioningStatusEnum ProvisioningStatus { get; set; } = ProvisioningStatusEnum.Default;
 
         /// <summary>
         /// Date/time the disk was created. In UTC.
@@ -92,10 +94,9 @@ namespace SujaySarma.Sdk.Azure.Compute.Snapshots
         /// <param name="sizeGB">Size of disk in GB (0 to 1023)</param>
         public VMSnapshotProperties(DiskCreationMetadata creationMetadata, int sizeGB)
         {
-            if (creationMetadata == null) { throw new ArgumentNullException(nameof(creationMetadata)); }
             if ((sizeGB <= 0) || (sizeGB > 1023)) { throw new ArgumentOutOfRangeException(nameof(sizeGB)); }
 
-            CreationMetadata = creationMetadata;
+            CreationMetadata = creationMetadata ?? throw new ArgumentNullException(nameof(creationMetadata));
             DiskSizeGB = sizeGB;
         }
 

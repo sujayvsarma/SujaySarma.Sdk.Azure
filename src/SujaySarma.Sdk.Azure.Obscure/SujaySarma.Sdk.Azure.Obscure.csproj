@@ -39,6 +39,12 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
-  <Import Project="..\SujaySarma.Sdk.Azure.Common\SujaySarma.Sdk.Azure.Common.projitems" Label="Shared" />
+  <ItemGroup>
+    <ProjectReference Include="..\SujaySarma.Sdk.Azure.Core\SujaySarma.Sdk.Azure.Core.csproj" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="COPY /Y $(TargetPath) $(SolutionDir)..\_build\$(TargetFileName)" />
+  </Target>
 
 </Project>

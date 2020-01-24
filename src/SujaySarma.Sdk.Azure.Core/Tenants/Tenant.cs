@@ -60,20 +60,22 @@ namespace SujaySarma.Sdk.Azure.Tenants
         {
             get
             {
-                if (AssociatedDomainNames != null)
+                if ((_primaryName == string.Empty) && (AssociatedDomainNames != null))
                 {
                     foreach (string d in AssociatedDomainNames)
                     {
                         if (d.EndsWith(".onmicrosoft.com") && (!d.EndsWith(".mail.onmicrosoft.com")))
                         {
-                            return d;
+                            _primaryName = d;
+                            break;
                         }
                     }
                 }                
 
-                return ".onmicrosoft.com";
+                return _primaryName;
             }
         }
+        private string _primaryName = string.Empty;
 
         #endregion
 
