@@ -30,7 +30,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
         /// <param name="type">Type of certificate (WARNING: selection has cost implications!)</param>
         /// <param name="validityPeriod">Period in years, that the issued certificate will be valid for</param>
         /// <returns>Details of the placed order</returns>
-        public static async Task<CertificateOrderDetail?> Order(string bearerToken, Guid subscription, string resourceGroupName, string orderNickname,
+        public static async Task<CertificateOrderDetail?> OrderUsingDomainName(string bearerToken, Guid subscription, string resourceGroupName, string orderNickname,
             string domainName, bool autoRenew = true, CertificateTypesEnum type = CertificateTypesEnum.StandardDomainValidatedSsl,
                 CertificateValidityPeriod validityPeriod = CertificateValidityPeriod.OneYear)
         {
@@ -223,69 +223,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
 
             return JsonConvert.DeserializeObject<ListResultWithContinuations<CertificateOrderDetail>>(response.Body).Values;
         }
-
-        /// <summary>
-        /// Reissue a certificate
-        /// </summary>
-        /// <param name="bearerToken">The Azure bearer token</param>
-        /// <param name="subscription">Subscription Id for authorization</param>
-        /// <param name="resourceGroupName">Name of the resource group the certificate exists in</param>
-        /// <param name="orderNickname">A nickname for the order, specified during order creation</param>
-        /// <returns>True if task was accepted, False if rejected, NULL if there was an error</returns>
-        public static async Task<bool?> ReissueCertificate(string bearerToken, Guid subscription, string resourceGroupName, string orderNickname)
-        {
-            if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
-            if (subscription == Guid.Empty) { throw new ArgumentNullException(nameof(subscription)); }
-            if (string.IsNullOrWhiteSpace(resourceGroupName)) { throw new ArgumentNullException(nameof(resourceGroupName)); }
-            if (string.IsNullOrWhiteSpace(orderNickname)) { throw new ArgumentNullException(nameof(orderNickname)); }
-
-            RestApiResponse response = await RestApiClient.POST(
-                    bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription:d}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{orderNickname}/reissue",
-                    CLIENT_API_VERSION, 
-                    null, null, 
-                    new int[] { 204 }
-                );
-
-            if (response.WasException)
-            {
-                return null;
-            }
-
-            return response.IsExpectedSuccess;
-        }
-
-        /// <summary>
-        /// Renew a certificate
-        /// </summary>
-        /// <param name="bearerToken">The Azure bearer token</param>
-        /// <param name="subscription">Subscription Id for authorization</param>
-        /// <param name="resourceGroupName">Name of the resource group the certificate exists in</param>
-        /// <param name="orderNickname">A nickname for the order, specified during order creation</param>
-        /// <returns>True if task was accepted, False if rejected, NULL if there was an error</returns>
-        public static async Task<bool?> RenewCertificate(string bearerToken, Guid subscription, string resourceGroupName, string orderNickname)
-        {
-            if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
-            if (subscription == Guid.Empty) { throw new ArgumentNullException(nameof(subscription)); }
-            if (string.IsNullOrWhiteSpace(resourceGroupName)) { throw new ArgumentNullException(nameof(resourceGroupName)); }
-            if (string.IsNullOrWhiteSpace(orderNickname)) { throw new ArgumentNullException(nameof(orderNickname)); }
-
-            RestApiResponse response = await RestApiClient.POST(
-                    bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription:d}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{orderNickname}/renew",
-                    CLIENT_API_VERSION,
-                    null, null,
-                    new int[] { 204 }
-                );
-
-            if (response.WasException)
-            {
-                return null;
-            }
-
-            return response.IsExpectedSuccess;
-        }
-
+      
         /// <summary>
         /// Resend the certificate email
         /// </summary>

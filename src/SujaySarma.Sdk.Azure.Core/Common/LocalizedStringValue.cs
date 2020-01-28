@@ -13,7 +13,7 @@ namespace SujaySarma.Sdk.Azure.Common
         /// <summary>
         /// The value name in English language
         /// </summary>
-        [JsonProperty("Value")]
+        [JsonProperty("value")]
         public string Value { get; set; } = string.Empty;
 
         /// <summary>

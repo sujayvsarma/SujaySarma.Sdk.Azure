@@ -4,6 +4,7 @@ using SujaySarma.Sdk.Azure.AppService.Common;
 using SujaySarma.Sdk.Azure.Internal;
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SujaySarma.Sdk.Azure.AppService.Clients
@@ -61,6 +62,23 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
                     _ => null
                 }
             };
+        }
+
+
+        /// <summary>
+        /// List all available SKUs for App Services
+        /// </summary>
+        /// <param name="bearerToken">Authorization bearer token</param>
+        /// <param name="subscription">Subscription Guid</param>
+        /// <returns>List of SKUs or empty list</returns>
+        public static async Task<IList<object>> GetAvailableSkus(string bearerToken, Guid subscription)
+        {
+            if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
+            if (subscription == Guid.Empty) { throw new ArgumentNullException(nameof(subscription)); }
+
+            //TODO !!!
+
+            return await Task.FromResult(new List<object>());
         }
 
     }

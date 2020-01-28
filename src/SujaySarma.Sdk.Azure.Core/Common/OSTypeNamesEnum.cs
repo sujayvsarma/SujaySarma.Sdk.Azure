@@ -1,4 +1,4 @@
-﻿namespace SujaySarma.Sdk.Azure.Compute.Common
+﻿namespace SujaySarma.Sdk.Azure.Common
 {
     /// <summary>
     /// Names of operating systems

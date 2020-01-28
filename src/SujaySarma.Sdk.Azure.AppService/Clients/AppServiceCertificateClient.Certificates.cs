@@ -128,6 +128,67 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
             return JsonConvert.DeserializeObject<IssuedCertificate>(response.Body);
         }
 
+        /// <summary>
+        /// Reissue the previous certificate
+        /// </summary>
+        /// <param name="bearerToken">The Azure bearer token</param>
+        /// <param name="subscription">Subscription Id for authorization</param>
+        /// <param name="resourceGroupName">Name of the resource group the certificate exists in</param>
+        /// <param name="orderNickname">A nickname for the order, specified during order creation</param>
+        /// <returns>True if task was accepted, False if rejected, NULL if there was an error</returns>
+        public static async Task<bool?> Reissue(string bearerToken, Guid subscription, string resourceGroupName, string orderNickname)
+        {
+            if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
+            if (subscription == Guid.Empty) { throw new ArgumentNullException(nameof(subscription)); }
+            if (string.IsNullOrWhiteSpace(resourceGroupName)) { throw new ArgumentNullException(nameof(resourceGroupName)); }
+            if (string.IsNullOrWhiteSpace(orderNickname)) { throw new ArgumentNullException(nameof(orderNickname)); }
+
+            RestApiResponse response = await RestApiClient.POST(
+                    bearerToken,
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{orderNickname}/reissue",
+                    CLIENT_API_VERSION,
+                    null, null,
+                    new int[] { 204 }
+                );
+
+            if (response.WasException)
+            {
+                return null;
+            }
+
+            return response.IsExpectedSuccess;
+        }
+
+        /// <summary>
+        /// Renew the currently issued certificate associated with the given order
+        /// </summary>
+        /// <param name="bearerToken">The Azure bearer token</param>
+        /// <param name="subscription">Subscription Id for authorization</param>
+        /// <param name="resourceGroupName">Name of the resource group the certificate exists in</param>
+        /// <param name="orderNickname">A nickname for the order, specified during order creation</param>
+        /// <returns>True if task was accepted, False if rejected, NULL if there was an error</returns>
+        public static async Task<bool?> Renew(string bearerToken, Guid subscription, string resourceGroupName, string orderNickname)
+        {
+            if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
+            if (subscription == Guid.Empty) { throw new ArgumentNullException(nameof(subscription)); }
+            if (string.IsNullOrWhiteSpace(resourceGroupName)) { throw new ArgumentNullException(nameof(resourceGroupName)); }
+            if (string.IsNullOrWhiteSpace(orderNickname)) { throw new ArgumentNullException(nameof(orderNickname)); }
+
+            RestApiResponse response = await RestApiClient.POST(
+                    bearerToken,
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{orderNickname}/renew",
+                    CLIENT_API_VERSION,
+                    null, null,
+                    new int[] { 204 }
+                );
+
+            if (response.WasException)
+            {
+                return null;
+            }
+
+            return response.IsExpectedSuccess;
+        }
 
         /// <summary>
         /// Delete a certificate associated with the given certificate order
