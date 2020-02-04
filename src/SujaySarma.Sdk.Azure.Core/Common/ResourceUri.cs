@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace SujaySarma.Sdk.Azure.Common
@@ -168,6 +167,86 @@ namespace SujaySarma.Sdk.Azure.Common
         }
 
         /// <summary>
+        /// Sets the subscription Id
+        /// </summary>
+        /// <param name="subscriptionId">Guid of the subscription</param>
+        /// <returns>ResourceUri</returns>
+        public ResourceUri WithSubscriptionId(Guid subscriptionId)
+        {
+            Subscription = subscriptionId;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the resource group name
+        /// </summary>
+        /// <param name="resourceGroupNameOrId">Name or Guid of the resource group</param>
+        /// <returns>ResourceUri</returns>
+        public ResourceUri WithResourceGroup(string resourceGroupNameOrId)
+        {
+            ResourceGroupName = resourceGroupNameOrId;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the resource group name
+        /// </summary>
+        /// <param name="resourceGroupId">Guid of the resource group</param>
+        /// <returns>ResourceUri</returns>
+        public ResourceUri WithResourceGroup(Guid resourceGroupId)
+        {
+            ResourceGroupName = resourceGroupId.ToString("d");
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the provider name
+        /// </summary>
+        /// <param name="providerName">Name of the provider</param>
+        /// <returns>ResourceUri</returns>
+        public ResourceUri WithProvider(string providerName)
+        {
+            ProviderName = providerName;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the type of resource
+        /// </summary>
+        /// <param name="type">Type of resource</param>
+        /// <returns>ResourceUri</returns>
+        public ResourceUri WithType(string type)
+        {
+            Type = type;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the resource name
+        /// </summary>
+        /// <param name="resourceName">Name of the resource</param>
+        /// <returns>ResourceUri</returns>
+        public ResourceUri WithResource(string resourceName)
+        {
+            ResourceName = resourceName;
+            return this;
+        }
+
+        /// <summary>
+        /// Validates that all components are present correctly
+        /// </summary>
+        /// <returns>ResourceUri</returns>
+        public ResourceUri Build()
+        {
+            if (! IsValid)
+            {
+                throw new Exception("ResourceUri does not contain valid components to create a valid AzureRM resource Uri string.");
+            }
+
+            return this;
+        }
+
+        /// <summary>
         /// Creates an accurate AzureRM resource Uri string
         /// </summary>
         /// <returns>AzureRM resource Uri String</returns>
@@ -216,12 +295,8 @@ namespace SujaySarma.Sdk.Azure.Common
         /// </summary>
         /// <param name="endpointName">Name of the AzureRM endpoint name (appended to the endpoint)</param>
         /// <returns>An absolute URL of the form 'https://management.azure.com/(resourceUri)/(endpointName)'</returns>
-        public string ToAbsoluteAzureRMEndpointUri(string endpointName)
-        {
-            if (endpointName == null) { throw new ArgumentNullException(nameof(endpointName)); }
-
-            return $"https://management.azure.com{ToString()}{(string.IsNullOrWhiteSpace(endpointName) ? "" : "/" + endpointName)}";
-        }
+        public string ToAbsoluteAzureRMEndpointUri(string? endpointName = null)
+            => $"https://management.azure.com{ToString()}{(string.IsNullOrWhiteSpace(endpointName) ? "" : "/" + endpointName)}";
 
         /// <summary>
         /// Checks if the provided component is the value provided

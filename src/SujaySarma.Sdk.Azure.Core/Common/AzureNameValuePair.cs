@@ -29,6 +29,17 @@ namespace SujaySarma.Sdk.Azure.Common
         public AzureNameValuePair() { }
 
         /// <summary>
+        /// Create an instance
+        /// </summary>
+        /// <param name="name">Name of the key</param>
+        /// <param name="value">Value</param>
+        public AzureNameValuePair(string name, string value)
+        {
+            Name = name;
+            Value = value;
+        }
+
+        /// <summary>
         /// Returns a KeyValuePair equivalent of this object
         /// </summary>
         /// <returns>KeyValuePair</returns>
@@ -48,6 +59,26 @@ namespace SujaySarma.Sdk.Azure.Common
             }
 
             return results;
+        }
+
+        /// <summary>
+        /// Add or set the value
+        /// </summary>
+        /// <param name="nameValuePairs">Collection of namevalue objects</param>
+        /// <param name="key">Key</param>
+        /// <param name="value">Value to set</param>
+        public static void AddOrSet(IList<AzureNameValuePair> nameValuePairs, string key, string value)
+        {
+            foreach (AzureNameValuePair pair in nameValuePairs)
+            {
+                if (pair.Name == key)
+                {
+                    pair.Value = value;
+                    return;
+                }
+            }
+
+            nameValuePairs.Add(new AzureNameValuePair(key, value));
         }
     }
 }

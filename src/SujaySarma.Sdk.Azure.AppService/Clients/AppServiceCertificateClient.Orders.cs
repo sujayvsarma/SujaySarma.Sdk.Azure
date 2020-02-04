@@ -223,7 +223,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
 
             return JsonConvert.DeserializeObject<ListResultWithContinuations<CertificateOrderDetail>>(response.Body).Values;
         }
-      
+
         /// <summary>
         /// Resend the certificate email
         /// </summary>
@@ -287,6 +287,96 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
         }
 
         /// <summary>
+        /// Get the history of emails sent for a certificate order
+        /// </summary>
+        /// <param name="bearerToken">The Azure bearer token</param>
+        /// <param name="subscription">Subscription Id for authorization</param>
+        /// <param name="resourceGroupName">Name of the resource group the certificate exists in</param>
+        /// <param name="orderNickname">A nickname for the order, specified during order creation</param>
+        /// <returns>List of emails sent or empty list</returns>
+        public static async Task<IList<CertificateEmail>> GetEmailHistory(string bearerToken, Guid subscription, string resourceGroupName, string orderNickname)
+        {
+            if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
+            if (subscription == Guid.Empty) { throw new ArgumentNullException(nameof(subscription)); }
+            if (string.IsNullOrWhiteSpace(resourceGroupName)) { throw new ArgumentNullException(nameof(resourceGroupName)); }
+            if (string.IsNullOrWhiteSpace(orderNickname)) { throw new ArgumentNullException(nameof(orderNickname)); }
+
+            RestApiResponse response = await RestApiClient.POST(
+                    bearerToken,
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{orderNickname}/retrieveEmailHistory",
+                    CLIENT_API_VERSION,
+                    null, null,
+                    new int[] { 200 }
+                );
+
+            if ((!response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
+            {
+                return new List<CertificateEmail>();
+            }
+
+            return JsonConvert.DeserializeObject<List<CertificateEmail>>(response.Body);
+        }
+
+
+        /// <summary>
+        /// Get the secure site site-seal for the certificate order
+        /// </summary>
+        /// <param name="bearerToken">The Azure bearer token</param>
+        /// <param name="subscription">Subscription Id for authorization</param>
+        /// <param name="resourceGroupName">Name of the resource group the certificate exists in</param>
+        /// <param name="orderNickname">A nickname for the order, specified during order creation</param>
+        /// <param name="useLightTheme">If set to true, uses the "light" theme for the seal</param>
+        /// <param name="localeName">By default, site seal is returned in "en-US". To return a different locale, set the value here.</param>
+        /// <returns>The Html for the site seal. NULL if there was a problem</returns>
+        public static async Task<string?> GetSiteSeal(string bearerToken, Guid subscription, string resourceGroupName, string orderNickname, bool useLightTheme = false, string? localeName = "en-US")
+        {
+            if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
+            if (subscription == Guid.Empty) { throw new ArgumentNullException(nameof(subscription)); }
+            if (string.IsNullOrWhiteSpace(resourceGroupName)) { throw new ArgumentNullException(nameof(resourceGroupName)); }
+            if (string.IsNullOrWhiteSpace(orderNickname)) { throw new ArgumentNullException(nameof(orderNickname)); }
+
+            if (localeName != null)
+            {
+                if ((localeName.Length != 4) || (localeName[2] != '-'))
+                {
+                    throw new ArgumentException(nameof(localeName));
+                }
+            }
+            else
+            {
+                localeName = "en-US";
+            }
+
+            StringBuilder request = new StringBuilder();
+            request.Append("{");
+            request.Append("\"lightTheme\": ").Append((useLightTheme ? "true" : "false")).Append(",");
+            request.Append("\"locale\": \"").Append(localeName).Append("\"");
+            request.Append("}");
+
+            RestApiResponse response = await RestApiClient.POST(
+                    bearerToken,
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{orderNickname}/retrieveSiteSeal",
+                    CLIENT_API_VERSION,
+                    null, request.ToString(),
+                    new int[] { 200 }
+                );
+
+            if ((!response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
+            {
+                return null;
+            }
+
+            Dictionary<string, string> seal = JsonConvert.DeserializeObject<Dictionary<string, string>>(response.Body);
+            if (!seal.TryGetValue("html", out string? sealValue))
+            {
+                return null;
+            }
+
+            return sealValue!;
+        }
+
+
+        /// <summary>
         /// Verify domain ownership for the domain the certificate order was placed for
         /// </summary>
         /// <param name="bearerToken">The Azure bearer token</param>
@@ -314,7 +404,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
                 return null;
             }
 
-            if ((response.HttpStatus == 400) && (! string.IsNullOrWhiteSpace(response.Body)) 
+            if ((response.HttpStatus == 400) && (!string.IsNullOrWhiteSpace(response.Body))
                 && response.Body.Contains("This request is no longer Pending Validation"))
             {
                 return true;

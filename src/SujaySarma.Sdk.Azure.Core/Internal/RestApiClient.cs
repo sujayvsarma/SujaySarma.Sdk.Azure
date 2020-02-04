@@ -42,7 +42,7 @@ namespace SujaySarma.Sdk.Azure.Internal
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestURI.ToString());
             if (requestBodyObject != null)
             {
-                request.Content = new StringContent(JsonConvert.SerializeObject(requestBodyObject));
+                request.Content = new StringContent(((requestBodyObject is string) ? (string)requestBodyObject : JsonConvert.SerializeObject(requestBodyObject)));
                 request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             }
 
@@ -94,7 +94,7 @@ namespace SujaySarma.Sdk.Azure.Internal
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestURI.ToString());
             if (requestBodyObject != null)
             {
-                request.Content = new StringContent(JsonConvert.SerializeObject(requestBodyObject));
+                request.Content = new StringContent(((requestBodyObject is string) ? (string)requestBodyObject : JsonConvert.SerializeObject(requestBodyObject)));
                 request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             }
 
@@ -180,7 +180,7 @@ namespace SujaySarma.Sdk.Azure.Internal
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, requestURI.ToString());
             if (requestBodyObject != null)
             {
-                request.Content = new StringContent(JsonConvert.SerializeObject(requestBodyObject));
+                request.Content = new StringContent(((requestBodyObject is string) ? (string)requestBodyObject : JsonConvert.SerializeObject(requestBodyObject)));
                 request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             }
 
@@ -313,7 +313,7 @@ namespace SujaySarma.Sdk.Azure.Internal
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, requestURI.ToString());
             if (requestBodyObject != null)
             {
-                request.Content = new StringContent(JsonConvert.SerializeObject(requestBodyObject));
+                request.Content = new StringContent(((requestBodyObject is string) ? (string)requestBodyObject : JsonConvert.SerializeObject(requestBodyObject)));
                 request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             }
 

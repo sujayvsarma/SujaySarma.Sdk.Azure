@@ -62,7 +62,7 @@ namespace SujaySarma.Sdk.Azure.Compute.AvailabilitySets
         {
             if (Properties == null)
             {
-                throw new InvalidOperationException("The availability structure has not been initialized correctly.");
+                Properties = new AvailabilitySetProperties();
             }
 
             Properties.AddVirtualMachine(virtualMachine);
@@ -74,17 +74,15 @@ namespace SujaySarma.Sdk.Azure.Compute.AvailabilitySets
         /// <param name="virtualMachine">ResourceUri of the VM to remove</param>
         public void RemoveVirtualMachine(ResourceUri virtualMachine)
         {
-            if (Properties == null)
+            if (Properties != null)
             {
-                throw new InvalidOperationException("The availability structure has not been initialized correctly.");
-            }
+                if ((Properties.VirtualMachines == null) || (Properties.VirtualMachines.Count == 0))
+                {
+                    return;
+                }
 
-            if ((Properties.VirtualMachines == null) || (Properties.VirtualMachines.Count == 0))
-            {
-                return;
-            }
-
-            Properties.RemoveVirtualMachine(virtualMachine);
+                Properties.RemoveVirtualMachine(virtualMachine);
+            }            
         }
 
     }

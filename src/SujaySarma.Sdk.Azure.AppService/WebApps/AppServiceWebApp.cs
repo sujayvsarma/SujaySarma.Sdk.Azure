@@ -27,6 +27,11 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         /// </summary>
         public AppServiceWebApp() { }
 
+
+        public static AppServiceWebApp New(string name, string resourceGroupName, string regionLocationCode)
+        {
+
+        }
     }
 
 }

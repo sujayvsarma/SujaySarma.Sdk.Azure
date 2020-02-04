@@ -6,6 +6,7 @@ using SujaySarma.Sdk.Azure.Core.Cors;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SujaySarma.Sdk.Azure.AppService.WebApps
 {
@@ -59,7 +60,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         public List<AppServiceWebAppAutoHealRule>? AutoHealRules { get; set; } = null;
 
         /// <summary>
-        /// Name of the slot to swap to during auto healing
+        /// Name of the slot to swap to
         /// </summary>
         [JsonProperty("autoSwapSlotName")]
         public string? AutoSwapSlotName { get; set; } = null;
@@ -149,6 +150,12 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         public string? JavaContainerVersion { get; set; } = null;
 
         /// <summary>
+        /// (If Java is enabled) Version number of Java
+        /// </summary>
+        [JsonProperty("javaVersion")]
+        public string? JavaVersion { get; set; } = null;
+
+        /// <summary>
         /// Site limits
         /// </summary>
         [JsonProperty("limits")]
@@ -173,7 +180,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         public bool IsLocalMySqlServiceEnabled { get; set; } = false;
 
         /// <summary>
-        /// Size limit for the "/logs" directory
+        /// Size limit for the "/logs" directory, in GB
         /// </summary>
         [JsonProperty("logsDirectorySizeLimit")]
         public int? SizeLimitForLogsDirectory { get; set; } = 0;
@@ -336,10 +343,515 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         [JsonProperty("xManagedServiceIdentityId")]
         public int? ExplicitManagedServicesIdentityId { get; set; } = 0;
 
+        /// <summary>
+        /// Additional metadata
+        /// </summary>
+        [JsonProperty("metadata")]
+        public List<AzureNameValuePair>? Metadata { get; set; } = null;
+
 
         /// <summary>
         /// Default constructor
         /// </summary>
         public AppServiceWebAppConfiguration() { }
+
+        /// <summary>
+        /// Sets application to be always On
+        /// </summary>
+        public AppServiceWebAppConfiguration WithAlwaysOn()
+        {
+            IsAlwaysOn = true;
+            return this;
+        }
+
+        public AppServiceWebAppConfiguration WithAutoHeal()
+        {
+            IsAutoHealEnabled = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the auto-swap slot name
+        /// </summary>
+        public AppServiceWebAppConfiguration WithAutoSwap(string slotName)
+        {
+            AutoSwapSlotName = slotName;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the launch command line string
+        /// </summary>
+        public AppServiceWebAppConfiguration WithCommandLine(string commandLineString)
+        {
+            LaunchCommandLine = commandLineString;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets CORS policy
+        /// </summary>
+        public AppServiceWebAppConfiguration WithCors(CorsPolicy policy)
+        {
+            CorsSettings = policy;
+            return this;
+        }
+
+        /// <summary>
+        /// Enables detailed logging
+        /// </summary>
+        public AppServiceWebAppConfiguration WithDetailedLogging()
+        {
+            IsDetailedErrorLoggingEnabled = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Set the document root (wwwroot) for the application. Set carefully!
+        /// </summary>
+        public AppServiceWebAppConfiguration WithWebRoot(string path)
+        {
+            WebRootPath = path;
+            return this;
+        }
+
+        /// <summary>
+        /// Set FTP state
+        /// </summary>
+        public AppServiceWebAppConfiguration WithFtp(AppServiceFtpServiceStateEnum state)
+        {
+            FtpServiceState = state;
+            return this;
+        }
+
+        /// <summary>
+        /// Set HTTP 2.0
+        /// </summary>
+        public AppServiceWebAppConfiguration WithHttp20()
+        {
+            IsHttp20Enabled = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Set Httpd Logging ON
+        /// </summary>
+        public AppServiceWebAppConfiguration WithWebServerLogging()
+        {
+            IsWebServerLoggingEnabled = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Enable local MySQL instance
+        /// </summary>
+        public AppServiceWebAppConfiguration WithLocalMySql()
+        {
+            IsLocalMySqlServiceEnabled = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Set load balancing type
+        /// </summary>
+        public AppServiceWebAppConfiguration WithLoadBalancing(AppServiceWebAppSiteLoadBalancingType type)
+        {
+            LoadBalancing = type;
+            return this;
+        }
+
+        /// <summary>
+        /// Set log directory size limit (in GB)
+        /// </summary>
+        public AppServiceWebAppConfiguration WithLogLimit(int limit)
+        {
+            SizeLimitForLogsDirectory = limit;
+            return this;
+        }
+
+        /// <summary>
+        /// Set the pipeline mode (classic/integrated)
+        /// </summary>
+        public AppServiceWebAppConfiguration WithPipeline(AppServiceWebAppManagedPipelineMode mode)
+        {
+            PipelineMode = mode;
+            return this;
+        }
+
+        /// <summary>
+        /// Set minimum version of Tls allowed
+        /// </summary>
+        public AppServiceWebAppConfiguration WithTls(TlsVersionEnum tlsVersion)
+        {
+            MinimumTlsVersion = tlsVersion switch 
+            {
+                TlsVersionEnum.V1_2 => "1.2",
+                TlsVersionEnum.v1_1 => "1.1",
+                _ => "1.0"
+            };
+
+            return this;
+        }
+
+        /// <summary>
+        /// Turn ON remote debugging and set the engine version
+        /// </summary>
+        public AppServiceWebAppConfiguration WithRemoteDebugging(AppServiceDebugEngineVersionEnum engineVersion)
+        {
+            IsRemoteDebuggingEnabled = true;
+            RemoteDebuggingEngineVersion = engineVersion switch 
+            {
+                AppServiceDebugEngineVersionEnum.VS2019 => "2019",
+                AppServiceDebugEngineVersionEnum.VS2018 => "2018",
+                _ => "2017"
+            };
+            return this;
+        }
+
+        /// <summary>
+        /// Set request tracing ON with the auto turnoff time
+        /// </summary>
+        public AppServiceWebAppConfiguration WithRequestTracing(DateTime turnOffAt)
+        {
+            IsRequestTracingEnabled = true;
+            RequestTracingExpiryAt = turnOffAt;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Set type of source control
+        /// </summary>
+        public AppServiceWebAppConfiguration WithSourceControl(AppServiceWebAppSourceControlType type)
+        {
+            SourceControlType = type;
+            return this;
+        }
+
+        /// <summary>
+        /// Set 32-bit mode -- by default we provision 64-bit apps!
+        /// </summary>
+        public AppServiceWebAppConfiguration With32Bit()
+        {
+            Is32BitApp = true;
+            return this;
+        }
+
+
+        /// <summary>
+        /// Turn ON websockets
+        /// </summary>
+        public AppServiceWebAppConfiguration WithWebSockets()
+        {
+            IsWebSocketsEnabled = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Add an autoheal rule
+        /// </summary>
+        /// <param name="rule">Rule to add</param>
+        public void AddAutoHealRule(AppServiceWebAppAutoHealRule rule)
+        {
+            IsAutoHealEnabled = true;
+            if (AutoHealRules == null)
+            {
+                AutoHealRules = new List<AppServiceWebAppAutoHealRule>();
+            }
+
+            AutoHealRules.Add(rule);
+        }
+
+        /// <summary>
+        /// Add an app setting
+        /// </summary>
+        /// <param name="key">Key/name of setting</param>
+        /// <param name="value">Value of setting</param>
+        public void AddAppSetting(string key, string value)
+        {
+            if (AppSettings == null)
+            {
+                AppSettings = new List<AzureNameValuePair>();
+            }
+
+            AppSettings.Add(new AzureNameValuePair(key, value));
+        }
+
+        /// <summary>
+        /// Get app setting value
+        /// </summary>
+        /// <param name="key">Key/name of setting</param>
+        /// <returns>value if found, or NULL</returns>
+        public string? GetAppSetting(string key)
+        {
+            if (AppSettings != null)
+            {
+                foreach(AzureNameValuePair pair in AppSettings)
+                {
+                    if (pair.Name == key)
+                    {
+                        return pair.Value;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Convert app settings structure into a dictionary
+        /// </summary>
+        /// <returns>Dictionary equivalent of app settings</returns>
+        public IDictionary<string, string> GetAppSettings() => AzureNameValuePair.ToDictionary(AppSettings);
+
+        /// <summary>
+        /// Add a connection string
+        /// </summary>
+        /// <param name="type">Type of connection string</param>
+        /// <param name="key">Name of key</param>
+        /// <param name="value">Connection string</param>
+        public void AddConnectionString(AppServiceWebAppConnectionStringType type, string key, string value)
+        {
+            if (ConnectionStrings == null)
+            {
+                ConnectionStrings = new List<AppServiceWebAppConnectionString>();
+            }
+
+            ConnectionStrings.Add(
+                    new AppServiceWebAppConnectionString()
+                    {
+                        Type = type,
+                        Name = key,
+                        Value = value
+                    }
+                ); ;
+        }
+
+        /// <summary>
+        /// Add default documents
+        /// </summary>
+        /// <param name="documentNames">Collection of default document names</param>
+        /// <returns>AppServiceWebAppConfiguration</returns>
+        public AppServiceWebAppConfiguration UseDefaultDocument(params string[] documentNames)
+        {
+            if (DefaultDocuments == null)
+            {
+                DefaultDocuments = new List<string>();
+            }
+
+            foreach(string doc in documentNames)
+            {
+                if (!DefaultDocuments.Contains(doc))
+                {
+                    DefaultDocuments.Add(doc);
+                }
+            }
+
+            return this;
+        }
+
+
+        /// <summary>
+        /// Configure the app for .NET Framework
+        /// </summary>
+        /// <param name="version">.NET Framework version ("v3.5" or "v4.0")</param>
+        /// <remarks>
+        ///     Version number is not validated!
+        /// </remarks>
+        public AppServiceWebAppConfiguration UseDotNetFramework(string version)
+        {
+            if (Metadata == null)
+            {
+                Metadata = new List<AzureNameValuePair>();
+            }
+
+            DotNetFrameworkVersion = version;
+            AzureNameValuePair.AddOrSet(Metadata, "CURRENT_STACK", "dotnet");
+            return this;
+        }
+
+        /// <summary>
+        /// Configure the app for .NET Core on Windows OS
+        /// </summary>
+        public AppServiceWebAppConfiguration UseDotNetCoreWithWindows()
+        {
+            if (Metadata == null)
+            {
+                Metadata = new List<AzureNameValuePair>();
+            }
+
+            AzureNameValuePair.AddOrSet(Metadata, "CURRENT_STACK", "dotnetcore");
+            return this;
+        }
+
+        /// <summary>
+        /// Configure the app for .NET Core on Linux OS
+        /// </summary>
+        /// <param name="versionNumber">Only the version number (eg: "3.0")</param>
+        /// <remarks>
+        ///     Version number is not validated!
+        /// </remarks>
+        public AppServiceWebAppConfiguration UseDotNetCoreWithLinux(string versionNumber)
+        {
+            LinuxAppFrameworkVersion = $"DOTNETCORE|{versionNumber}";
+            return this;
+        }
+
+        /// <summary>
+        /// Configure the app for Java with Linux OS
+        /// </summary>
+        /// <param name="version">Java version string. Looks like "JAVA|11-java-11"</param>
+        /// <remarks>
+        ///     Version number is not validated!
+        /// </remarks>
+        public AppServiceWebAppConfiguration UseJavaWithLinux(string version)
+        {
+            LinuxAppFrameworkVersion = version;
+            return this;
+        }
+
+        /// <summary>
+        /// Configure the app for Java with Windows OS
+        /// </summary>
+        /// <param name="containerName">Name of the Java container (eg: Java, Tomcat, Wildfly)</param>
+        /// <param name="containerVersion">Version number of the Java container</param>
+        /// <param name="javaVersion">Version number of Java</param>
+        /// <remarks>
+        ///     Version number is not validated!
+        /// </remarks>
+        public AppServiceWebAppConfiguration UseJavaWithWindows(string containerName, string containerVersion, string javaVersion)
+        {
+            JavaContainerName = containerName;
+            JavaContainerVersion = containerVersion;
+            JavaVersion = javaVersion;
+
+            if (Metadata == null)
+            {
+                Metadata = new List<AzureNameValuePair>();
+            }
+
+            AzureNameValuePair.AddOrSet(Metadata, "CURRENT_STACK", "java");
+            return this;
+        }
+
+        /// <summary>
+        /// Configure the app for Node.Js with Windows OS
+        /// </summary>
+        /// <param name="version">Node.js version number - only the version number portion</param>
+        /// <remarks>
+        ///     Version number is not validated!
+        /// </remarks>
+        public AppServiceWebAppConfiguration UseNodeJsWithWindows(string version)
+        {
+            if (Metadata == null)
+            {
+                Metadata = new List<AzureNameValuePair>();
+            }
+
+            AzureNameValuePair.AddOrSet(Metadata, "CURRENT_STACK", "node");
+            AddAppSetting("WEBSITE_NODE_DEFAULT_VERSION", version);
+            NodeJsVersion = version;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Configure the app for Node.Js with Linux OS
+        /// </summary>
+        /// <param name="version">Node.js version number - only the version number portion</param>
+        /// <remarks>
+        ///     Version number is not validated!
+        /// </remarks>
+        public AppServiceWebAppConfiguration UseNodeJsWithLinux(string version)
+        {
+            LinuxAppFrameworkVersion = $"NODE|{version}";
+
+            return this;
+        }
+
+        /// <summary>
+        /// Configure the app for PHP with Windows OS
+        /// </summary>
+        /// <param name="version">PHP version number - only the version number portion</param>
+        /// <remarks>
+        ///     Version number is not validated!
+        /// </remarks>
+        public AppServiceWebAppConfiguration UsePHPWithWindows(string version)
+        {
+            if (Metadata == null)
+            {
+                Metadata = new List<AzureNameValuePair>();
+            }
+
+            AzureNameValuePair.AddOrSet(Metadata, "CURRENT_STACK", "php");
+            PhpVersion = version;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Configure the app for PHP with Linux OS
+        /// </summary>
+        /// <param name="version">PHP version number - only the version number portion</param>
+        /// <remarks>
+        ///     Version number is not validated!
+        /// </remarks>
+        public AppServiceWebAppConfiguration UsePHPWithLinux(string version)
+        {
+            LinuxAppFrameworkVersion = $"PHP|{version}";
+
+            return this;
+        }
+
+        /// <summary>
+        /// Configure the app for Python with Windows OS
+        /// </summary>
+        /// <param name="version">Python version number - only the version number portion</param>
+        /// <remarks>
+        ///     Version number is not validated!
+        /// </remarks>
+        public AppServiceWebAppConfiguration UsePythonWithWindows(string version)
+        {
+            if (Metadata == null)
+            {
+                Metadata = new List<AzureNameValuePair>();
+            }
+
+            AzureNameValuePair.AddOrSet(Metadata, "CURRENT_STACK", "python");
+            PythonVersion = version;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Configure the app for Python with Linux OS
+        /// </summary>
+        /// <param name="version">Python version number - only the version number portion</param>
+        /// <remarks>
+        ///     Version number is not validated!
+        /// </remarks>
+        public AppServiceWebAppConfiguration UsePythonWithLinux(string version)
+        {
+            LinuxAppFrameworkVersion = $"PYTHON|{version}";
+
+            return this;
+        }
+
+        /// <summary>
+        /// Configure the app for Ruby with Linux OS
+        /// </summary>
+        /// <param name="version">Ruby version number - only the version number portion</param>
+        /// <remarks>
+        ///     Version number is not validated! 
+        ///     As per the Portal UX, you cannot run Ruby on Windows yet.
+        /// </remarks>
+        public AppServiceWebAppConfiguration UseRubyWithLinux(string version)
+        {
+            LinuxAppFrameworkVersion = $"RUBY|{version}";
+
+            return this;
+        }
+
+
     }
 }

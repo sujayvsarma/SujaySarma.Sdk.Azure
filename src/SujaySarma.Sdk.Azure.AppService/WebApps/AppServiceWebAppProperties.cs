@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Converters;
 
 using SujaySarma.Sdk.Azure.AppService.Plans;
-
+using SujaySarma.Sdk.Azure.Common;
 using System;
 using System.Collections.Generic;
 
@@ -232,5 +232,124 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         /// Default constructor
         /// </summary>
         public AppServiceWebAppProperties() { }
+
+
+        /// <summary>
+        /// Use the app service plan. Note that this cannot be changed after the app 
+        /// has been created
+        /// </summary>
+        public AppServiceWebAppProperties WithAppServicePlan(ResourceUri appServicePlan)
+        {
+            if (! string.IsNullOrWhiteSpace(PlanResourceId))
+            {
+                throw new InvalidOperationException($"App is already bound to the app service plan '{PlanResourceId}'.");
+            }
+
+            if ((! appServicePlan.IsValid) || (!appServicePlan.Is(ResourceUriCompareLevel.Provider, "Microsoft.Web")) || (!appServicePlan.Is(ResourceUriCompareLevel.Type, "serverfarms")))
+            {
+                throw new ArgumentNullException();
+            }
+
+            PlanResourceId = appServicePlan.ToString();
+            return this;
+        }
+
+        /// <summary>
+        /// Set client (ARR) affinity
+        /// </summary>
+        public AppServiceWebAppProperties WithClientAffinity()
+        {
+            IsClientAffinityEnabled = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Enable client-certificate authentication
+        /// </summary>
+        /// <param name="excludedCertificatePaths">Comma-seperated list of exclusion paths for client certificates</param>
+        public AppServiceWebAppProperties WithClientCertificateAuthentication(string? excludedCertificatePaths = null)
+        {
+            IsClientAffinityEnabled = true;
+            ClientCertificateExclusionPaths = excludedCertificatePaths;
+            return this;
+        }
+
+        /// <summary>
+        /// Set hostnames for the app
+        /// </summary>
+        public AppServiceWebAppProperties WithHostNames(string defaultHostName, params string[] otherHostNames)
+        {
+            DefaultHostName = defaultHostName;
+            HostNames = new List<string>();
+            EnabledHostNames = new List<string>();
+
+            foreach(string name in otherHostNames)
+            {
+                HostNames.Add(name);
+                EnabledHostNames.Add(name);
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add or update an ssl certificate
+        /// </summary>
+        public AppServiceWebAppProperties WithSslCertificate(string hostName, string certificateThumbprint)
+        {
+            if (HostNameSslStates == null)
+            {
+                HostNameSslStates = new List<AppServiceHostNameSslStates>();
+            }
+
+            bool updatedCertificate = false;
+            foreach(AppServiceHostNameSslStates ssl in HostNameSslStates)
+            {
+                if (ssl.HostName.Equals(hostName, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    ssl.SslCertificateThumbprint = certificateThumbprint;
+                    ssl.MustUpdateConfiguration = true;
+                    updatedCertificate = true;
+                    break;
+                }
+            }
+
+            if (! updatedCertificate)
+            {
+                HostNameSslStates.Add(
+                        new AppServiceHostNameSslStates()
+                        {
+                            HostName = hostName,
+                            HostType = AppServiceWebAppHostTypeEnum.Standard,
+                            SslCertificateThumbprint = certificateThumbprint,
+                            State = AppServiceWebAppSslTypeEnum.SniEnabled,
+                            IpBasedSslVirtualIpAddress = null,
+                            MustUpdateConfiguration = true
+                        }
+                    );
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Enable Https-only mode
+        /// </summary>
+        public AppServiceWebAppProperties WithHttpsOnly()
+        {
+            IsHttpsOnly = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the web app configuration settings
+        /// </summary>
+        public AppServiceWebAppProperties WithConfiguration(AppServiceWebAppConfiguration configuration)
+        {
+            WebAppConfiguration = configuration;
+            return this;
+        }
+
+
     }
 }

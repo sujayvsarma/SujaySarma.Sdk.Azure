@@ -68,8 +68,7 @@ namespace SujaySarma.Sdk.Azure.Compute.AvailabilitySets
         /// <param name="virtualMachine">ResourceUri of the VM to add</param>
         public void AddVirtualMachine(ResourceUri virtualMachine)
         {
-            if ((virtualMachine.ProviderName == null) || (!virtualMachine.ProviderName.Equals("Microsoft.Compute", StringComparison.InvariantCultureIgnoreCase))
-                || (virtualMachine.Type == null) || (!virtualMachine.Type.Equals("virtualMachines", StringComparison.InvariantCultureIgnoreCase)))
+            if ((! virtualMachine.Is(ResourceUriCompareLevel.Provider, "Microsoft.Compute")) || (! virtualMachine.Is(ResourceUriCompareLevel.Type, "virtualMachines")))
             {
                 throw new ArgumentException($"{nameof(virtualMachine)} does not represent a virtual machine.");
             }
@@ -100,8 +99,7 @@ namespace SujaySarma.Sdk.Azure.Compute.AvailabilitySets
         /// <param name="virtualMachine">ResourceUri of the VM to remove</param>
         public void RemoveVirtualMachine(ResourceUri virtualMachine)
         {
-            if ((virtualMachine.ProviderName == null) || (!virtualMachine.ProviderName.Equals("Microsoft.Compute", StringComparison.InvariantCultureIgnoreCase))
-                || (virtualMachine.Type == null) || (!virtualMachine.Type.Equals("virtualMachines", StringComparison.InvariantCultureIgnoreCase)))
+            if ((!virtualMachine.Is(ResourceUriCompareLevel.Provider, "Microsoft.Compute")) || (!virtualMachine.Is(ResourceUriCompareLevel.Type, "virtualMachines")))
             {
                 throw new ArgumentException($"{nameof(virtualMachine)} does not represent a virtual machine.");
             }

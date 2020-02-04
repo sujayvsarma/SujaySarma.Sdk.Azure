@@ -31,5 +31,51 @@ namespace SujaySarma.Sdk.Azure.Core.Cors
         /// Allow all origins (clears the current list)
         /// </summary>
         public void AllowAllOrigins() => AllowedOrigins = new List<string>() { "*" };
+
+        /// <summary>
+        /// Adds one or more origins
+        /// </summary>
+        /// <param name="originAddress">Addresses of the origin</param>
+        /// <returns>CorsPolicy</returns>
+        public CorsPolicy WithOrigins(params string[] originAddress)
+        {
+            if (AllowedOrigins == null)
+            {
+                AllowedOrigins = new List<string>();
+            }
+
+            if (!AllowedOrigins.Contains("*"))
+            {
+                foreach (string newOrigin in originAddress)
+                {
+                    if (!AllowedOrigins.Contains(newOrigin))
+                    {
+                        AllowedOrigins.Add(newOrigin);
+                    }
+                }
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Same as calling AllowAllOrigins
+        /// </summary>
+        /// <returns>CorsPolicy</returns>
+        public CorsPolicy WithAllOrigins()
+        {
+            AllowAllOrigins();
+            return this;
+        }
+
+        /// <summary>
+        /// Set credentials allowed
+        /// </summary>
+        /// <returns>CorsPolicy</returns>
+        public CorsPolicy WithCredentialsAllowed()
+        {
+            IsCorsRequestsWithCredentialsAllowed = true;
+            return this;
+        }
     }
 }

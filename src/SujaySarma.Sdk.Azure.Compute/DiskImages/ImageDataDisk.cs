@@ -29,7 +29,7 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskImages
         /// Size of disk in gigabytes. Cannot be larger than 1023 (1023 GB).
         /// </summary>
         [JsonProperty("diskSizeGB")]
-        public int SizeGB { get; set; } = 4096;
+        public int SizeGB { get; set; } = 4;
 
         /// <summary>
         /// Logical unit number of the adapter/port attached to on the VM. Value must be 
@@ -105,6 +105,84 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskImages
             SizeGB = sizeInGB;
             CacheType = caching;
             VhdStoredOnBlobUri = null;
+        }
+
+        /// <summary>
+        /// With the disk stored on a blob
+        /// </summary>
+        /// <param name="blob">Blob resource Uri</param>
+        /// <returns>ImageDataDisk</returns>
+        public ImageDataDisk WithBlob(ResourceUri blob)
+        {
+            VhdStoredOnBlobUri = blob.ToString();
+            return this;
+        }
+
+        /// <summary>
+        /// With the disk stored on a blob
+        /// </summary>
+        /// <param name="blob">Blob resource Uri</param>
+        /// <returns>ImageDataDisk</returns>
+        public ImageDataDisk WithBlob(string blob)
+        {
+            VhdStoredOnBlobUri = blob;
+            return this;
+        }
+
+        /// <summary>
+        /// Set the cache type
+        /// </summary>
+        /// <param name="cachingType">Type of cache</param>
+        /// <returns>ImageDataDisk</returns>
+        public ImageDataDisk WithCache(CachingTypeNamesEnum cachingType)
+        {
+            CacheType = cachingType;
+            return this;
+        }
+
+        /// <summary>
+        /// Set disk size
+        /// </summary>
+        /// <param name="size">Size of disk in GB (cannot be larger than 1023)</param>
+        /// <returns>ImageDataDisk</returns>
+        public ImageDataDisk WithSize(int size)
+        {
+            if ((size < 0) || (size > 1023)) { throw new ArgumentOutOfRangeException(nameof(size)); }
+            SizeGB = size;
+            return this;
+        }
+
+        /// <summary>
+        /// With a managed disk
+        /// </summary>
+        /// <param name="managedDisk">Managed disk resource Uri</param>
+        /// <returns>ImageDataDisk</returns>
+        public ImageDataDisk WithManagedDisk(ResourceUri managedDisk)
+        {
+            VhdStoredOnBlobUri = managedDisk.ToString();
+            return this;
+        }
+
+        /// <summary>
+        /// With a managed disk
+        /// </summary>
+        /// <param name="managedDisk">Managed disk resource Uri</param>
+        /// <returns>ImageDataDisk</returns>
+        public ImageDataDisk WithManagedDisk(string managedDisk)
+        {
+            VhdStoredOnBlobUri = managedDisk;
+            return this;
+        }
+
+        /// <summary>
+        /// Set type of storage account
+        /// </summary>
+        /// <param name="storageAccountType"></param>
+        /// <returns>ImageDataDisk</returns>
+        public ImageDataDisk WithStorageAccountType(DiskSkuNamesEnum storageAccountType)
+        {
+            AccountType = storageAccountType;
+            return this;
         }
     }
 }

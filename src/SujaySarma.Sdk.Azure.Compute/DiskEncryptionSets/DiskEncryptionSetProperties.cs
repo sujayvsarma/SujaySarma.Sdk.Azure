@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+
 using SujaySarma.Sdk.Azure.Common;
 using SujaySarma.Sdk.Azure.Compute.Encryption;
+
+using System;
+using System.Collections.Generic;
 
 namespace SujaySarma.Sdk.Azure.Compute.DiskEncryptionSets
 {
@@ -40,10 +42,7 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskEncryptionSets
         /// <param name="keyVaultKeyUri">The absolute Uri to the key in the KeyVault</param>
         public DiskEncryptionSetProperties(ResourceUri keyVaultUri, string keyVaultKeyUri)
         {
-            if ((keyVaultUri == null) || (!keyVaultUri.IsValid)
-                || string.IsNullOrWhiteSpace(keyVaultUri.ProviderName) || (!keyVaultUri.ProviderName.Equals("Microsoft.KeyVault", StringComparison.InvariantCultureIgnoreCase))
-                    || string.IsNullOrWhiteSpace(keyVaultUri.Type) || (! keyVaultUri.Type.Equals("vaults", StringComparison.InvariantCultureIgnoreCase))
-                ) 
+            if ((!keyVaultUri.IsValid) || (!keyVaultUri.Is(ResourceUriCompareLevel.Provider, "Microsoft.KeyVault")) || (! keyVaultUri.Is(ResourceUriCompareLevel.Type, "vaults"))) 
             { 
                 throw new ArgumentException(nameof(keyVaultUri)); 
             }

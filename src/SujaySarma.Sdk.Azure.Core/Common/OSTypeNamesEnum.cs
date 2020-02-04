@@ -5,10 +5,17 @@
     /// </summary>
     public enum OSTypeNamesEnum
     {
+
+        /// <summary>
+        /// Service default
+        /// </summary>
+        Default = Windows,
+
+
         /// <summary>
         /// Windows Operating System. May be Client or Server
         /// </summary>
-        Windows,
+        Windows = 0,
 
         /// <summary>
         /// Linux Operating System.

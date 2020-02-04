@@ -57,5 +57,38 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskImages
             SourceVirtualMachine = new SubResource(sourceVM);
             StorageProfile = new ImageStorageProfile(primaryDisk, isZoneResilient, dataDisks);            
         }
+
+        /// <summary>
+        /// Set Hyper V generation
+        /// </summary>
+        /// <param name="generation">Hyper V generation</param>
+        /// <returns>DiskImageProperties</returns>
+        public DiskImageProperties WithGeneration(HyperVGenerationNamesEnum generation)
+        {
+            HyperVGeneration = generation;
+            return this;
+        }
+
+        /// <summary>
+        /// Set source VM
+        /// </summary>
+        /// <param name="virtualMachine">Source VM instance</param>
+        /// <returns>DiskImageProperties</returns>
+        public DiskImageProperties WithVirtualMachine(VirtualMachines.VirtualMachine virtualMachine)
+        {
+            SourceVirtualMachine = new SubResource(virtualMachine.ResourceId);
+            return this;
+        }
+
+        /// <summary>
+        /// Set source VM
+        /// </summary>
+        /// <param name="virtualMachine">Source VM resource Uri</param>
+        /// <returns>DiskImageProperties</returns>
+        public DiskImageProperties WithVirtualMachine(ResourceUri virtualMachine)
+        {
+            SourceVirtualMachine = new SubResource(virtualMachine);
+            return this;
+        }
     }
 }

@@ -39,5 +39,6 @@ namespace SujaySarma.Sdk.Azure.Compute.Disks
             AccessLevelRequired = required;
             AccessExpireInSeconds = expireIn;
         }
+
     }
 }
