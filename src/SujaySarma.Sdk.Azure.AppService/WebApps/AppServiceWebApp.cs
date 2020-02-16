@@ -30,7 +30,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
 
         public static AppServiceWebApp New(string name, string resourceGroupName, string regionLocationCode)
         {
-
+            return new AppServiceWebApp();
         }
     }
 

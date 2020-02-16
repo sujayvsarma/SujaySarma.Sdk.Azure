@@ -66,6 +66,54 @@ namespace SujaySarma.Sdk.Azure.Internal
         }
 
         /// <summary>
+        /// Performs a GET without authentication. For use with some undocumented Azure APIs that seem not to expect auth tokens.
+        /// </summary>
+        /// <param name="requestBaseURI">The base URI for the request, without any parameters</param>
+        /// <param name="apiVersionRequired">The API version requested</param>
+        /// <param name="queryParameters">Query string parameters (do not add apiVersion!)</param>
+        /// <param name="requestBodyObject">The object containing the data for the request body (this will be json'ized)</param>
+        /// <param name="expectedSuccessCodes">HTTP success codes that would indicate successful execution</param>
+        /// <param name="timeOutSeconds">Timeout in seconds</param>
+        /// <returns>RestApiResponse structure containing the result</returns>
+        public static async Task<RestApiResponse> GETWithoutAuthentication(string requestBaseURI, string apiVersionRequired, Dictionary<string, string>? queryParameters, object? requestBodyObject, IEnumerable<int>? expectedSuccessCodes, int timeOutSeconds = 15)
+        {
+            StringBuilder requestURI = new StringBuilder(requestBaseURI);
+            requestURI.Append("?api-version=").Append(apiVersionRequired);
+            if ((queryParameters != null) && (queryParameters.Count > 0))
+            {
+                foreach (string key in queryParameters.Keys)
+                {
+                    requestURI.Append("&")
+                        .Append(key).Append("=").Append(Uri.EscapeDataString(queryParameters[key]));
+                }
+            }
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestURI.ToString());
+            if (requestBodyObject != null)
+            {
+                request.Content = new StringContent(((requestBodyObject is string) ? (string)requestBodyObject : JsonConvert.SerializeObject(requestBodyObject)));
+                request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+            }
+
+            HttpClient client = new HttpClient()
+            {
+                Timeout = TimeSpan.FromSeconds(timeOutSeconds)
+            };
+
+            HttpResponseMessage responseMessage;
+            try
+            {
+                responseMessage = await client.SendAsync(request);
+            }
+            catch (Exception ex)
+            {
+                return new RestApiResponse(ex);
+            }
+
+            return new RestApiResponse(responseMessage, expectedSuccessCodes ?? new int[] { 200, 201, 202 });
+        }
+
+        /// <summary>
         /// Fire a GET request and follow it until all the continuations are fetched. Data from each fetch is intelligently 
         /// appended to the response's body string.
         /// </summary>

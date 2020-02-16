@@ -36,7 +36,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
                 return new List<Subscription>();
             }
 
-            return JsonConvert.DeserializeObject<ListResultWithContinuations<Subscription>>(response.Body).Values;
+            return JsonConvert.DeserializeObject<List<Subscription>>(response.Body);
         }
 
         /// <summary>

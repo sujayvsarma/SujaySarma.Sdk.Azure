@@ -70,7 +70,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
 
             RestApiResponse response = await RestApiClient.GET(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription:d}/providers/Microsoft.Web/locations/{locationCode}/deletedSites/{siteId}"
+                    $"https://management.azure.com/subscriptions/{subscription:d}/providers/Microsoft.Web/locations/{locationCode}/deletedSites/{siteId}",
                     CLIENT_API_VERSION,
                     null, null,
                     new int[] { 200 }
