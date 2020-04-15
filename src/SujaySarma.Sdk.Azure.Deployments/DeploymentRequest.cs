@@ -13,6 +13,12 @@ namespace SujaySarma.Sdk.Azure.Deployments
         [JsonProperty("properties")]
         public DeploymentRequestProperties Properties { get; set; }
 
+        /// <summary>
+        /// Location of deployment (required for Subscription level deployments)
+        /// </summary>
+        [JsonProperty("location")]
+        public string? Location { get; set; } = null;
+
 
         public DeploymentRequest()
         {

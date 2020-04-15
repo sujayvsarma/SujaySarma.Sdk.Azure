@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace SujaySarma.Sdk.Azure.Deployments
 {
@@ -10,7 +11,7 @@ namespace SujaySarma.Sdk.Azure.Deployments
         /// <summary>
         /// Type of error handling. One of: "SpecificDeployment" or "LastSuccessful"
         /// </summary>
-        [JsonProperty("type", ItemConverterType = typeof(DeploymentRequestErrorHandlerTypesEnum))]
+        [JsonProperty("type", ItemConverterType = typeof(StringEnumConverter))]
         public DeploymentRequestErrorHandlerTypesEnum Type { get; set; } = DeploymentRequestErrorHandlerTypesEnum.LastSuccessful;
 
         /// <summary>

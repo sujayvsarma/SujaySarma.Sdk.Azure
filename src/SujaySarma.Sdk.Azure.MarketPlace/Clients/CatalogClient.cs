@@ -107,7 +107,7 @@ namespace SujaySarma.Sdk.Azure.MarketPlace.Clients
         /// <returns>Single item in that catalog index under the provided section or NULL</returns>
         public static async Task<IndexItem?> GetCategoryItem(string catalogIndexId, string catalogSectionName, string idOrNameOrOfferId, string language = "en", string locale = "en-us")
         {
-            IList<IndexCatalogCategory> categories = await GetCategories(catalogIndexId, language, locale);
+            IList<IndexCatalogCategory> categories = await GetCategories(catalogIndexId, language, locale, false);
             if (categories.Count == 0)
             {
                 return null;

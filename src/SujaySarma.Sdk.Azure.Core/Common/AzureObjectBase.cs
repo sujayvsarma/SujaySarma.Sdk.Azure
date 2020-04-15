@@ -36,6 +36,9 @@ namespace SujaySarma.Sdk.Azure.Common
         [JsonProperty("location")]
         public string Location { get; set; }
 
+        /// <summary>
+        /// Tags attached to the object
+        /// </summary>
         [JsonProperty("tags")]
         public Dictionary<string, string>? Tags { get; set; } = null;
 

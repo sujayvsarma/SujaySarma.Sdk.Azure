@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,7 +33,7 @@ namespace SujaySarma.Sdk.Azure.Internal
             requestURI.Append("?api-version=").Append(apiVersionRequired);
             if ((queryParameters != null) && (queryParameters.Count > 0))
             {
-                foreach(string key in queryParameters.Keys)
+                foreach (string key in queryParameters.Keys)
                 {
                     requestURI.Append("&")
                         .Append(key).Append("=").Append(Uri.EscapeDataString(queryParameters[key]));
@@ -42,10 +43,11 @@ namespace SujaySarma.Sdk.Azure.Internal
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestURI.ToString());
             if (requestBodyObject != null)
             {
-                request.Content = new StringContent(((requestBodyObject is string) ? (string)requestBodyObject : JsonConvert.SerializeObject(requestBodyObject)));
+                request.Content = new StringContent(((requestBodyObject is string str) ? str : JsonConvert.SerializeObject(requestBodyObject)));
                 request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             }
 
+            tryAgain:
             HttpClient client = new HttpClient()
             {
                 Timeout = TimeSpan.FromSeconds(15)
@@ -56,6 +58,10 @@ namespace SujaySarma.Sdk.Azure.Internal
             try
             {
                 responseMessage = await client.SendAsync(request);
+            }
+            catch (Exception badEx) when (badEx.Message.Contains("No such host", StringComparison.InvariantCultureIgnoreCase) || badEx.Message.Contains("cancelled", StringComparison.InvariantCultureIgnoreCase))
+            {
+                goto tryAgain;
             }
             catch (Exception ex)
             {
@@ -75,10 +81,14 @@ namespace SujaySarma.Sdk.Azure.Internal
         /// <param name="expectedSuccessCodes">HTTP success codes that would indicate successful execution</param>
         /// <param name="timeOutSeconds">Timeout in seconds</param>
         /// <returns>RestApiResponse structure containing the result</returns>
-        public static async Task<RestApiResponse> GETWithoutAuthentication(string requestBaseURI, string apiVersionRequired, Dictionary<string, string>? queryParameters, object? requestBodyObject, IEnumerable<int>? expectedSuccessCodes, int timeOutSeconds = 15)
+        public static async Task<RestApiResponse> GETWithoutAuthentication(string requestBaseURI, string? apiVersionRequired, Dictionary<string, string>? queryParameters, object? requestBodyObject, IEnumerable<int>? expectedSuccessCodes, int timeOutSeconds = 15)
         {
             StringBuilder requestURI = new StringBuilder(requestBaseURI);
-            requestURI.Append("?api-version=").Append(apiVersionRequired);
+            if (! string.IsNullOrWhiteSpace(apiVersionRequired))
+            {
+                requestURI.Append("?api-version=").Append(apiVersionRequired);
+            }
+
             if ((queryParameters != null) && (queryParameters.Count > 0))
             {
                 foreach (string key in queryParameters.Keys)
@@ -91,10 +101,11 @@ namespace SujaySarma.Sdk.Azure.Internal
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestURI.ToString());
             if (requestBodyObject != null)
             {
-                request.Content = new StringContent(((requestBodyObject is string) ? (string)requestBodyObject : JsonConvert.SerializeObject(requestBodyObject)));
+                request.Content = new StringContent(((requestBodyObject is string str) ? str : JsonConvert.SerializeObject(requestBodyObject)));
                 request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             }
 
+            tryAgain:
             HttpClient client = new HttpClient()
             {
                 Timeout = TimeSpan.FromSeconds(timeOutSeconds)
@@ -104,6 +115,10 @@ namespace SujaySarma.Sdk.Azure.Internal
             try
             {
                 responseMessage = await client.SendAsync(request);
+            }
+            catch (Exception badEx) when (badEx.Message.Contains("No such host", StringComparison.InvariantCultureIgnoreCase) || badEx.Message.Contains("cancelled", StringComparison.InvariantCultureIgnoreCase))
+            {
+                goto tryAgain;
             }
             catch (Exception ex)
             {
@@ -142,10 +157,11 @@ namespace SujaySarma.Sdk.Azure.Internal
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestURI.ToString());
             if (requestBodyObject != null)
             {
-                request.Content = new StringContent(((requestBodyObject is string) ? (string)requestBodyObject : JsonConvert.SerializeObject(requestBodyObject)));
+                request.Content = new StringContent(((requestBodyObject is string str) ? str : JsonConvert.SerializeObject(requestBodyObject)));
                 request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             }
 
+            tryAgain:
             HttpClient client = new HttpClient()
             {
                 Timeout = TimeSpan.FromSeconds(15)
@@ -166,7 +182,7 @@ namespace SujaySarma.Sdk.Azure.Internal
                         returnableObjects.AddRange(result.Values);
                     }
 
-                    while (! string.IsNullOrWhiteSpace(result.NextPage))
+                    while (!string.IsNullOrWhiteSpace(result.NextPage))
                     {
                         request = new HttpRequestMessage(HttpMethod.Get, result.NextPage);
                         responseMessage = await client.SendAsync(request);
@@ -184,6 +200,10 @@ namespace SujaySarma.Sdk.Azure.Internal
                         }
                     }
                 }
+            }
+            catch (Exception badEx) when (badEx.Message.Contains("No such host", StringComparison.InvariantCultureIgnoreCase) || badEx.Message.Contains("cancelled", StringComparison.InvariantCultureIgnoreCase))
+            {
+                goto tryAgain;
             }
             catch (Exception ex)
             {
@@ -228,10 +248,11 @@ namespace SujaySarma.Sdk.Azure.Internal
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, requestURI.ToString());
             if (requestBodyObject != null)
             {
-                request.Content = new StringContent(((requestBodyObject is string) ? (string)requestBodyObject : JsonConvert.SerializeObject(requestBodyObject)));
+                request.Content = new StringContent(((requestBodyObject is string str) ? str : JsonConvert.SerializeObject(requestBodyObject)));
                 request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             }
 
+            tryAgain:
             HttpClient client = new HttpClient()
             {
                 Timeout = TimeSpan.FromSeconds(15)
@@ -243,6 +264,10 @@ namespace SujaySarma.Sdk.Azure.Internal
             {
                 responseMessage = await client.SendAsync(request);
             }
+            catch (Exception badEx) when (badEx.Message.Contains("No such host", StringComparison.InvariantCultureIgnoreCase) || badEx.Message.Contains("cancelled", StringComparison.InvariantCultureIgnoreCase))
+            {
+                goto tryAgain;
+            }
             catch (Exception ex)
             {
                 return new RestApiResponse(ex);
@@ -250,7 +275,7 @@ namespace SujaySarma.Sdk.Azure.Internal
 
             return new RestApiResponse(responseMessage, expectedSuccessCodes ?? new int[] { 200, 201, 202 });
         }
-        
+
         /// <summary>
         /// Fire a HEAD request
         /// </summary>
@@ -274,6 +299,8 @@ namespace SujaySarma.Sdk.Azure.Internal
             }
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, requestURI.ToString());
+
+            tryAgain:
             HttpClient client = new HttpClient()
             {
                 Timeout = TimeSpan.FromSeconds(15)
@@ -284,6 +311,10 @@ namespace SujaySarma.Sdk.Azure.Internal
             try
             {
                 responseMessage = await client.SendAsync(request);
+            }
+            catch (Exception badEx) when (badEx.Message.Contains("No such host", StringComparison.InvariantCultureIgnoreCase) || badEx.Message.Contains("cancelled", StringComparison.InvariantCultureIgnoreCase))
+            {
+                goto tryAgain;
             }
             catch (Exception ex)
             {
@@ -316,6 +347,8 @@ namespace SujaySarma.Sdk.Azure.Internal
             }
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, requestURI.ToString());
+
+            tryAgain:
             HttpClient client = new HttpClient()
             {
                 Timeout = TimeSpan.FromSeconds(15)
@@ -326,6 +359,10 @@ namespace SujaySarma.Sdk.Azure.Internal
             try
             {
                 responseMessage = await client.SendAsync(request);
+            }
+            catch (Exception badEx) when (badEx.Message.Contains("No such host", StringComparison.InvariantCultureIgnoreCase) || badEx.Message.Contains("cancelled", StringComparison.InvariantCultureIgnoreCase))
+            {
+                goto tryAgain;
             }
             catch (Exception ex)
             {
@@ -361,10 +398,11 @@ namespace SujaySarma.Sdk.Azure.Internal
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, requestURI.ToString());
             if (requestBodyObject != null)
             {
-                request.Content = new StringContent(((requestBodyObject is string) ? (string)requestBodyObject : JsonConvert.SerializeObject(requestBodyObject)));
+                request.Content = new StringContent(((requestBodyObject is string str) ? str : JsonConvert.SerializeObject(requestBodyObject)));
                 request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             }
 
+            tryAgain:
             HttpClient client = new HttpClient()
             {
                 Timeout = TimeSpan.FromSeconds(15)
@@ -375,6 +413,10 @@ namespace SujaySarma.Sdk.Azure.Internal
             try
             {
                 responseMessage = await client.SendAsync(request);
+            }
+            catch (Exception badEx) when (badEx.Message.Contains("No such host", StringComparison.InvariantCultureIgnoreCase) || badEx.Message.Contains("cancelled", StringComparison.InvariantCultureIgnoreCase))
+            {
+                goto tryAgain;
             }
             catch (Exception ex)
             {
