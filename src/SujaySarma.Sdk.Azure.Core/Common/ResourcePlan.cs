@@ -18,25 +18,25 @@ namespace SujaySarma.Sdk.Azure.Common
         /// <summary>
         /// Offer ID
         /// </summary>
-        [JsonProperty("product")] 
+        [JsonProperty("product")]
         public string? Product { get; set; }
 
         /// <summary>
         /// Promo Code if applied
         /// </summary>
-        [JsonProperty("promotionCode")] 
+        [JsonProperty("promotionCode")]
         public string? PromotionalCode { get; set; }
 
         /// <summary>
         /// Publisher ID
         /// </summary>
-        [JsonProperty("publisher")] 
+        [JsonProperty("publisher")]
         public string? Publisher { get; set; }
 
         /// <summary>
         /// Version of the plan
         /// </summary>
-        [JsonProperty("version")] 
+        [JsonProperty("version")]
         public string? Version { get; set; }
 
         /// <summary>

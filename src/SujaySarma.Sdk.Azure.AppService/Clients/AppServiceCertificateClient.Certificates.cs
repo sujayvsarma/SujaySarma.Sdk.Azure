@@ -88,7 +88,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
         /// <param name="keyVaultId">Resource Uri to the KeyVault to hold the private key for the certificate</param>
         /// <param name="privateKeySecretName">Name of the private key for this certificate in the Azure KeyVault</param>
         /// <returns>The issued certificate or NULL</returns>
-        public static async Task<IssuedCertificate?> Issue(string bearerToken, Guid subscription, string resourceGroupName, 
+        public static async Task<IssuedCertificate?> Issue(string bearerToken, Guid subscription, string resourceGroupName,
             string orderNickname, string certificateName, ResourceUri keyVaultId, string privateKeySecretName)
         {
             if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
@@ -96,7 +96,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
             if (string.IsNullOrWhiteSpace(resourceGroupName)) { throw new ArgumentNullException(nameof(resourceGroupName)); }
             if (string.IsNullOrWhiteSpace(orderNickname)) { throw new ArgumentNullException(nameof(orderNickname)); }
             if (string.IsNullOrWhiteSpace(certificateName)) { throw new ArgumentNullException(nameof(certificateName)); }
-            if ((keyVaultId == null) || (! keyVaultId.IsValid) || (! keyVaultId.Is(ResourceUriCompareLevel.Provider, "Microsoft.KeyVault")))
+            if ((keyVaultId == null) || (!keyVaultId.IsValid) || (!keyVaultId.Is(ResourceUriCompareLevel.Provider, "Microsoft.KeyVault")))
             {
                 throw new ArgumentException(nameof(keyVaultId));
             }
@@ -211,7 +211,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
                     bearerToken,
                     $"https://management.azure.com/subscriptions/{subscription:d}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{orderNickname}/certificates/{certificateName}",
                     CLIENT_API_VERSION,
-                    null, 
+                    null,
                     new int[] { 200, 204 }
                 );
 

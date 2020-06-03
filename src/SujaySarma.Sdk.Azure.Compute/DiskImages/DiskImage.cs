@@ -37,7 +37,7 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskImages
         {
             EnsureProperties();
             Properties!.WithGeneration(generation);
-            
+
             return this;
         }
 

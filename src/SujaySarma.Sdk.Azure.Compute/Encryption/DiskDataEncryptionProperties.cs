@@ -33,9 +33,9 @@ namespace SujaySarma.Sdk.Azure.Compute.Encryption
         /// <param name="encryptionSetId">ResourceUri to the Azure Disk Encryption Set to be used</param>
         public DiskDataEncryptionProperties(DiskDataEncryptionTypeNamesEnum type, ResourceUri encryptionSetId)
         {
-            if (! Enum.IsDefined(typeof(DiskDataEncryptionTypeNamesEnum), type)) { throw new ArgumentOutOfRangeException(nameof(type)); }
-            if ((encryptionSetId == null) || (! encryptionSetId.IsValid) || 
-                (! encryptionSetId.Is(ResourceUriCompareLevel.Provider, "Microsoft.Compute")) || (! encryptionSetId.Is(ResourceUriCompareLevel.Type, "diskEncryptionSets")))
+            if (!Enum.IsDefined(typeof(DiskDataEncryptionTypeNamesEnum), type)) { throw new ArgumentOutOfRangeException(nameof(type)); }
+            if ((encryptionSetId == null) || (!encryptionSetId.IsValid) ||
+                (!encryptionSetId.Is(ResourceUriCompareLevel.Provider, "Microsoft.Compute")) || (!encryptionSetId.Is(ResourceUriCompareLevel.Type, "diskEncryptionSets")))
             {
                 throw new ArgumentException(nameof(encryptionSetId));
             }

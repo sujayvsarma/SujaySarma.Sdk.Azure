@@ -62,7 +62,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Domains
         /// <summary>
         /// Type of DNS server that will be used
         /// </summary>
-        [JsonProperty("dnsType", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("dnsType"), JsonConverter(typeof(StringEnumConverter))]
         public DomainRegistrationDnsTypeEnum TypeOfDns { get; set; } = DomainRegistrationDnsTypeEnum.AzureDns;
 
         /// <summary>

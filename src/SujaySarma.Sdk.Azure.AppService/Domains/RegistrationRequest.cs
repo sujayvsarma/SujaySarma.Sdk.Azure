@@ -41,7 +41,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Domains
         /// <param name="contact">Contact information to use for admin/billing/tech/registrant contact for the domain</param>
         /// <param name="consentIpAddress">IP address of user creating this request</param>
         /// <param name="consentAgreementKeys">Keys of terms that have been agreed to</param>
-        public RegistrationRequest(bool autoRenew, DomainRegistrationContact contact, string consentIpAddress, string[] consentAgreementKeys) 
+        public RegistrationRequest(bool autoRenew, DomainRegistrationContact contact, string consentIpAddress, string[] consentAgreementKeys)
         {
             Properties = new RegistrationRequestProperties()
             {

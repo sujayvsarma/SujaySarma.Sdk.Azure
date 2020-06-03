@@ -751,7 +751,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
             if (string.IsNullOrWhiteSpace(resourceGroupName)) { throw new ArgumentNullException(nameof(resourceGroupName)); }
             if (string.IsNullOrWhiteSpace(virtualMachineName)) { throw new ArgumentNullException(nameof(virtualMachineName)); }
 
-            return await ExecuteCommand(bearerToken, $"/{subscription.ToString("d")}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{virtualMachineName}", 
+            return await ExecuteCommand(bearerToken, $"/{subscription.ToString("d")}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{virtualMachineName}",
                 type, command, commandParameters);
         }
 
@@ -769,7 +769,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
 
             Type t_VMCTE = typeof(VMCommandTypesEnum);
             string commandName = (Enum.GetName(typeof(VMCommandTypesEnum), type) ?? string.Empty);
-            if ((! Enum.IsDefined(t_VMCTE, type)) || string.IsNullOrEmpty(commandName))
+            if ((!Enum.IsDefined(t_VMCTE, type)) || string.IsNullOrEmpty(commandName))
             {
                 throw new ArgumentOutOfRangeException(nameof(type));
             }
@@ -782,7 +782,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
             List<RunCommandParameter> parameters = new List<RunCommandParameter>();
             if ((commandParameters != null) && (commandParameters.Count > 0))
             {
-                foreach(string key in commandParameters.Keys)
+                foreach (string key in commandParameters.Keys)
                 {
                     parameters.Add(new RunCommandParameter()
                     {
@@ -822,7 +822,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
             }
 
             List<string> logLines = new List<string>();
-            foreach(InstanceViewStatus status in result.Status)
+            foreach (InstanceViewStatus status in result.Status)
             {
                 logLines.Add($"[{status.Level}]: {status.Label}. {status.Message}");
             }

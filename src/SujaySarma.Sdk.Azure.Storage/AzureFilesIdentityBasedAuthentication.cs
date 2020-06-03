@@ -14,7 +14,7 @@ namespace SujaySarma.Sdk.Azure.Storage
         /// <summary>
         /// Type of directory services used
         /// </summary>
-        [JsonProperty("directoryServiceOptions", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("directoryServiceOptions"), JsonConverter(typeof(StringEnumConverter))]
         public ActiveDirectoryServiceOptions Options { get; set; } = ActiveDirectoryServiceOptions.None;
 
         /// <summary>

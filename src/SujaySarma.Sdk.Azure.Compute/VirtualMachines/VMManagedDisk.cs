@@ -23,7 +23,7 @@ namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
         /// Type of account. UltraSSD_LRS can only be used with data disks, 
         /// it cannot be used with OS Disk.
         /// </summary>
-        [JsonProperty("storageAccountType", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("storageAccountType"), JsonConverter(typeof(StringEnumConverter))]
         public DiskSkuNamesEnum Type { get; set; } = DiskSkuNamesEnum.Standard_LRS;
 
 
@@ -36,8 +36,8 @@ namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
         /// <param name="type"></param>
         public VMManagedDisk(ResourceUri diskUri, DiskSkuNamesEnum type = DiskSkuNamesEnum.Standard_LRS)
         {
-            if ((diskUri == null) || (! diskUri.IsValid)) { throw new ArgumentException(nameof(diskUri)); }
-            if (! Enum.IsDefined(typeof(DiskSkuNamesEnum), type)) { throw new ArgumentOutOfRangeException(nameof(type)); }
+            if ((diskUri == null) || (!diskUri.IsValid)) { throw new ArgumentException(nameof(diskUri)); }
+            if (!Enum.IsDefined(typeof(DiskSkuNamesEnum), type)) { throw new ArgumentOutOfRangeException(nameof(type)); }
 
             Id = diskUri.ToString();
             Type = type;

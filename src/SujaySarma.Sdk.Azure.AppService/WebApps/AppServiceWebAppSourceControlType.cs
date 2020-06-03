@@ -51,7 +51,7 @@
         /// Local Git repository
         /// </summary>
         LocalGit,
-        
+
         /// <summary>
         /// Microsoft OneDrive
         /// </summary>

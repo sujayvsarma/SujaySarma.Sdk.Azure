@@ -25,7 +25,7 @@ namespace SujaySarma.Sdk.Azure.Storage
         /// <summary>
         /// Status of the georeplication process
         /// </summary>
-        [JsonProperty("status", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("status"), JsonConverter(typeof(StringEnumConverter))]
         public GeoReplicationStatus Status { get; set; }
     }
 }

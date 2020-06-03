@@ -24,7 +24,7 @@ namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
         /// <summary>
         /// Result code of the last maintenance operation. May be NULL.
         /// </summary>
-        [JsonProperty("lastOperationResultCode", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("lastOperationResultCode"), JsonConverter(typeof(StringEnumConverter))]
         public MaintenanceOperationResultCodesEnum? LastMaintenanceOperationResult { get; set; } = MaintenanceOperationResultCodesEnum.None;
 
         /// <summary>

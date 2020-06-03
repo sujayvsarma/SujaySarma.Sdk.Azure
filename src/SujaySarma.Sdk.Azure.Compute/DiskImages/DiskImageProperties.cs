@@ -50,12 +50,12 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskImages
         /// <param name="dataDisks">Collection of data disks in the image</param>
         public DiskImageProperties(HyperVGenerationNamesEnum generation, ResourceUri sourceVM, ImageOSDisk primaryDisk, bool isZoneResilient = false, IEnumerable<ImageDataDisk>? dataDisks = null)
         {
-            if (! Enum.IsDefined(typeof(HyperVGenerationNamesEnum), generation)) { throw new ArgumentOutOfRangeException(nameof(generation)); }
-            if ((sourceVM == null) || (!sourceVM.IsValid)) { throw new ArgumentException(nameof(sourceVM)); }           
+            if (!Enum.IsDefined(typeof(HyperVGenerationNamesEnum), generation)) { throw new ArgumentOutOfRangeException(nameof(generation)); }
+            if ((sourceVM == null) || (!sourceVM.IsValid)) { throw new ArgumentException(nameof(sourceVM)); }
 
             HyperVGeneration = generation;
             SourceVirtualMachine = new SubResource(sourceVM);
-            StorageProfile = new ImageStorageProfile(primaryDisk, isZoneResilient, dataDisks);            
+            StorageProfile = new ImageStorageProfile(primaryDisk, isZoneResilient, dataDisks);
         }
 
         /// <summary>

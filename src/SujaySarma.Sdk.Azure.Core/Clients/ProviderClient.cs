@@ -48,7 +48,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
                 return new List<ResourceProvider>();
             }
 
-            return JsonConvert.DeserializeObject<ResourceProviderListResult>(response.Body).Values;
+            return JsonConvert.DeserializeObject<List<ResourceProvider>>(response.Body);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             RestApiResponse response = await RestApiClient.GETWithContinuations<ResourceProvider>(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/providers",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/providers",
                     CLIENT_API_VERSION,
                     query, null,
                     new int[] { 200 }
@@ -87,7 +87,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
                 return new List<ResourceProvider>();
             }
 
-            return JsonConvert.DeserializeObject<ResourceProviderListResult>(response.Body).Values;
+            return JsonConvert.DeserializeObject<List<ResourceProvider>>(response.Body);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             RestApiResponse response = await RestApiClient.GET(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/providers/{resourceProviderNamespace}",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/providers/{resourceProviderNamespace}",
                     CLIENT_API_VERSION,
                     query, null,
                     new int[] { 200 }
@@ -185,7 +185,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             RestApiResponse response = await RestApiClient.POST(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/providers/{resourceProviderNamespace}/register",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/providers/{resourceProviderNamespace}/register",
                     CLIENT_API_VERSION,
                     null, null,
                     new int[] { 200 }
@@ -209,7 +209,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             RestApiResponse response = await RestApiClient.POST(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/providers/{resourceProviderNamespace}/unregister",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/providers/{resourceProviderNamespace}/unregister",
                     CLIENT_API_VERSION,
                     null, null,
                     new int[] { 200 }

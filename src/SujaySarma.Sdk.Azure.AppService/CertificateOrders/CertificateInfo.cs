@@ -43,7 +43,7 @@ namespace SujaySarma.Sdk.Azure.AppService.CertificateOrders
         /// <summary>
         /// Certificate signing algorithm
         /// </summary>
-        [JsonProperty("signatureAlgorithm", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("signatureAlgorithm"), JsonConverter(typeof(StringEnumConverter))]
         public CertificateSignatureAlgorithmNamesEnum Algorithm { get; set; } = CertificateSignatureAlgorithmNamesEnum.sha256RSA;
 
         /// <summary>

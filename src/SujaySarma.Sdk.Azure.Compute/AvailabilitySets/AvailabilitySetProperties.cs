@@ -68,7 +68,7 @@ namespace SujaySarma.Sdk.Azure.Compute.AvailabilitySets
         /// <param name="virtualMachine">ResourceUri of the VM to add</param>
         public void AddVirtualMachine(ResourceUri virtualMachine)
         {
-            if ((! virtualMachine.Is(ResourceUriCompareLevel.Provider, "Microsoft.Compute")) || (! virtualMachine.Is(ResourceUriCompareLevel.Type, "virtualMachines")))
+            if ((!virtualMachine.Is(ResourceUriCompareLevel.Provider, "Microsoft.Compute")) || (!virtualMachine.Is(ResourceUriCompareLevel.Type, "virtualMachines")))
             {
                 throw new ArgumentException($"{nameof(virtualMachine)} does not represent a virtual machine.");
             }

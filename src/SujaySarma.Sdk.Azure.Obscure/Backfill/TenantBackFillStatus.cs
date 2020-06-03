@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+
 using System;
 
 namespace SujaySarma.Sdk.Azure.Obscure.Backfill

@@ -29,7 +29,7 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskEncryptionSets
         /// <summary>
         /// The type of Managed Identity used by the DiskEncryptionSet
         /// </summary>
-        [JsonProperty("type", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("type"), JsonConverter(typeof(StringEnumConverter))]
         public DiskEncryptionSetIdentityTypeNamesEnum Type { get; set; } = DiskEncryptionSetIdentityTypeNamesEnum.SystemAssigned;
 
         public DiskEncryptionSetIdentity() { }
@@ -44,7 +44,7 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskEncryptionSets
         {
             if (tenantId == default) { throw new ArgumentNullException(nameof(tenantId)); }
             if (principalId == default) { throw new ArgumentNullException(nameof(principalId)); }
-            if (! Enum.IsDefined(typeof(DiskEncryptionSetIdentityTypeNamesEnum), type)) { throw new ArgumentOutOfRangeException(nameof(type)); }
+            if (!Enum.IsDefined(typeof(DiskEncryptionSetIdentityTypeNamesEnum), type)) { throw new ArgumentOutOfRangeException(nameof(type)); }
 
             PrincipalId = principalId.ToString("d");
             TenantId = tenantId.ToString("d");

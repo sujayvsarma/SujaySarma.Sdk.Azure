@@ -32,6 +32,6 @@ namespace SujaySarma.Sdk.Azure.AppService.Plans
         /// Default constructor
         /// </summary>
         public AppServicePlanSku() { }
-        
+
     }
 }

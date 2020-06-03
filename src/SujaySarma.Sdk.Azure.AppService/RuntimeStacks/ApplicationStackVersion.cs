@@ -24,7 +24,7 @@ namespace SujaySarma.Sdk.Azure.AppService.RuntimeStacks
         /// Is the default version used for this stack if one is not specified?
         /// </summary>
         [JsonProperty("isDefault")]
-        public bool IsDefault { get; set; } = false;       
+        public bool IsDefault { get; set; } = false;
 
 
         /// <summary>

@@ -33,7 +33,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Certificates
         /// </summary>
         [JsonProperty("tags")]
         public Dictionary<string, string>? Tags { get; set; } = null;
-        
+
         /// <summary>
         /// Default constructor
         /// </summary>

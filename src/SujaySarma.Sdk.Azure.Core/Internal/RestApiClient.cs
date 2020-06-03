@@ -1,10 +1,11 @@
 ﻿using Newtonsoft.Json;
+
 using SujaySarma.Sdk.Azure.Common;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,7 +31,11 @@ namespace SujaySarma.Sdk.Azure.Internal
         public static async Task<RestApiResponse> GET(string bearerToken, string requestBaseURI, string apiVersionRequired, Dictionary<string, string>? queryParameters, object? requestBodyObject, IEnumerable<int>? expectedSuccessCodes)
         {
             StringBuilder requestURI = new StringBuilder(requestBaseURI);
-            requestURI.Append("?api-version=").Append(apiVersionRequired);
+            if (apiVersionRequired != string.Empty)
+            {
+                requestURI.Append("?api-version=").Append(apiVersionRequired);
+            }
+
             if ((queryParameters != null) && (queryParameters.Count > 0))
             {
                 foreach (string key in queryParameters.Keys)
@@ -84,7 +89,7 @@ namespace SujaySarma.Sdk.Azure.Internal
         public static async Task<RestApiResponse> GETWithoutAuthentication(string requestBaseURI, string? apiVersionRequired, Dictionary<string, string>? queryParameters, object? requestBodyObject, IEnumerable<int>? expectedSuccessCodes, int timeOutSeconds = 15)
         {
             StringBuilder requestURI = new StringBuilder(requestBaseURI);
-            if (! string.IsNullOrWhiteSpace(apiVersionRequired))
+            if (!string.IsNullOrWhiteSpace(apiVersionRequired))
             {
                 requestURI.Append("?api-version=").Append(apiVersionRequired);
             }
@@ -142,7 +147,10 @@ namespace SujaySarma.Sdk.Azure.Internal
         public static async Task<RestApiResponse> GETWithContinuations<T>(string bearerToken, string requestBaseURI, string apiVersionRequired, Dictionary<string, string>? queryParameters, object? requestBodyObject, IEnumerable<int>? expectedSuccessCodes)
         {
             StringBuilder requestURI = new StringBuilder(requestBaseURI);
-            requestURI.Append("?api-version=").Append(apiVersionRequired);
+            if (apiVersionRequired != string.Empty)
+            {
+                requestURI.Append("?api-version=").Append(apiVersionRequired);
+            }
             if ((queryParameters != null) && (queryParameters.Count > 0))
             {
                 foreach (string key in queryParameters.Keys)
@@ -220,8 +228,6 @@ namespace SujaySarma.Sdk.Azure.Internal
             };
         }
 
-
-
         /// <summary>
         /// Fire a POST request
         /// </summary>
@@ -235,7 +241,10 @@ namespace SujaySarma.Sdk.Azure.Internal
         public static async Task<RestApiResponse> POST(string bearerToken, string requestBaseURI, string apiVersionRequired, Dictionary<string, string>? queryParameters, object? requestBodyObject, IEnumerable<int>? expectedSuccessCodes)
         {
             StringBuilder requestURI = new StringBuilder(requestBaseURI);
-            requestURI.Append("?api-version=").Append(apiVersionRequired);
+            if (apiVersionRequired != string.Empty)
+            {
+                requestURI.Append("?api-version=").Append(apiVersionRequired);
+            }
             if ((queryParameters != null) && (queryParameters.Count > 0))
             {
                 foreach (string key in queryParameters.Keys)
@@ -288,7 +297,10 @@ namespace SujaySarma.Sdk.Azure.Internal
         public static async Task<RestApiResponse> HEAD(string bearerToken, string requestBaseURI, string apiVersionRequired, Dictionary<string, string>? queryParameters, IEnumerable<int>? expectedSuccessCodes)
         {
             StringBuilder requestURI = new StringBuilder(requestBaseURI);
-            requestURI.Append("?api-version=").Append(apiVersionRequired);
+            if (apiVersionRequired != string.Empty)
+            {
+                requestURI.Append("?api-version=").Append(apiVersionRequired);
+            }
             if ((queryParameters != null) && (queryParameters.Count > 0))
             {
                 foreach (string key in queryParameters.Keys)
@@ -336,7 +348,10 @@ namespace SujaySarma.Sdk.Azure.Internal
         public static async Task<RestApiResponse> DELETE(string bearerToken, string requestBaseURI, string apiVersionRequired, Dictionary<string, string>? queryParameters, IEnumerable<int>? expectedSuccessCodes)
         {
             StringBuilder requestURI = new StringBuilder(requestBaseURI);
-            requestURI.Append("?api-version=").Append(apiVersionRequired);
+            if (apiVersionRequired != string.Empty)
+            {
+                requestURI.Append("?api-version=").Append(apiVersionRequired);
+            }
             if ((queryParameters != null) && (queryParameters.Count > 0))
             {
                 foreach (string key in queryParameters.Keys)
@@ -385,7 +400,10 @@ namespace SujaySarma.Sdk.Azure.Internal
         public static async Task<RestApiResponse> PUT(string bearerToken, string requestBaseURI, string apiVersionRequired, Dictionary<string, string>? queryParameters, object? requestBodyObject, IEnumerable<int>? expectedSuccessCodes)
         {
             StringBuilder requestURI = new StringBuilder(requestBaseURI);
-            requestURI.Append("?api-version=").Append(apiVersionRequired);
+            if (apiVersionRequired != string.Empty)
+            {
+                requestURI.Append("?api-version=").Append(apiVersionRequired);
+            }
             if ((queryParameters != null) && (queryParameters.Count > 0))
             {
                 foreach (string key in queryParameters.Keys)

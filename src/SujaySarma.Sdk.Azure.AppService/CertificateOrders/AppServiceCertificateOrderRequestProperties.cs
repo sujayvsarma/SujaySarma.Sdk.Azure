@@ -33,7 +33,7 @@ namespace SujaySarma.Sdk.Azure.AppService.CertificateOrders
         /// <summary>
         /// Type of certificate
         /// </summary>
-        [JsonProperty("productType", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("productType"), JsonConverter(typeof(StringEnumConverter))]
         public CertificateTypesEnum Type { get; set; } = CertificateTypesEnum.StandardDomainValidatedSsl;
 
         /// <summary>

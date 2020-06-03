@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
 
 using SujaySarma.Sdk.Azure.Common;
-using SujaySarma.Sdk.Azure.Compute.Disks;
-using SujaySarma.Sdk.Azure.Compute.Encryption;
 using SujaySarma.Sdk.Azure.Internal;
 
 using System;
@@ -84,7 +82,7 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskEncryptionSets
                     new int[] { 200 }
                 );
 
-            if ((! response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
+            if ((!response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
             {
                 return new List<DiskEncryptionSet>();
             }
@@ -148,7 +146,7 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskEncryptionSets
         /// <param name="resourceGroupName">Name of the resource group containing the disk</param>
         /// <param name="diskEncryptionSetName">Name of the disk encryption set to retrieve</param>
         /// <returns>Disk encryption set or NULL if there was a problem</returns>
-        public static async Task<DiskEncryptionSet?> CreateOrUpdate(string bearerToken, Guid subscription, string resourceGroupName, string diskEncryptionSetName, 
+        public static async Task<DiskEncryptionSet?> CreateOrUpdate(string bearerToken, Guid subscription, string resourceGroupName, string diskEncryptionSetName,
             DiskEncryptionSetProperties properties, string location, Dictionary<string, string>? tags = null)
         {
             if ((subscription == Guid.Empty) || (subscription == default)) { throw new ArgumentNullException(nameof(subscription)); }
@@ -176,13 +174,13 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskEncryptionSets
             RestApiResponse response = await RestApiClient.PUT(
                     bearerToken,
                     $"https://management.azure.com/{resourceId}",
-                    CLIENT_API_VERSION, 
-                    null, 
-                    request, 
+                    CLIENT_API_VERSION,
+                    null,
+                    request,
                     new int[] { 200, 201 }
                 );
 
-            if ((! response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
+            if ((!response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
             {
                 return null;
             }

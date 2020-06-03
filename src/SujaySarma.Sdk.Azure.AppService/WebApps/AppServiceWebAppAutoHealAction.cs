@@ -11,7 +11,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         /// <summary>
         /// Type of action to be taken
         /// </summary>
-        [JsonProperty("actionType", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("actionType"), JsonConverter(typeof(StringEnumConverter))]
         public AppServiceWebAppAutoHealActionType ActionType { get; set; } = AppServiceWebAppAutoHealActionType.Default;
 
         /// <summary>

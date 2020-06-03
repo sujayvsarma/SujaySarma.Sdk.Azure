@@ -6,7 +6,6 @@ using SujaySarma.Sdk.Azure.Core.Cors;
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SujaySarma.Sdk.Azure.AppService.WebApps
 {
@@ -104,7 +103,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         /// <summary>
         /// Status of the FTP Service
         /// </summary>
-        [JsonProperty("ftpsState", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("ftpsState"), JsonConverter(typeof(StringEnumConverter))]
         public AppServiceFtpServiceStateEnum FtpServiceState { get; set; } = AppServiceFtpServiceStateEnum.Default;
 
         /// <summary>
@@ -170,7 +169,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         /// <summary>
         /// Load balancing configuration
         /// </summary>
-        [JsonProperty("loadBalancing", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("loadBalancing"), JsonConverter(typeof(StringEnumConverter))]
         public AppServiceWebAppSiteLoadBalancingType? LoadBalancing { get; set; } = null;
 
         /// <summary>
@@ -194,7 +193,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         /// <summary>
         /// HTTP pipeline mode
         /// </summary>
-        [JsonProperty("managedPipelineMode", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("managedPipelineMode"), JsonConverter(typeof(StringEnumConverter))]
         public AppServiceWebAppManagedPipelineMode PipelineMode { get; set; } = AppServiceWebAppManagedPipelineMode.Integrated;
 
         /// <summary>
@@ -298,7 +297,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         /// <summary>
         /// Type of source control being used. Will be NULL if not used.
         /// </summary>
-        [JsonProperty("scmType", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("scmType"), JsonConverter(typeof(StringEnumConverter))]
         public AppServiceWebAppSourceControlType? SourceControlType { get; set; }
 
         /// <summary>
@@ -483,7 +482,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         /// </summary>
         public AppServiceWebAppConfiguration WithTls(TlsVersionEnum tlsVersion)
         {
-            MinimumTlsVersion = tlsVersion switch 
+            MinimumTlsVersion = tlsVersion switch
             {
                 TlsVersionEnum.V1_2 => "1.2",
                 TlsVersionEnum.v1_1 => "1.1",
@@ -499,7 +498,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         public AppServiceWebAppConfiguration WithRemoteDebugging(AppServiceDebugEngineVersionEnum engineVersion)
         {
             IsRemoteDebuggingEnabled = true;
-            RemoteDebuggingEngineVersion = engineVersion switch 
+            RemoteDebuggingEngineVersion = engineVersion switch
             {
                 AppServiceDebugEngineVersionEnum.VS2019 => "2019",
                 AppServiceDebugEngineVersionEnum.VS2018 => "2018",
@@ -586,7 +585,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         {
             if (AppSettings != null)
             {
-                foreach(AzureNameValuePair pair in AppSettings)
+                foreach (AzureNameValuePair pair in AppSettings)
                 {
                     if (pair.Name == key)
                     {
@@ -639,7 +638,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
                 DefaultDocuments = new List<string>();
             }
 
-            foreach(string doc in documentNames)
+            foreach (string doc in documentNames)
             {
                 if (!DefaultDocuments.Contains(doc))
                 {

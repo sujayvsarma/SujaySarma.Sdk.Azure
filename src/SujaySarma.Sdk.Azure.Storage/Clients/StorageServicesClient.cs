@@ -60,7 +60,7 @@ namespace SujaySarma.Sdk.Azure.Storage.Clients
         /// <param name="sku">SKU of storage account</param>
         /// <param name="properties">Additional properties (optional)</param>
         /// <returns>Storage Account</returns>
-        public static async Task<StorageAccount?> Create(string bearerToken, Guid subscription, string resourceGroupName, string storageAccountName, string location, 
+        public static async Task<StorageAccount?> Create(string bearerToken, Guid subscription, string resourceGroupName, string storageAccountName, string location,
             StorageAccountKind kind = StorageAccountKind.StorageV2, StorageAccountSkuNames sku = StorageAccountSkuNames.Standard_LRS,
                 StorageAccountCreateRequestProperties? properties = null, Dictionary<string, string>? tags = null)
         {
@@ -74,7 +74,11 @@ namespace SujaySarma.Sdk.Azure.Storage.Clients
             StorageAccountCreateRequest request = new StorageAccountCreateRequest()
             {
                 Kind = kind,
-                Sku = sku,
+                Sku = new StorageAccountSku()
+                {
+                    Name = sku,
+                    Tier = StorageAccountSkuTiers.Standard
+                },
                 Location = location,
                 Tags = tags,
 
@@ -83,19 +87,46 @@ namespace SujaySarma.Sdk.Azure.Storage.Clients
 
             RestApiResponse response = await RestApiClient.PUT(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription:d}/providers/Microsoft.Storage/storageAccounts/{storageAccountName}",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{storageAccountName}",
                     CLIENT_API_VERSION,
                     null,
                     request,
                     new int[] { 200, 202 }
                 );
 
-            if ((! response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
+            if ((!response.IsExpectedSuccess) || response.WasException)
             {
                 return null;
             }
 
-            return JsonConvert.DeserializeObject<StorageAccount>(response.Body);
+            if ((response.HttpStatus == 202) && (!string.IsNullOrWhiteSpace(response.Headers?.Location.ToString())))
+            {
+                string pollUrl = response.Headers!.Location.ToString();
+                bool complete = false;
+
+                while (!complete)
+                {
+                    response = await RestApiClient.GET(
+                            bearerToken,
+                            pollUrl,
+                            string.Empty, null, null,
+                            new int[] { 200, 202 }
+                        );
+
+                    if ((!response.IsExpectedSuccess) || response.WasException)
+                    {
+                        return null;
+                    }
+
+                    if ((response.HttpStatus == 200) && (!string.IsNullOrWhiteSpace(response.Body)))
+                    {
+                        complete = true;
+                    }
+                }
+            }
+
+
+            return JsonConvert.DeserializeObject<StorageAccount>(response.Body!);
         }
 
         /// <summary>
@@ -114,7 +145,7 @@ namespace SujaySarma.Sdk.Azure.Storage.Clients
 
             RestApiResponse response = await RestApiClient.DELETE(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription:d}/providers/Microsoft.Storage/storageAccounts/{storageAccountName}",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{storageAccountName}",
                     CLIENT_API_VERSION,
                     null,
                     new int[] { 200, 204 }
@@ -144,7 +175,7 @@ namespace SujaySarma.Sdk.Azure.Storage.Clients
 
             RestApiResponse response = await RestApiClient.POST(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription:d}/providers/Microsoft.Storage/storageAccounts/{storageAccountName}/failover",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{storageAccountName}/failover",
                     CLIENT_API_VERSION,
                     null, null,
                     new int[] { 200, 202 }
@@ -174,7 +205,7 @@ namespace SujaySarma.Sdk.Azure.Storage.Clients
 
             RestApiResponse response = await RestApiClient.GET(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription:d}/providers/Microsoft.Storage/storageAccounts/{storageAccountName}",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{storageAccountName}",
                     CLIENT_API_VERSION,
                     null, null,
                     new int[] { 200 }
@@ -234,9 +265,9 @@ namespace SujaySarma.Sdk.Azure.Storage.Clients
 
             RestApiResponse response = await RestApiClient.POST(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription:d}/providers/Microsoft.Storage/storageAccounts/{storageAccountName}/ListAccountSas",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{storageAccountName}/ListAccountSas",
                     CLIENT_API_VERSION,
-                    null, 
+                    null,
                     properties,
                     new int[] { 200 }
                 );
@@ -267,7 +298,7 @@ namespace SujaySarma.Sdk.Azure.Storage.Clients
 
             RestApiResponse response = await RestApiClient.POST(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription:d}/providers/Microsoft.Storage/storageAccounts/{storageAccountName}/ListServiceSas",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{storageAccountName}/ListServiceSas",
                     CLIENT_API_VERSION,
                     null,
                     properties,
@@ -298,7 +329,7 @@ namespace SujaySarma.Sdk.Azure.Storage.Clients
 
             RestApiResponse response = await RestApiClient.POST(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription:d}/providers/Microsoft.Storage/storageAccounts/{storageAccountName}/listKeys",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{storageAccountName}/listKeys",
                     CLIENT_API_VERSION,
                     null, null,
                     new int[] { 200 }
@@ -331,9 +362,9 @@ namespace SujaySarma.Sdk.Azure.Storage.Clients
 
             RestApiResponse response = await RestApiClient.POST(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription:d}/providers/Microsoft.Storage/storageAccounts/{storageAccountName}/regenerateKey",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{storageAccountName}/regenerateKey",
                     CLIENT_API_VERSION,
-                    null, 
+                    null,
                     $"{{ \"keyName\" : \"{keyName}\" }}",
                     new int[] { 200 }
                 );
@@ -356,7 +387,7 @@ namespace SujaySarma.Sdk.Azure.Storage.Clients
         /// <param name="restoreTo">Timestamp of point in time to restore up to</param>
         /// <param name="blobRanges">Ranges of blobs to restore</param>
         /// <returns>True if task has been accepted. False/NULL otherwise</returns>
-        public static async Task<bool?> RestoreBlobs(string bearerToken, Guid subscription, string resourceGroupName, string storageAccountName, 
+        public static async Task<bool?> RestoreBlobs(string bearerToken, Guid subscription, string resourceGroupName, string storageAccountName,
                 string restoreTo, IEnumerable<BlobRestoreRange> blobRanges)
         {
             if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
@@ -367,7 +398,7 @@ namespace SujaySarma.Sdk.Azure.Storage.Clients
 
             RestApiResponse response = await RestApiClient.POST(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription:d}/providers/Microsoft.Storage/storageAccounts/{storageAccountName}/restoreBlobRanges",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{storageAccountName}/restoreBlobRanges",
                     CLIENT_API_VERSION,
                     null,
                     new BlobRestoreRequest()

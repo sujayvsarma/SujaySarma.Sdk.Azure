@@ -31,7 +31,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
 
             StringBuilder requestUri = new StringBuilder();
             requestUri.Append($"https://management.azure.com/subscriptions/{subscription:d}/providers/Microsoft.Web");
-            if (! string.IsNullOrWhiteSpace(locationCode))
+            if (!string.IsNullOrWhiteSpace(locationCode))
             {
                 requestUri.Append($"/locations/{locationCode}");
             }
@@ -39,13 +39,13 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
 
             RestApiResponse response = await RestApiClient.GETWithContinuations<DeletedWebAppProperties>(
                     bearerToken,
-                    requestUri.ToString(), 
+                    requestUri.ToString(),
                     CLIENT_API_VERSION,
-                    null, null, 
+                    null, null,
                     new int[] { 200 }
                 );
 
-            if ((! response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
+            if ((!response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
             {
                 return new List<DeletedWebApp>();
             }

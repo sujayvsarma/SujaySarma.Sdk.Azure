@@ -274,7 +274,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
 
             StringBuilder requestUri = new StringBuilder();
             requestUri.Append($"https://management.azure.com/subscriptions/{subscription:d}");
-            if (! string.IsNullOrWhiteSpace(resourceGroupName))
+            if (!string.IsNullOrWhiteSpace(resourceGroupName))
             {
                 requestUri.Append($"/resourceGroups/{resourceGroupName}");
             }
@@ -309,7 +309,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
         {
             if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
             if (subscription == Guid.Empty) { throw new ArgumentNullException(nameof(subscription)); }
-            if ((keywords == null) || (! keywords.Any())) { throw new ArgumentNullException(nameof(keywords)); }
+            if ((keywords == null) || (!keywords.Any())) { throw new ArgumentNullException(nameof(keywords)); }
             if ((maxRecommendations < 1) || (maxRecommendations > 25)) { throw new ArgumentOutOfRangeException(nameof(maxRecommendations)); }
 
             DomainNameRecommendationRqeuest request = new DomainNameRecommendationRqeuest()
@@ -321,7 +321,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
             RestApiResponse response = await RestApiClient.POST(
                     bearerToken,
                     $"https://management.azure.com/subscriptions/{subscription:d}/providers/Microsoft.DomainRegistration/listDomainRecommendations",
-                    CLIENT_API_VERSION, 
+                    CLIENT_API_VERSION,
                     null, request,
                     new int[] { 200 }
                 );
@@ -361,7 +361,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
             if (string.IsNullOrWhiteSpace(targetResourceGroupName)) { throw new ArgumentNullException(nameof(targetResourceGroupName)); }
             if (string.IsNullOrWhiteSpace(transferAuthorization)) { throw new ArgumentNullException(nameof(transferAuthorization)); }
             if (subscription == Guid.Empty) { throw new ArgumentNullException(nameof(subscription)); }
-            if ((agreementKeyNames == null) ||( ! agreementKeyNames.Any())) { throw new ArgumentNullException(nameof(agreementKeyNames)); }
+            if ((agreementKeyNames == null) || (!agreementKeyNames.Any())) { throw new ArgumentNullException(nameof(agreementKeyNames)); }
 
             // validate domain name :-)
             AvailabilityRequest _ = new AvailabilityRequest(domainName);
@@ -413,7 +413,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
         /// <param name="existingAzureZone">If an existing Azure DNS Zone is to be tied to this domain, the resource Uri to that zone</param>
         /// <returns>True if the domain registration task was accepted by Azure. False if not, NULL if there were errors</returns>
         public static async Task<bool?> TransferDomain(string bearerToken, Guid subscription, string domainName, string transferAuthorization,
-            string targetResourceGroupName, bool autoRenew, DomainRegistrationContact registrationContact, string callerIpAddress, 
+            string targetResourceGroupName, bool autoRenew, DomainRegistrationContact registrationContact, string callerIpAddress,
                     bool useCustomDns = false, ResourceUri? existingAzureZone = null)
         {
             if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
@@ -478,11 +478,11 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
                     bearerToken,
                     $"https://management.azure.com/subscriptions/{subscription:d}/providers/Microsoft.DomainRegistration/topLevelDomains",
                     CLIENT_API_VERSION,
-                    null, null, 
+                    null, null,
                     new int[] { 200 }
                 );
 
-            if ((! response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
+            if ((!response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
             {
                 return new List<TopLevelDomain>();
             }
@@ -533,7 +533,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
         /// <param name="includePrivacyConsents">If true retrieves consents required for privacy</param>
         /// <param name="includeTransferConsents">If true retrieves consents for domain transfer</param>
         /// <returns>List of supported TLDs or empty list</returns>
-        public static async Task<IList<TopLevelAgreement>> GetRequiredConsents(string bearerToken, Guid subscription, string tldName, 
+        public static async Task<IList<TopLevelAgreement>> GetRequiredConsents(string bearerToken, Guid subscription, string tldName,
             bool includePrivacyConsents = true, bool includeTransferConsents = false)
         {
             if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }

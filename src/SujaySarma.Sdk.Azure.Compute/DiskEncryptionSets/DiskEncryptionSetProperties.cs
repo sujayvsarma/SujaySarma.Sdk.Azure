@@ -42,16 +42,16 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskEncryptionSets
         /// <param name="keyVaultKeyUri">The absolute Uri to the key in the KeyVault</param>
         public DiskEncryptionSetProperties(ResourceUri keyVaultUri, string keyVaultKeyUri)
         {
-            if ((!keyVaultUri.IsValid) || (!keyVaultUri.Is(ResourceUriCompareLevel.Provider, "Microsoft.KeyVault")) || (! keyVaultUri.Is(ResourceUriCompareLevel.Type, "vaults"))) 
-            { 
-                throw new ArgumentException(nameof(keyVaultUri)); 
+            if ((!keyVaultUri.IsValid) || (!keyVaultUri.Is(ResourceUriCompareLevel.Provider, "Microsoft.KeyVault")) || (!keyVaultUri.Is(ResourceUriCompareLevel.Type, "vaults")))
+            {
+                throw new ArgumentException(nameof(keyVaultUri));
             }
 
             ActiveKey = new KeyVaultAndKeyReference()
             {
-                Vault = new SourceVault() 
-                { 
-                    KeyVaultResourceId = keyVaultUri.ToString() 
+                Vault = new SourceVault()
+                {
+                    KeyVaultResourceId = keyVaultUri.ToString()
                 },
                 KeyUrl = keyVaultKeyUri
             };

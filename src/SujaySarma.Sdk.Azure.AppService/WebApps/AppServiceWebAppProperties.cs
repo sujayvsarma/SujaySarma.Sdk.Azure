@@ -3,6 +3,7 @@ using Newtonsoft.Json.Converters;
 
 using SujaySarma.Sdk.Azure.AppService.Plans;
 using SujaySarma.Sdk.Azure.Common;
+
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +18,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         /// <summary>
         /// Management information availability state for the app
         /// </summary>
-        [JsonProperty("availabilityState", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("availabilityState"), JsonConverter(typeof(StringEnumConverter))]
         public AppServiceWebAppAvailabilityStateEnum AvailabilityState { get; set; } = AppServiceWebAppAvailabilityStateEnum.Default;
 
         /// <summary>
@@ -150,7 +151,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         /// <summary>
         /// Redundancy mode of the App service site
         /// </summary>
-        [JsonProperty("redundancyMode", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("redundancyMode"), JsonConverter(typeof(StringEnumConverter))]
         public AppServiceRedundancyModeEnum RedundancyMode { get; set; }
 
         /// <summary>
@@ -224,7 +225,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         /// <summary>
         /// Status of usage versus usage quotas
         /// </summary>
-        [JsonProperty("usageState", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("usageState"), JsonConverter(typeof(StringEnumConverter))]
         public AppServiceWebAppUsageStatusEnum UsageStatus { get; set; }
 
 
@@ -240,12 +241,12 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         /// </summary>
         public AppServiceWebAppProperties WithAppServicePlan(ResourceUri appServicePlan)
         {
-            if (! string.IsNullOrWhiteSpace(PlanResourceId))
+            if (!string.IsNullOrWhiteSpace(PlanResourceId))
             {
                 throw new InvalidOperationException($"App is already bound to the app service plan '{PlanResourceId}'.");
             }
 
-            if ((! appServicePlan.IsValid) || (!appServicePlan.Is(ResourceUriCompareLevel.Provider, "Microsoft.Web")) || (!appServicePlan.Is(ResourceUriCompareLevel.Type, "serverfarms")))
+            if ((!appServicePlan.IsValid) || (!appServicePlan.Is(ResourceUriCompareLevel.Provider, "Microsoft.Web")) || (!appServicePlan.Is(ResourceUriCompareLevel.Type, "serverfarms")))
             {
                 throw new ArgumentNullException();
             }
@@ -283,7 +284,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
             HostNames = new List<string>();
             EnabledHostNames = new List<string>();
 
-            foreach(string name in otherHostNames)
+            foreach (string name in otherHostNames)
             {
                 HostNames.Add(name);
                 EnabledHostNames.Add(name);
@@ -303,7 +304,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
             }
 
             bool updatedCertificate = false;
-            foreach(AppServiceHostNameSslStates ssl in HostNameSslStates)
+            foreach (AppServiceHostNameSslStates ssl in HostNameSslStates)
             {
                 if (ssl.HostName.Equals(hostName, StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -314,7 +315,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
                 }
             }
 
-            if (! updatedCertificate)
+            if (!updatedCertificate)
             {
                 HostNameSslStates.Add(
                         new AppServiceHostNameSslStates()

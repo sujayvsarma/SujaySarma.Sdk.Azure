@@ -229,7 +229,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
                     bearerToken,
                     $"https://management.azure.com/{diskResourceId[1..]}/beginGetAccess",
                     CLIENT_API_VERSION,
-                    null, request, 
+                    null, request,
                     new int[] { 200, 202 }
                 );
 

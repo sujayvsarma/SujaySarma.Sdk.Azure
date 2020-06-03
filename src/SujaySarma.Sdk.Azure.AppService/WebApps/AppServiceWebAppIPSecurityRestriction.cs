@@ -56,7 +56,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         /// <summary>
         /// The type of filter that is going to be applied
         /// </summary>
-        [JsonProperty("tag", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("tag"), JsonConverter(typeof(StringEnumConverter))]
         public IpSecurityRestrictionFilterType FilterType { get; set; }
 
         /// <summary>

@@ -97,7 +97,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
                     new int[] { 200, 202 }
                 );
 
-            if ((! response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
+            if ((!response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
             {
                 return null;
             }

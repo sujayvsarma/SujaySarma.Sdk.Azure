@@ -37,7 +37,7 @@ namespace SujaySarma.Sdk.Azure.Deployments
         /// <summary>
         /// Mode of deployment (for example: "Complete" or "Incremental")
         /// </summary>
-        [JsonProperty("mode", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("mode"), JsonConverter(typeof(StringEnumConverter))]
         public DeploymentTypesEnum Mode { get; set; } = DeploymentTypesEnum.Incremental;
 
         /// <summary>

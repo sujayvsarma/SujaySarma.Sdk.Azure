@@ -39,7 +39,7 @@ namespace SujaySarma.Sdk.Azure.RateCard.Clients
                     {
                         { "$filter", $"OfferDurableId eq '{azureSubscriptionOfferId}' and Currency eq '{isoCurrencyCode}' and Locale eq '{isoLocaleCode}' and RegionInfo eq '{isoRegionCode}'" }
                     },
-                    null, 
+                    null,
                     new int[] { 302 }
                 );
 
@@ -50,12 +50,12 @@ namespace SujaySarma.Sdk.Azure.RateCard.Clients
 
             RestApiResponse response = await RestApiClient.GETWithoutAuthentication(
                     originalResponse.Headers!.Location.AbsoluteUri,
-                    null, null, null, 
+                    null, null, null,
                     new int[] { 200 },
                     60                  // set timeout to 1 min
                 );
 
-            if ((! response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
+            if ((!response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
             {
                 return null;
             }

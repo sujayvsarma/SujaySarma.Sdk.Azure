@@ -12,8 +12,8 @@ namespace SujaySarma.Sdk.Azure.Storage
         /// <summary>
         /// Access tier
         /// </summary>
-        [JsonProperty("accessTier", ItemConverterType = typeof(StringEnumConverter))]
-        public StorageAccessTier AccessTier { get; set; }
+        [JsonProperty("accessTier"), JsonConverter(typeof(StringEnumConverter))]
+        public StorageAccessTier AccessTier { get; set; } = StorageAccessTier.Hot;
 
         /// <summary>
         /// Azure identity based authentication for File service
@@ -37,13 +37,13 @@ namespace SujaySarma.Sdk.Azure.Storage
         /// Flag indicating if Hierarchical Namespace is enabled
         /// </summary>
         [JsonProperty("isHnsEnabled")]
-        public bool IsHierarchicalNamespaceEnabled { get; set; }
+        public bool IsHierarchicalNamespaceEnabled { get; set; } = false;
 
         /// <summary>
         /// State of large file shares
         /// </summary>
-        [JsonProperty("largeFileSharesState", ItemConverterType = typeof(StringEnumConverter))]
-        public LargeFilesShareState LargeFilesShareState { get; set; }
+        [JsonProperty("largeFileSharesState"), JsonConverter(typeof(StringEnumConverter))]
+        public LargeFilesShareState LargeFilesShareState { get; set; } = LargeFilesShareState.Disabled;
 
         /// <summary>
         /// Network ACL rulesets
@@ -55,13 +55,13 @@ namespace SujaySarma.Sdk.Azure.Storage
         /// Routing preference
         /// </summary>
         [JsonProperty("routingPreference")]
-        public RoutingPreference RoutingPreference { get; set; } = new RoutingPreference();
+        public RoutingPreference? RoutingPreference { get; set; }
 
         /// <summary>
         /// Flag indicating if the storage should allow only HTTPS traffic
         /// </summary>
         [JsonProperty("supportsHttpsTrafficOnly")]
-        public bool IsSupportsHttpsTrafficOnly { get; set; }
+        public bool IsSupportsHttpsTrafficOnly { get; set; } = true;
 
         /// <summary>
         /// Default constructor

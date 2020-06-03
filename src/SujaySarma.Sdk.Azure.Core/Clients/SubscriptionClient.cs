@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 
-using SujaySarma.Sdk.Azure.Common;
 using SujaySarma.Sdk.Azure.Internal;
 using SujaySarma.Sdk.Azure.Subscriptions;
 
@@ -52,7 +51,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             RestApiResponse response = await RestApiClient.GET(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{id.ToString("d")}",
+                    $"https://management.azure.com/subscriptions/{id:d}",
                     CLIENT_API_VERSION,
                     null, null,
                     new int[] { 200 }
@@ -77,9 +76,9 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
             if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
             if ((id == Guid.Empty) || (id == default)) { throw new ArgumentNullException(nameof(id)); }
 
-            RestApiResponse response = await RestApiClient.GET(
+            RestApiResponse response = await RestApiClient.GETWithContinuations<SubscriptionLocation>(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{id.ToString("d")}",
+                    $"https://management.azure.com/subscriptions/{id:d}/locations",
                     CLIENT_API_VERSION,
                     null, null,
                     new int[] { 200 }
@@ -90,7 +89,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
                 return new List<SubscriptionLocation>();
             }
 
-            return JsonConvert.DeserializeObject<ListResultWithContinuations<SubscriptionLocation>>(response.Body).Values;
+            return JsonConvert.DeserializeObject<List<SubscriptionLocation>>(response.Body);
         }
 
 
@@ -106,7 +105,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             RestApiResponse response = await RestApiClient.POST(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{id.ToString("d")}/providers/Microsoft.Subscription/cancel",
+                    $"https://management.azure.com/subscriptions/{id:d}/providers/Microsoft.Subscription/cancel",
                     "2019-03-01-preview",
                     null, null,
                     new int[] { 200 }
@@ -132,7 +131,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             RestApiResponse response = await RestApiClient.POST(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{id.ToString("d")}/providers/Microsoft.Subscription/enable",
+                    $"https://management.azure.com/subscriptions/{id:d}/providers/Microsoft.Subscription/enable",
                     "2019-03-01-preview",
                     null, null,
                     new int[] { 200 }
@@ -160,7 +159,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             RestApiResponse response = await RestApiClient.POST(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{id.ToString("d")}/providers/Microsoft.Subscription/rename",
+                    $"https://management.azure.com/subscriptions/{id:d}/providers/Microsoft.Subscription/rename",
                     "2019-03-01-preview",
                     null,
                     new SubscriptionRenameStructure()

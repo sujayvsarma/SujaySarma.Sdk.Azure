@@ -24,7 +24,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Domains
         /// <summary>
         /// Type of availability
         /// </summary>
-        [JsonProperty("domainType", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("domainType"), JsonConverter(typeof(StringEnumConverter))]
         public AvailableResultDomainTypeEnum Type { get; set; }
 
 

@@ -10,7 +10,7 @@
          * ORDER is NOT important. The NAME is important.
          * We are using Enum.GetName() to transform it to an Azure CommandId. 
          * So, match the casing!
-         */ 
+         */
 
         /// <summary>
         /// Get network configuration (ifconfig on Linux, ipconfig on Windows). Does not require 

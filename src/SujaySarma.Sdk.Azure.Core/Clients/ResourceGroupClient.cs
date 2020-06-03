@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 
-using SujaySarma.Sdk.Azure.Common;
 using SujaySarma.Sdk.Azure.Internal;
 using SujaySarma.Sdk.Azure.ResourceGroups;
 
@@ -29,7 +28,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             RestApiResponse response = await RestApiClient.GETWithContinuations<ResourceGroup>(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/resourcegroups",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourcegroups",
                     CLIENT_API_VERSION,
                     null, null,
                     new int[] { 200 }
@@ -40,7 +39,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
                 return new List<ResourceGroup>();
             }
 
-            return JsonConvert.DeserializeObject<ListResultWithContinuations<ResourceGroup>>(response.Body).Values;
+            return JsonConvert.DeserializeObject<List<ResourceGroup>>(response.Body);
         }
 
         /// <summary>
@@ -58,7 +57,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             RestApiResponse response = await RestApiClient.GET(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/resourcegroups/{resourceGroupName}",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourcegroups/{resourceGroupName}",
                     CLIENT_API_VERSION,
                     null, null,
                     new int[] { 200 }
@@ -87,13 +86,13 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             RestApiResponse response = await RestApiClient.HEAD(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/resourcegroups/{resourceGroupName}",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourcegroups/{resourceGroupName}",
                     CLIENT_API_VERSION,
                     null,
                     new int[] { 204, 404 }
                 );
 
-            if ((! response.IsExpectedSuccess) || response.WasException)
+            if ((!response.IsExpectedSuccess) || response.WasException)
             {
                 return null;
             }
@@ -125,7 +124,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             RestApiResponse response = await RestApiClient.PUT(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/resourcegroups/{resourceGroupName}",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourcegroups/{resourceGroupName}",
                     CLIENT_API_VERSION,
                     null, body,
                     new int[] { 200, 201 }
@@ -161,7 +160,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             RestApiResponse response = await RestApiClient.PUT(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/resourcegroups/{resourceGroupName}",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourcegroups/{resourceGroupName}",
                     CLIENT_API_VERSION,
                     null, body,
                     new int[] { 200, 201 }
@@ -191,7 +190,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             RestApiResponse response = await RestApiClient.DELETE(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/resourcegroups/{resourceGroupName}",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourcegroups/{resourceGroupName}",
                     CLIENT_API_VERSION,
                     null,
                     new int[] { 200, 202 }
@@ -222,7 +221,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
                 // will set default options
                 options = new ExportTemplateOptions();
             }
-            
+
             StringBuilder optOptions = new StringBuilder();
             if (options.IncludeDefaultValuesForParameters)
             {
@@ -237,7 +236,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
                 }
                 optOptions.Append("IncludeComments");
             }
-            
+
             if (options.DoNotParameterize)
             {
                 if (optOptions.Length > 0)
@@ -272,12 +271,12 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
             {
                 options = optOptions.ToString(),
                 resources = options.ResourceNames
-            };           
+            };
 
 
             RestApiResponse response = await RestApiClient.POST(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/resourcegroups/{resourceGroupName}/exportTemplate",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourcegroups/{resourceGroupName}/exportTemplate",
                     CLIENT_API_VERSION,
                     null, opt,
                     new int[] { 200, 202 }

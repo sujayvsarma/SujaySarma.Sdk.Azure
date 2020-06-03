@@ -22,7 +22,7 @@ namespace SujaySarma.Sdk.Azure.Compute.DiskImages
         /// <summary>
         /// Type of caching
         /// </summary>
-        [JsonProperty("caching", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("caching"), JsonConverter(typeof(StringEnumConverter))]
         public CachingTypeNamesEnum CacheType { get; set; } = CachingTypeNamesEnum.None;
 
         /// <summary>

@@ -35,7 +35,7 @@ namespace SujaySarma.Sdk.Azure.MarketPlace.Clients
             }
 
             IndexCatalogMenu menu = JsonConvert.DeserializeObject<IndexCatalogMenu>(json);
-            foreach(IndexCatalogMenuItem item in menu.StaticMenu)
+            foreach (IndexCatalogMenuItem item in menu.StaticMenu)
             {
                 item.Language = language;
                 item.Locale = locale;
@@ -119,7 +119,7 @@ namespace SujaySarma.Sdk.Azure.MarketPlace.Clients
                 return null;
             }
 
-            foreach(IndexItem item in section.Items)
+            foreach (IndexItem item in section.Items)
             {
                 if (item.Id.Equals(idOrNameOrOfferId, StringComparison.InvariantCultureIgnoreCase)
                             || item.OfferId.Equals(idOrNameOrOfferId, StringComparison.InvariantCultureIgnoreCase)
@@ -193,7 +193,7 @@ namespace SujaySarma.Sdk.Azure.MarketPlace.Clients
             string localFileName = Path.Combine(localFilePath, ((endpointType == EndpointTypeEnum.Catalog) ? "catalog.json" : $"{(limitedRows ? "Limited" : "Complete")}_{categoryId!.ToLower()}.json"));
             bool needsReload = false;
 
-            lock(_fsLock)
+            lock (_fsLock)
             {
                 if (!Directory.Exists(localFilePath))
                 {
@@ -259,7 +259,7 @@ namespace SujaySarma.Sdk.Azure.MarketPlace.Clients
             return json;
         }
 
-        private static object _fsLock = new object();
+        private static readonly object _fsLock = new object();
         private static readonly string CLIENT_API_VERSION = "2018-08-01-beta";
 
         /// <summary>

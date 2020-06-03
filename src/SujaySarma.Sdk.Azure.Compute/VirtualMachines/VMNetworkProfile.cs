@@ -32,7 +32,7 @@ namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
         {
             if (Interfaces != null)
             {
-                foreach(VMNetworkInterface card in Interfaces)
+                foreach (VMNetworkInterface card in Interfaces)
                 {
                     if ((card.Properties != null) && (card.Properties.IsPrimary))
                     {

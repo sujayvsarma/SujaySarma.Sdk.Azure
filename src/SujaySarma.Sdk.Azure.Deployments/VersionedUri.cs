@@ -19,7 +19,7 @@ namespace SujaySarma.Sdk.Azure.Deployments
         /// </summary>
         /// <param name="uri">Uri to the target</param>
         public VersionedUri(string uri) => Uri = uri;
-    
+
     }
 
 }

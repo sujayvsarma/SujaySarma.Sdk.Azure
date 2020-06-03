@@ -61,6 +61,6 @@ namespace SujaySarma.Sdk.Azure.AppService.DeletedWebApps
         /// <summary>
         /// Default constructor
         /// </summary>
-        public DeletedWebAppProperties()  { }
+        public DeletedWebAppProperties() { }
     }
 }

@@ -16,13 +16,13 @@ namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
         /// <summary>
         /// Caching
         /// </summary>
-        [JsonProperty("caching", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("caching"), JsonConverter(typeof(StringEnumConverter))]
         public CachingTypeNamesEnum Caching { get; set; } = CachingTypeNamesEnum.None;
 
         /// <summary>
         /// Must be either Attach or FromImage. Other values are not allowed here.
         /// </summary>
-        [JsonProperty("createOption", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("createOption"), JsonConverter(typeof(StringEnumConverter))]
         public DiskCreationOptionsEnum CreateUsing { get; set; } = DiskCreationOptionsEnum.Empty;
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
         /// <summary>
         /// The OS that is loaded
         /// </summary>
-        [JsonProperty("osType", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("osType"), JsonConverter(typeof(StringEnumConverter))]
         public OSTypeNamesEnum OSName { get; set; } = OSTypeNamesEnum.Windows;
 
         /// <summary>

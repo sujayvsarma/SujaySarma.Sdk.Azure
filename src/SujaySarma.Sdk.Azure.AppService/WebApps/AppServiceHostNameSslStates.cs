@@ -11,7 +11,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         /// <summary>
         /// Type of host
         /// </summary>
-        [JsonProperty("hostType", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("hostType"), JsonConverter(typeof(StringEnumConverter))]
         public AppServiceWebAppHostTypeEnum HostType { get; set; } = AppServiceWebAppHostTypeEnum.Default;
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         /// <summary>
         /// Status of SSL on this host
         /// </summary>
-        [JsonProperty("sslState", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("sslState"), JsonConverter(typeof(StringEnumConverter))]
         public AppServiceWebAppSslTypeEnum State { get; set; } = AppServiceWebAppSslTypeEnum.Default;
 
         /// <summary>

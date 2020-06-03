@@ -65,7 +65,7 @@ namespace SujaySarma.Sdk.Azure.Internal
 
             if (expectedSuccessCodes != null)
             {
-                foreach(int code in expectedSuccessCodes)
+                foreach (int code in expectedSuccessCodes)
                 {
                     if (code == HttpStatus)
                     {

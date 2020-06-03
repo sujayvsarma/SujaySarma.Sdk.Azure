@@ -29,7 +29,7 @@ namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
         /// <summary>
         /// When are these commands to be run?
         /// </summary>
-        [JsonProperty("settingName", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("settingName"), JsonConverter(typeof(StringEnumConverter))]
         public VMUnattendedWindowsSetupRunAtEnum RunWhen { get; set; } = VMUnattendedWindowsSetupRunAtEnum.FirstLogonCommands;
 
         public VMUnattendedWindowsSetupContent() { }

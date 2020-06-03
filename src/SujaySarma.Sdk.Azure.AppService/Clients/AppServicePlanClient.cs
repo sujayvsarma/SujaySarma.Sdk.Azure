@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 
-using SujaySarma.Sdk.Azure.AppService.WebApps;
 using SujaySarma.Sdk.Azure.AppService.Plans;
+using SujaySarma.Sdk.Azure.AppService.WebApps;
 using SujaySarma.Sdk.Azure.Common;
 using SujaySarma.Sdk.Azure.Internal;
 
@@ -113,7 +113,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
 
             IList<ExtensibleAzureObject> objList = JsonConvert.DeserializeObject<ListResultWithContinuations<ExtensibleAzureObject>>(response.Body).Values;
             Dictionary<string, string> result = new Dictionary<string, string>();
-            foreach(ExtensibleAzureObject obj in objList)
+            foreach (ExtensibleAzureObject obj in objList)
             {
                 result.Add((string)obj.Properties["name"]!, (string)obj.Properties["value"]!);
             }
@@ -151,7 +151,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
 
             IList<UsageAPIResponseItem> objList = JsonConvert.DeserializeObject<ListResultWithContinuations<UsageAPIResponseItem>>(response.Body).Values;
             List<UsageSdkResponseItem> results = new List<UsageSdkResponseItem>();
-            foreach(UsageAPIResponseItem api in objList)
+            foreach (UsageAPIResponseItem api in objList)
             {
                 results.Add(new UsageSdkResponseItem(api));
             }
@@ -172,7 +172,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
         /// <param name="sku">The App Service plan SKU to use (use MiscServicesClient.GetAvailableSkus)</param>
         /// <param name="tags">Tags to attach</param>
         /// <returns>The created App Service Plan or NULL</returns>
-        public static async Task<AppServicePlan?> CreateStandardPlan(string bearerToken, Guid subscription, string resourceGroupName, string planName, 
+        public static async Task<AppServicePlan?> CreateStandardPlan(string bearerToken, Guid subscription, string resourceGroupName, string planName,
             string locationCode, OSTypeNamesEnum operatingSystem, ResourceSku sku, Dictionary<string, string>? tags = null)
         {
             if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
@@ -180,7 +180,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
             if (string.IsNullOrWhiteSpace(resourceGroupName)) { throw new ArgumentNullException(nameof(resourceGroupName)); }
             if (string.IsNullOrWhiteSpace(planName)) { throw new ArgumentNullException(nameof(planName)); }
             if (string.IsNullOrWhiteSpace(locationCode)) { throw new ArgumentNullException(nameof(locationCode)); }
-            if (! Enum.IsDefined(typeof(OSTypeNamesEnum), operatingSystem)) { throw new ArgumentOutOfRangeException(nameof(operatingSystem)); }
+            if (!Enum.IsDefined(typeof(OSTypeNamesEnum), operatingSystem)) { throw new ArgumentOutOfRangeException(nameof(operatingSystem)); }
             if (sku == null) { throw new ArgumentNullException(nameof(sku)); }
 
             AppServicePlan request = new AppServicePlan()
@@ -289,7 +289,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
         /// <param name="tags">Tags to attach</param>
         /// <returns>The created App Service Plan or NULL</returns>
         public static async Task<AppServicePlan?> CreateSpotPlan(string bearerToken, Guid subscription, string resourceGroupName, string planName,
-            string locationCode, OSTypeNamesEnum operatingSystem, ResourceSku sku, int maximumWorkerCount, bool enablePerSiteScaling, 
+            string locationCode, OSTypeNamesEnum operatingSystem, ResourceSku sku, int maximumWorkerCount, bool enablePerSiteScaling,
                 DateTime spotExpirationTime, Dictionary<string, string>? tags = null)
         {
             if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
@@ -388,7 +388,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
                     bearerToken,
                     $"https://management.azure.com/subscriptions/{subscription:d}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{planName}",
                     CLIENT_API_VERSION,
-                    null, 
+                    null,
                     new int[] { 200, 204 }
                 );
 
@@ -507,11 +507,11 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
                     bearerToken,
                     $"https://management.azure.com/subscriptions/{subscription:d}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{planName}/skus",
                     CLIENT_API_VERSION,
-                    null, null, 
+                    null, null,
                     new int[] { 200 }
                 );
 
-            if ((! response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
+            if ((!response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
             {
                 return new List<AppServicePlanSku>();
             }

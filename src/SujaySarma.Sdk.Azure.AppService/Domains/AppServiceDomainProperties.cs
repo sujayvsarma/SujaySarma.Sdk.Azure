@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+
 using SujaySarma.Sdk.Azure.Common;
+
 using System;
 using System.Collections.Generic;
 
@@ -15,13 +17,13 @@ namespace SujaySarma.Sdk.Azure.AppService.Domains
         /// <summary>
         /// Status of registration
         /// </summary>
-        [JsonProperty("registrationStatus", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("registrationStatus"), JsonConverter(typeof(StringEnumConverter))]
         public DomainRegistrationStatusEnum RegistrationStatus { get; set; } = DomainRegistrationStatusEnum.Active;
 
         /// <summary>
         /// Provisioning state
         /// </summary>
-        [JsonProperty("provisioningState", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("provisioningState"), JsonConverter(typeof(StringEnumConverter))]
         public ProvisioningStatusEnum ProvisioningState { get; set; } = ProvisioningStatusEnum.Default;
 
         /// <summary>

@@ -37,17 +37,17 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
                     bearerToken,
                     $"https://management.azure.com/subscriptions/{subscription:d}/providers/Microsoft.Web/checknameavailability",
                     "2019-08-01",
-                    null, 
+                    null,
                     new ResourceNameAvailabilityRequest()
                     {
                         Name = nameToCheck,
                         IsFullyQualifiedDomainName = isNameFQDN,
                         Type = Enum.GetName(typeof(AppServiceResourceTypesEnum), type)?.Replace("__", "/")?.Replace("_", ".") ?? "Site"
-                    }, 
+                    },
                     new int[] { 200 }
                 );
 
-            if ((! response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
+            if ((!response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
             {
                 return null;
             }

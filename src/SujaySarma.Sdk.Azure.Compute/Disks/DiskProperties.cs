@@ -79,7 +79,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Disks
         /// <summary>
         /// Disk provisioning status
         /// </summary>
-        [JsonProperty("provisioningState", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("provisioningState"), JsonConverter(typeof(StringEnumConverter))]
         public ProvisioningStatusEnum ProvisioningStatus { get; set; } = ProvisioningStatusEnum.Default;
 
         /// <summary>

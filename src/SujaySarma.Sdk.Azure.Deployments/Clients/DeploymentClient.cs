@@ -65,7 +65,7 @@ namespace SujaySarma.Sdk.Azure.Deployments.Clients
                 deploymentRequest.Location = dataStorageLocation;
             }
 
-        tryAgain:
+            tryAgain:
             RestApiResponse response = await RestApiClient.PUT(
                     bearerToken,
                     uri.ToString(),
@@ -83,9 +83,9 @@ namespace SujaySarma.Sdk.Azure.Deployments.Clients
                     new int[] { 200, 201 }
                 );
 
-            if ((! response.IsExpectedSuccess) || string.IsNullOrWhiteSpace(response.Body))
+            if ((!response.IsExpectedSuccess) || string.IsNullOrWhiteSpace(response.Body))
             {
-                if ((response.HttpStatus == 400) && (! string.IsNullOrWhiteSpace(response.Body)) && (response.Body!.Contains("InvalidOnErrorDeployment")))
+                if ((response.HttpStatus == 400) && (!string.IsNullOrWhiteSpace(response.Body)) && (response.Body!.Contains("InvalidOnErrorDeployment")))
                 {
                     // caller specified an OnError deployment but one does not exist, 
                     // so retry the request without an OnError
@@ -143,7 +143,7 @@ namespace SujaySarma.Sdk.Azure.Deployments.Clients
                     new int[] { 200 }
                 );
 
-            if ((! response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
+            if ((!response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
             {
                 return null;
             }

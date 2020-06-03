@@ -141,7 +141,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             RestApiResponse response = await RestApiClient.GET(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/resourceGroups/{resourceGroupName}/resources",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/resourceGroups/{resourceGroupName}/resources",
                     CLIENT_API_VERSION,
                     null, null,
                     new int[] { 200 }

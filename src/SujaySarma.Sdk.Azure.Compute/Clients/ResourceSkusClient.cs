@@ -12,7 +12,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
 {
     public static class ResourceSkusClient
     {
-        
+
         /// <summary>
         /// Get all SKUs available to a subscription
         /// </summary>

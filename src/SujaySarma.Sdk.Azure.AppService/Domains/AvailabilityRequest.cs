@@ -52,8 +52,8 @@ namespace SujaySarma.Sdk.Azure.AppService.Domains
             // ahead of the complex extensions
 
             "com", "net", "org", "biz",
-            "nl", "in", 
-            
+            "nl", "in",
+
             "co.in", "co.uk", "org.uk"
         };
     }

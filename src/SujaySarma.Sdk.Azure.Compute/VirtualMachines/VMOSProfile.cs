@@ -84,7 +84,7 @@ namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
         public static VMOSProfile CreateProfileForWindows(string hostName, string administratorUserName, string administratorPasword, string timeZoneName,
             bool enableAutomaticUpdates = true, bool provisionVMAgent = true)
         {
-            if (! IsValidHostName(hostName)) { throw new ArgumentNullException(nameof(hostName)); }
+            if (!IsValidHostName(hostName)) { throw new ArgumentNullException(nameof(hostName)); }
             if (string.IsNullOrWhiteSpace(administratorUserName)) { throw new ArgumentNullException(nameof(administratorUserName)); }
             if (string.IsNullOrWhiteSpace(administratorPasword)) { throw new ArgumentNullException(nameof(administratorPasword)); }
             if (string.IsNullOrWhiteSpace(timeZoneName)) { throw new ArgumentNullException(nameof(timeZoneName)); }
@@ -184,7 +184,7 @@ namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
 
             // validate if Keyvault is already added
             string vaultId = keyVault.ToString();
-            foreach(VMCertificates vault in Certificates)
+            foreach (VMCertificates vault in Certificates)
             {
                 if (vault.Vault?.ResourceId == vaultId)
                 {

@@ -35,7 +35,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
                 return new List<Tenant>();
             }
 
-            return JsonConvert.DeserializeObject<TenantListResult>(response.Body).Values;
+            return JsonConvert.DeserializeObject<List<Tenant>>(response.Body);
         }
 
         public static string CLIENT_API_VERSION = "2019-11-01";

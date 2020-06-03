@@ -11,7 +11,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
 {
     public static class VirtualMachineSizeClient
     {
-        
+
 
         /// <summary>
         /// Get the VM sizes available by name of the location
@@ -30,11 +30,11 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
                     bearerToken,
                     $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/providers/Microsoft.Compute/locations/{locationName}/vmSizes",
                     CLIENT_API_VERSION,
-                    null, null, 
+                    null, null,
                     new int[] { 200 }
                 );
 
-            if ((! response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
+            if ((!response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
             {
                 return new List<VirtualMachineSize>();
             }

@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+
 using SujaySarma.Sdk.Azure.Common;
+
 using System;
 using System.Collections.Generic;
 
@@ -43,7 +45,7 @@ namespace SujaySarma.Sdk.Azure.AppService.CertificateOrders
         /// <summary>
         /// Type of certificate
         /// </summary>
-        [JsonProperty("productType", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("productType"), JsonConverter(typeof(StringEnumConverter))]
         public CertificateTypesEnum Type { get; set; } = CertificateTypesEnum.StandardDomainValidatedSsl;
 
         /// <summary>
@@ -92,7 +94,7 @@ namespace SujaySarma.Sdk.Azure.AppService.CertificateOrders
         /// <summary>
         /// Status of Provisioning
         /// </summary>
-        [JsonProperty("provisioningState", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("provisioningState"), JsonConverter(typeof(StringEnumConverter))]
         public ProvisioningStatusEnum ProvisioningStatus { get; set; } = ProvisioningStatusEnum.Default;
 
         /// <summary>
@@ -104,7 +106,7 @@ namespace SujaySarma.Sdk.Azure.AppService.CertificateOrders
         /// <summary>
         /// Status of the order
         /// </summary>
-        [JsonProperty("status", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("status"), JsonConverter(typeof(StringEnumConverter))]
         public CertificateOrderStatus OrderStatus { get; set; } = CertificateOrderStatus.Default;
 
         /// <summary>

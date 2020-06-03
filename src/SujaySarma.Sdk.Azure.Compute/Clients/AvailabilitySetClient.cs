@@ -110,11 +110,11 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
                     bearerToken,
                     $"https://management.azure.com/{availabilitySetUri[1..]}",
                     CLIENT_API_VERSION,
-                    null, 
+                    null,
                     new int[] { 200, 204 }
                 );
 
-            if ((! response.IsExpectedSuccess) || response.WasException)
+            if ((!response.IsExpectedSuccess) || response.WasException)
             {
                 return false;
             }
@@ -180,7 +180,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
 
             StringBuilder queryUri = new StringBuilder();
             queryUri.Append($"https://management.azure.com/subscriptions/{subscription.ToString("d")}");
-            if (! string.IsNullOrWhiteSpace(resourceGroupName))
+            if (!string.IsNullOrWhiteSpace(resourceGroupName))
             {
                 queryUri.Append($"/resourceGroups/{resourceGroupName}");
             }
@@ -189,12 +189,12 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
             RestApiResponse response = await RestApiClient.GETWithContinuations<AvailabilitySet>(
                     bearerToken,
                     queryUri.ToString(),
-                    CLIENT_API_VERSION, 
-                    null, null, 
+                    CLIENT_API_VERSION,
+                    null, null,
                     new int[] { 200 }
                 );
 
-            if ((! response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
+            if ((!response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
             {
                 return new List<AvailabilitySet>();
             }

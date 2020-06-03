@@ -82,7 +82,7 @@ namespace SujaySarma.Sdk.Azure.Compute.AvailabilitySets
                 }
 
                 Properties.RemoveVirtualMachine(virtualMachine);
-            }            
+            }
         }
 
     }

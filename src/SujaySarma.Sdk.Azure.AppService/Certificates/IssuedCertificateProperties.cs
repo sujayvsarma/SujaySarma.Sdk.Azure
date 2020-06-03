@@ -23,7 +23,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Certificates
         /// <summary>
         /// State of provisioning the KeyVault secret
         /// </summary>
-        [JsonProperty("provisioningState", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("provisioningState"), JsonConverter(typeof(StringEnumConverter))]
         public KeyVaultSecretStatusEnum KeyVaultSecretStatus { get; set; } = KeyVaultSecretStatusEnum.Unknown;
 
         /// <summary>

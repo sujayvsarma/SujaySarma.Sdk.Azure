@@ -12,7 +12,7 @@ namespace SujaySarma.Sdk.Azure.Storage
         /// <summary>
         /// Action to be taken
         /// </summary>
-        [JsonProperty("action", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("action"), JsonConverter(typeof(StringEnumConverter))]
         public VirtualNetworkRuleAccessAction Action { get; set; }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace SujaySarma.Sdk.Azure.Storage
         /// <summary>
         /// State of rule
         /// </summary>
-        [JsonProperty("state", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("state"), JsonConverter(typeof(StringEnumConverter))]
         public VirtualNetworkRuleState State { get; set; }
 
     }

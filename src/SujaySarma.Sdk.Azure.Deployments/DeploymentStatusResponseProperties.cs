@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+
+using System;
+using System.Collections.Generic;
 
 namespace SujaySarma.Sdk.Azure.Deployments
 {
@@ -26,7 +26,7 @@ namespace SujaySarma.Sdk.Azure.Deployments
         /// <summary>
         /// Mode of deployment
         /// </summary>
-        [JsonProperty("mode", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("mode"), JsonConverter(typeof(StringEnumConverter))]
         public DeploymentTypesEnum Mode { get; set; } = DeploymentTypesEnum.Incremental;
 
         /// <summary>

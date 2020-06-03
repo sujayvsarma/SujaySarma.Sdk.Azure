@@ -1,14 +1,12 @@
 ﻿using Newtonsoft.Json;
 
 using SujaySarma.Sdk.Azure.AppService.WebApps;
-using SujaySarma.Sdk.Azure.AppService.Plans;
 using SujaySarma.Sdk.Azure.Common;
 using SujaySarma.Sdk.Azure.Internal;
 
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SujaySarma.Sdk.Azure.AppService.RuntimeStacks;
 
 namespace SujaySarma.Sdk.Azure.AppService.Clients
 {
@@ -182,7 +180,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
                     {
                         { "softRestart", (isSoftRestart ? "true" : "false" ) },
                         { "synchronous", (blockTillRestarted ? "true" : "false" ) }
-                    }, 
+                    },
                     null,
                     new int[] { 200 }
                 );

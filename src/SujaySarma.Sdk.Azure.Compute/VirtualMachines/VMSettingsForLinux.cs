@@ -44,9 +44,9 @@ namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
                 Keys = new System.Collections.Generic.List<VMSshPublicKey>()
                 {
                     new VMSshPublicKey()
-                    { 
+                    {
                         KeyData = sshPublicKey
-                        
+
                     }
                 }
             };

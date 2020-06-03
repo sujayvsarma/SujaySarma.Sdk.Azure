@@ -12,7 +12,7 @@ namespace SujaySarma.Sdk.Azure.Storage
         /// <summary>
         /// Action for an IP ACL rule
         /// </summary>
-        [JsonProperty("action", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("action"), JsonConverter(typeof(StringEnumConverter))]
         public VirtualNetworkRuleAccessAction Action { get; set; }
 
         /// <summary>

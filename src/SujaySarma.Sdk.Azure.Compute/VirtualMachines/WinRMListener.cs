@@ -17,7 +17,7 @@ namespace SujaySarma.Sdk.Azure.Compute.VirtualMachines
         /// <summary>
         /// Protocol to be used
         /// </summary>
-        [JsonProperty("protocol", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("protocol"), JsonConverter(typeof(StringEnumConverter))]
         public WinRMProtocolsEnum Protocol { get; set; } = WinRMProtocolsEnum.https;
 
 

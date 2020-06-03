@@ -53,7 +53,7 @@ namespace SujaySarma.Sdk.Azure.Common
         public static Dictionary<string, string> ToDictionary(IEnumerable<AzureNameValuePair> nameValuePairs)
         {
             Dictionary<string, string> results = new Dictionary<string, string>();
-            foreach(AzureNameValuePair pair in nameValuePairs)
+            foreach (AzureNameValuePair pair in nameValuePairs)
             {
                 results.Add(pair.Name, pair.Value);
             }

@@ -21,14 +21,14 @@ namespace SujaySarma.Sdk.Azure.Storage
         /// <summary>
         /// Kind of account
         /// </summary>
-        [JsonProperty("kind", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("kind"), JsonConverter(typeof(StringEnumConverter))]
         public StorageAccountKind Kind { get; set; }
 
         /// <summary>
         /// Sku of the storage account
         /// </summary>
-        [JsonProperty("sku", ItemConverterType = typeof(StringEnumConverter))]
-        public StorageAccountSkuNames Sku { get; set; }
+        [JsonProperty("sku")]
+        public StorageAccountSku Sku { get; set; } = new StorageAccountSku();
 
         /// <summary>
         /// Properties

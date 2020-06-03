@@ -11,7 +11,7 @@ namespace SujaySarma.Sdk.Azure.AppService.WebApps
         /// <summary>
         /// Type of connection string
         /// </summary>
-        [JsonProperty("type", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("type"), JsonConverter(typeof(StringEnumConverter))]
         public AppServiceWebAppConnectionStringType Type { get; set; }
 
         /// <summary>

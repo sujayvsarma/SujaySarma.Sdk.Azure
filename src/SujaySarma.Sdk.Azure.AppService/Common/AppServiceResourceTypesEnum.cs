@@ -14,7 +14,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Common
          * 
          * Replace '.'s in name with '_' and replace "/' with '__' (double '_')
          * 
-         */ 
+         */
 
 
         /// <summary>

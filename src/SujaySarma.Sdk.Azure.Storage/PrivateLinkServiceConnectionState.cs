@@ -24,7 +24,7 @@ namespace SujaySarma.Sdk.Azure.Storage
         /// <summary>
         /// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
         /// </summary>
-        [JsonProperty("status", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("status"), JsonConverter(typeof(StringEnumConverter))]
         public ConnectionState ConnectionState { get; set; }
 
         /// <summary>

@@ -70,7 +70,7 @@ namespace SujaySarma.Sdk.Azure.Tenants
                             break;
                         }
                     }
-                }                
+                }
 
                 return _primaryName;
             }

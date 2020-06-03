@@ -166,7 +166,7 @@ namespace SujaySarma.Sdk.Azure.Compute.ResourceSkus
                 _capabilities = new List<Dictionary<string, string>>();
             }
 
-            if ( _capabilitiesRebuilt != null)
+            if (_capabilitiesRebuilt != null)
             {
                 // we can validate!
                 if (_capabilitiesRebuilt.ContainsKey(name))

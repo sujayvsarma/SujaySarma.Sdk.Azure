@@ -29,7 +29,7 @@ namespace SujaySarma.Sdk.Azure.Storage
         /// <summary>
         /// Status of blob restore operation
         /// </summary>
-        [JsonProperty("status", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("status"), JsonConverter(typeof(StringEnumConverter))]
         public BlobRestoreProgress Status { get; set; }
 
         /// <summary>

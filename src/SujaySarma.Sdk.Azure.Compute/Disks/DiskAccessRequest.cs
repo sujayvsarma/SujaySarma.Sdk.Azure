@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Converters;
 
 using SujaySarma.Sdk.Azure.Compute.Common;
+
 using System;
 
 namespace SujaySarma.Sdk.Azure.Compute.Disks
@@ -14,7 +15,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Disks
         /// <summary>
         /// Access level required
         /// </summary>
-        [JsonProperty("access", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("access"), JsonConverter(typeof(StringEnumConverter))]
         public AccessLevelEnum AccessLevelRequired { get; set; } = AccessLevelEnum.None;
 
         /// <summary>
@@ -33,7 +34,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Disks
         /// <param name="expireIn">Number of seconds to expire the SAS token</param>
         public DiskAccessRequest(AccessLevelEnum required, int expireIn)
         {
-            if (! Enum.IsDefined(typeof(AccessLevelEnum), required)) { throw new ArgumentOutOfRangeException(nameof(required)); }
+            if (!Enum.IsDefined(typeof(AccessLevelEnum), required)) { throw new ArgumentOutOfRangeException(nameof(required)); }
             if ((expireIn < 1) || (expireIn > 86400)) { throw new ArgumentOutOfRangeException(nameof(expireIn)); }
 
             AccessLevelRequired = required;

@@ -36,7 +36,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Encryption
         {
             if (string.IsNullOrWhiteSpace(keyUrl)) { throw new ArgumentNullException(nameof(keyUrl)); }
 
-            Vault = new SourceVault(vaultUri);            
+            Vault = new SourceVault(vaultUri);
             KeyUrl = keyUrl;
         }
     }

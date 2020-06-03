@@ -59,11 +59,11 @@ namespace SujaySarma.Sdk.Azure.Providers
         /// <returns>True or False</returns>
         public bool SupportsLocation(string locationName)
         {
-            if (string.IsNullOrWhiteSpace(locationName)) { throw new ArgumentNullException(nameof(locationName));  }
+            if (string.IsNullOrWhiteSpace(locationName)) { throw new ArgumentNullException(nameof(locationName)); }
 
             if ((Locations != null) && (Locations.Count == 0))
             {
-                foreach(string loc in Locations)
+                foreach (string loc in Locations)
                 {
                     if (loc.Equals(locationName, System.StringComparison.InvariantCultureIgnoreCase))
                     {

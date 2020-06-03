@@ -21,7 +21,7 @@ namespace SujaySarma.Sdk.Azure.Storage
         /// <summary>
         /// Default action to take
         /// </summary>
-        [JsonProperty("defaultAction", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("defaultAction"), JsonConverter(typeof(StringEnumConverter))]
         public RuleAction DefaultAction { get; set; }
 
         /// <summary>

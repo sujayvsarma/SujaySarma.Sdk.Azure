@@ -238,7 +238,7 @@ namespace SujaySarma.Sdk.Azure.Common
         /// <returns>ResourceUri</returns>
         public ResourceUri Build()
         {
-            if (! IsValid)
+            if (!IsValid)
             {
                 throw new Exception("ResourceUri does not contain valid components to create a valid AzureRM resource Uri string.");
             }

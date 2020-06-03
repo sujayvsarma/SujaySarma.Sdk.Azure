@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 
-using SujaySarma.Sdk.Azure.Common;
 using SujaySarma.Sdk.Azure.Core.Tags;
 using SujaySarma.Sdk.Azure.Internal;
 
@@ -29,7 +28,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
             if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
             if ((subscription == Guid.Empty) || (subscription == default)) { throw new ArgumentNullException(nameof(subscription)); }
             if (string.IsNullOrWhiteSpace(tagName)) { throw new ArgumentNullException(nameof(tagName)); }
-            if ((tagName.Length > 512) || tagName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) 
+            if ((tagName.Length > 512) || tagName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase)
                 || tagName.StartsWith("azure", StringComparison.InvariantCultureIgnoreCase) || tagName.StartsWith("windows", StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new ArgumentException("tagName must be <= 512 characters and not start with 'microsoft', 'azure' or 'windows'.");
@@ -37,7 +36,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             RestApiResponse response = await RestApiClient.PUT(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/tagNames/{tagName}",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/tagNames/{tagName}",
                     CLIENT_API_VERSION,
                     null, null,
                     new int[] { 200, 201 }
@@ -65,10 +64,10 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
             if ((subscription == Guid.Empty) || (subscription == default)) { throw new ArgumentNullException(nameof(subscription)); }
             if (string.IsNullOrWhiteSpace(tagName)) { throw new ArgumentNullException(nameof(tagName)); }
             if (string.IsNullOrWhiteSpace(value)) { throw new ArgumentNullException(nameof(value)); }
-            
+
             RestApiResponse response = await RestApiClient.PUT(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/tagNames/{tagName}/{value}",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/tagNames/{tagName}/{value}",
                     CLIENT_API_VERSION,
                     null, null,
                     new int[] { 200, 201 }
@@ -97,7 +96,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             RestApiResponse response = await RestApiClient.DELETE(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/tagNames/{tagName}",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/tagNames/{tagName}",
                     CLIENT_API_VERSION,
                     null,
                     new int[] { 200, 204 }
@@ -124,7 +123,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
 
             RestApiResponse response = await RestApiClient.GETWithContinuations<Tag>(
                     bearerToken,
-                    $"https://management.azure.com/subscriptions/{subscription.ToString("d")}/tagNames",
+                    $"https://management.azure.com/subscriptions/{subscription:d}/tagNames",
                     CLIENT_API_VERSION,
                     null, null,
                     new int[] { 200 }
@@ -135,7 +134,7 @@ namespace SujaySarma.Sdk.Azure.Core.Clients
                 return new List<Tag>();
             }
 
-            return JsonConvert.DeserializeObject<ListResultWithContinuations<Tag>>(response.Body).Values;
+            return JsonConvert.DeserializeObject<List<Tag>>(response.Body);
         }
 
 

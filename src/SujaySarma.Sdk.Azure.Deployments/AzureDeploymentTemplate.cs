@@ -77,7 +77,7 @@ namespace SujaySarma.Sdk.Azure.Deployments
         /// Name of the resource. Can use ARM functions like 'uniqueString()' etc here.
         /// </summary>
         [JsonProperty("name")]
-        public string Name { get; set; } = string.Empty;        
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// Azure region (location) to deploy to. 

@@ -23,7 +23,7 @@ namespace SujaySarma.Sdk.Azure.ResourceGroups
         /// current names.
         /// </summary>
         public bool RetainExistingResourceNames { get; set; } = false;
-        
+
         /// <summary>
         /// If TRUE, will not create any parameters at all and all values will be hard-coded 
         /// to their current values.

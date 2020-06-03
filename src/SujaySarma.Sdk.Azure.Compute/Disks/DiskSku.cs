@@ -30,7 +30,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Disks
         /// <param name="tier">Tier of the SKU</param>
         public DiskSku(DiskSkuNamesEnum sku, string? tier = null)
         {
-            if (! Enum.IsDefined(typeof(DiskSkuNamesEnum), sku)) { throw new ArgumentOutOfRangeException(nameof(sku)); }
+            if (!Enum.IsDefined(typeof(DiskSkuNamesEnum), sku)) { throw new ArgumentOutOfRangeException(nameof(sku)); }
 
             Name = sku;
             Tier = tier;

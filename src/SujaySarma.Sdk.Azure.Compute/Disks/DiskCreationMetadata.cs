@@ -68,8 +68,8 @@ namespace SujaySarma.Sdk.Azure.Compute.Disks
         /// <returns>Disk creation metadata</returns>
         public static DiskCreationMetadata ViaCopy(ResourceUri sourceSnapshotUri)
         {
-            if ((sourceSnapshotUri == null) || (!sourceSnapshotUri.IsValid) || 
-                (!sourceSnapshotUri.Is(ResourceUriCompareLevel.Provider, "Microsoft.Compute")) || (! sourceSnapshotUri.Is(ResourceUriCompareLevel.Type, "snapshots")))
+            if ((sourceSnapshotUri == null) || (!sourceSnapshotUri.IsValid) ||
+                (!sourceSnapshotUri.Is(ResourceUriCompareLevel.Provider, "Microsoft.Compute")) || (!sourceSnapshotUri.Is(ResourceUriCompareLevel.Type, "snapshots")))
             {
                 throw new ArgumentException(nameof(sourceSnapshotUri));
             }
@@ -96,7 +96,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Disks
                 throw new ArgumentException(nameof(storageAccountUri));
             }
 
-            if ((! Uri.IsWellFormedUriString(vhdUri, UriKind.Absolute)) || (!vhdUri.EndsWith(".vhd", StringComparison.InvariantCultureIgnoreCase)))
+            if ((!Uri.IsWellFormedUriString(vhdUri, UriKind.Absolute)) || (!vhdUri.EndsWith(".vhd", StringComparison.InvariantCultureIgnoreCase)))
             {
                 throw new ArgumentException(nameof(vhdUri));
             }
@@ -138,7 +138,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Disks
         /// <returns>Disk creation metadata</returns>
         public static DiskCreationMetadata ViaPlatformImage(OSTypeNamesEnum osType, ResourceUri marketplaceImageResourceUri)
         {
-            if (! Enum.IsDefined(typeof(OSTypeNamesEnum), osType)) { throw new ArgumentOutOfRangeException(nameof(osType)); }
+            if (!Enum.IsDefined(typeof(OSTypeNamesEnum), osType)) { throw new ArgumentOutOfRangeException(nameof(osType)); }
             if ((marketplaceImageResourceUri == null) || (!marketplaceImageResourceUri.IsValid))
             {
                 throw new ArgumentException(nameof(marketplaceImageResourceUri));

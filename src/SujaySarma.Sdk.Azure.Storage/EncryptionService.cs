@@ -18,7 +18,7 @@ namespace SujaySarma.Sdk.Azure.Storage
         /// <summary>
         /// Type of key used
         /// </summary>
-        [JsonProperty("keyType", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("keyType"), JsonConverter(typeof(StringEnumConverter))]
         public EncryptionServiceKeyType KeyType { get; set; }
 
         /// <summary>

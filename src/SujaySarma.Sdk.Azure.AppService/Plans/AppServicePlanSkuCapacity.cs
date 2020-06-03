@@ -36,7 +36,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Plans
         /// <summary>
         /// Type of scaling that can be applied
         /// </summary>
-        [JsonProperty("scaleType", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("scaleType"), JsonConverter(typeof(StringEnumConverter))]
         public AppServicePlanScaleTypeEnum ScaleType { get; set; } = AppServicePlanScaleTypeEnum.Default;
 
 

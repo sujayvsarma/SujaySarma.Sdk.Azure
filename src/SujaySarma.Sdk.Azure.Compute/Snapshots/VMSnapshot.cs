@@ -37,7 +37,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Snapshots
         /// <param name="managedBy">Resource Id of the entity managing the snapshot</param>
         public VMSnapshot(DiskCreationMetadata creationMetadata, int sizeGB, ResourceUri? managedBy = null)
         {
-            if ((managedBy != null) && (! managedBy.IsValid)) { throw new ArgumentException(nameof(managedBy)); }
+            if ((managedBy != null) && (!managedBy.IsValid)) { throw new ArgumentException(nameof(managedBy)); }
 
             Properties = new VMSnapshotProperties(creationMetadata, sizeGB);
             ManagedBy = managedBy?.ToString();

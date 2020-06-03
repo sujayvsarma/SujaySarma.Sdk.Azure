@@ -25,7 +25,7 @@ namespace SujaySarma.Sdk.Azure.AppService.Clients
         public static async Task<IList<ApplicationStack>> GetApplicationStacks(string bearerToken, OSTypeNamesEnum operatingSystem)
         {
             if (string.IsNullOrWhiteSpace(bearerToken)) { throw new ArgumentNullException(nameof(bearerToken)); }
-            if (! Enum.IsDefined(typeof(OSTypeNamesEnum), operatingSystem)) { throw new ArgumentOutOfRangeException(nameof(operatingSystem)); }
+            if (!Enum.IsDefined(typeof(OSTypeNamesEnum), operatingSystem)) { throw new ArgumentOutOfRangeException(nameof(operatingSystem)); }
 
             RestApiResponse response = await RestApiClient.GETWithContinuations<ApplicationStack>(
                     bearerToken,

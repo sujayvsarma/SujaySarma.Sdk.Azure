@@ -29,7 +29,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
         /// <param name="properties">Properties of the extension</param>
         /// <param name="tags">Tags (optional)</param>
         /// <returns>VMExtension object if successful, else NULL</returns>
-        public static async Task<VMExtension?> Create(string bearerToken, Guid subscription, string resourceGroupName, string virtualMachineName, string extensionName, 
+        public static async Task<VMExtension?> Create(string bearerToken, Guid subscription, string resourceGroupName, string virtualMachineName, string extensionName,
             string location, VMExtensionProperties properties, Dictionary<string, string>? tags = null)
         {
             if (subscription == Guid.Empty) { throw new ArgumentNullException(nameof(subscription)); }
@@ -53,7 +53,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
             };
 
             return await CreateOrUpdate(
-                    bearerToken, 
+                    bearerToken,
                     new VMExtension()
                     {
                         Location = location,
@@ -75,7 +75,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
         /// <param name="properties">Properties of the extension</param>
         /// <param name="tags">Tags (optional)</param>
         /// <returns>VMExtension object if successful, else NULL</returns>
-        public static async Task<VMExtension?> Create(string bearerToken, string virtualMachineResourceUri, string extensionName, 
+        public static async Task<VMExtension?> Create(string bearerToken, string virtualMachineResourceUri, string extensionName,
             string location, VMExtensionProperties properties, Dictionary<string, string>? tags = null)
         {
             if (string.IsNullOrWhiteSpace(virtualMachineResourceUri)) { throw new ArgumentNullException(nameof(virtualMachineResourceUri)); }
@@ -126,12 +126,12 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
                     bearerToken,
                     $"https://management.azure.com/{virtualMachineExtension.ResourceId[1..]}",
                     CLIENT_API_VERSION,
-                    null, 
+                    null,
                     virtualMachineExtension,
                     new int[] { 200, 201 }
                 );
 
-            if ((! response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
+            if ((!response.IsExpectedSuccess) || response.WasException || string.IsNullOrWhiteSpace(response.Body))
             {
                 return null;
             }
@@ -188,11 +188,11 @@ namespace SujaySarma.Sdk.Azure.Compute.Clients
                     bearerToken,
                     $"https://management.azure.com/{virtualMachineExtensionResourceUri[1..]}",
                     CLIENT_API_VERSION,
-                    null, 
+                    null,
                     new int[] { 200, 202, 204 }
                 );
 
-            if ((! response.IsExpectedSuccess) || response.WasException)
+            if ((!response.IsExpectedSuccess) || response.WasException)
             {
                 return false;
             }

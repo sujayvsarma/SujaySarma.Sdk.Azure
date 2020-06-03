@@ -15,7 +15,7 @@ namespace SujaySarma.Sdk.Azure.Storage
         /// <summary>
         /// Access tier
         /// </summary>
-        [JsonProperty("accessTier", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("accessTier"), JsonConverter(typeof(StringEnumConverter))]
         public StorageAccessTier AccessTier { get; set; }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace SujaySarma.Sdk.Azure.Storage
         /// <summary>
         /// State of large file shares
         /// </summary>
-        [JsonProperty("largeFileSharesState", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("largeFileSharesState"), JsonConverter(typeof(StringEnumConverter))]
         public LargeFilesShareState LargeFilesShareState { get; set; }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace SujaySarma.Sdk.Azure.Storage
         /// <summary>
         /// Provisioning state
         /// </summary>
-        [JsonProperty("provisioningState", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("provisioningState"), JsonConverter(typeof(StringEnumConverter))]
         public ProvisioningState ProvisioningState { get; set; }
 
         /// <summary>
@@ -129,13 +129,13 @@ namespace SujaySarma.Sdk.Azure.Storage
         /// <summary>
         /// Status of the primary account
         /// </summary>
-        [JsonProperty("statusOfPrimary", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("statusOfPrimary"), JsonConverter(typeof(StringEnumConverter))]
         public AccountStatus PrimaryStatus { get; set; }
 
         /// <summary>
         /// Status of the secondary account
         /// </summary>
-        [JsonProperty("statusOfSecondary", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("statusOfSecondary"), JsonConverter(typeof(StringEnumConverter))]
         public AccountStatus SecondaryStatus { get; set; }
 
         /// <summary>

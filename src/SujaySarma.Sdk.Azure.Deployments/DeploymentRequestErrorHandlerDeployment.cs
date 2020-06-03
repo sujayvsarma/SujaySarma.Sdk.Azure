@@ -11,7 +11,7 @@ namespace SujaySarma.Sdk.Azure.Deployments
         /// <summary>
         /// Type of error handling. One of: "SpecificDeployment" or "LastSuccessful"
         /// </summary>
-        [JsonProperty("type", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("type"), JsonConverter(typeof(StringEnumConverter))]
         public DeploymentRequestErrorHandlerTypesEnum Type { get; set; } = DeploymentRequestErrorHandlerTypesEnum.LastSuccessful;
 
         /// <summary>

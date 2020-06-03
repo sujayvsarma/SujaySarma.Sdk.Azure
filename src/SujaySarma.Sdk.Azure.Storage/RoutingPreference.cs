@@ -24,7 +24,7 @@ namespace SujaySarma.Sdk.Azure.Storage
         /// <summary>
         /// Choice of routing opted
         /// </summary>
-        [JsonProperty("routingChoice", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("routingChoice"), JsonConverter(typeof(StringEnumConverter))]
         public RoutingChoice RoutingChoice { get; set; }
 
         /// <summary>

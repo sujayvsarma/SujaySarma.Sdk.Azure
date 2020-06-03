@@ -1,8 +1,6 @@
 ﻿
 using Newtonsoft.Json;
 
-using System.Collections.Generic;
-
 namespace SujaySarma.Sdk.Azure.Storage
 {
     /// <summary>
@@ -26,7 +24,7 @@ namespace SujaySarma.Sdk.Azure.Storage
         /// Collection of Encryption service
         /// </summary>
         [JsonProperty("services")]
-        public List<EncryptionService> EncryptionService { get; set; } = new List<EncryptionService>();
+        public EncryptableServices? EncryptionService { get; set; }
 
         /// <summary>
         /// Default constructor

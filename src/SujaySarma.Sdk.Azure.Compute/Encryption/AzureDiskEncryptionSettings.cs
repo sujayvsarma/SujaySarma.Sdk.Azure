@@ -1,5 +1,6 @@
 ﻿
 using Newtonsoft.Json;
+
 using System;
 using System.Collections.Generic;
 
@@ -72,9 +73,9 @@ namespace SujaySarma.Sdk.Azure.Compute.Encryption
         {
             if (diskEncryptionKey == null) { throw new ArgumentNullException(nameof(diskEncryptionKey)); }
 
-            if (! Enabled)
+            if (!Enabled)
             {
-                if (! enableIfDisabled)
+                if (!enableIfDisabled)
                 {
                     throw new InvalidOperationException();
                 }

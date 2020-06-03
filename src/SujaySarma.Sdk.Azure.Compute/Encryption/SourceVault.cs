@@ -27,7 +27,7 @@ namespace SujaySarma.Sdk.Azure.Compute.Encryption
         /// <param name="vaultUri">ResourceUri to an Azure KeyVault</param>
         public SourceVault(ResourceUri vaultUri)
         {
-            if ((vaultUri == null) || (! vaultUri.IsValid) || (!vaultUri.Is(ResourceUriCompareLevel.Provider, "Microsoft.KeyVault")) || 
+            if ((vaultUri == null) || (!vaultUri.IsValid) || (!vaultUri.Is(ResourceUriCompareLevel.Provider, "Microsoft.KeyVault")) ||
                 (!vaultUri.Is(ResourceUriCompareLevel.Type, "vaults")))
             {
                 throw new ArgumentException(nameof(vaultUri));
