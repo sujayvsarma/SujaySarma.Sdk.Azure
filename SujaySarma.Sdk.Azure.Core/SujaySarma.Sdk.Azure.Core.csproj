@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Authors>Sujay V Sarma</Authors>
+    <Company>Sujay V Sarma</Company>
+    <Description>An intuitive, progressive and comprehensive client to interact with the Azure REST API services. Please see the project website on Github.com for documentation.</Description>
+    <Copyright>Copyright © 2019 Sujay V. Sarma. All Rights Reserved.</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/sujayvsarma/SujaySarma.Sdk.Azure</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/sujayvsarma/SujaySarma.Sdk.Azure</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>azure,sdk,.net,dotnet,netcore,.net core,3.1</PackageTags>
+    <Version>1.5</Version>
+    <PackageReleaseNotes>This is the first initial release of this SDK. Do bear with me about bugs, and file them on my Github repo so that I can fix them for you.</PackageReleaseNotes>
+    <AssemblyVersion>1.5.0.0</AssemblyVersion>
+    <FileVersion>1.5.0.0</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CodeAnalysisRuleSet />
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <DebugType>embedded</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove=".gitignore" />
+    <None Remove="README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="COPY /Y $(TargetPath) $(SolutionDir)..\_build\$(TargetFileName)" />
+  </Target>
+
+</Project>
